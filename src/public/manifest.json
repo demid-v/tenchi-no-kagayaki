@@ -1,0 +1,10 @@
+{
+  "name": "天地の輝き - The shine of the Universe",
+  "short_name": "天地の輝き",
+  "icons": [],
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
