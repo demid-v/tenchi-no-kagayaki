@@ -53,6 +53,7 @@ const nextConfig: NextConfig = {
 
     return config
   },
+  turbopack: {},
 }
 
 const KEYS_TO_OMIT = ['webpackDevMiddleware', 'configOrigin', 'target', 'analyticsId', 'webpack5', 'amp', 'assetPrefix']
