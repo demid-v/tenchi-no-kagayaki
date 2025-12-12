@@ -1,14 +1,19 @@
-import { Layout } from '~/components/dom/Layout'
-import './global.css'
+import { Layout } from "~/components/dom/Layout";
+
+import "./global.css";
 
 export const metadata = {
-  title: '天地の輝き',
-  description: 'Star system discovery game.',
-}
+  title: "天地の輝き",
+  description: "Star system discovery game.",
+};
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang='en' className='antialiased'>
+    <html lang="en" className="antialiased">
       {/*
         <head /> will contain the components returned by the nearest parent
         head.tsx. Find out more at https://beta.nextjs.org/docs/api-reference/file-conventions/head
@@ -19,5 +24,5 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Layout>{children}</Layout>
       </body>
     </html>
-  )
+  );
 }
