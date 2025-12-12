@@ -1,12 +1,12 @@
-import { Layout } from '@/components/dom/Layout'
-import '@/global.css'
+import { Layout } from '~/components/dom/Layout'
+import './global.css'
 
 export const metadata = {
   title: '天地の輝き',
   description: 'Star system discovery game.',
 }
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang='en' className='antialiased'>
       {/*

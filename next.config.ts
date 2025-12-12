@@ -1,3 +1,5 @@
+import { NextConfig } from 'next'
+
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
@@ -11,7 +13,7 @@ const withPWA = require('@ducanh2912/next-pwa').default({
   disable: process.env.NODE_ENV === 'development',
 })
 
-const nextConfig = {
+const nextConfig: NextConfig = {
   // uncomment the following snippet if using styled components
   // compiler: {
   //   styledComponents: true,
@@ -55,6 +57,7 @@ const nextConfig = {
 
 const KEYS_TO_OMIT = ['webpackDevMiddleware', 'configOrigin', 'target', 'analyticsId', 'webpack5', 'amp', 'assetPrefix']
 
+//@ts-ignore
 module.exports = (_phase, { defaultConfig }) => {
   const plugins = [[withPWA], [withBundleAnalyzer, {}]]
 
@@ -63,7 +66,7 @@ module.exports = (_phase, { defaultConfig }) => {
     ...nextConfig,
   })
 
-  const finalConfig = {}
+  const finalConfig: { [key: string]: string } = {}
   Object.keys(wConfig).forEach((key) => {
     if (!KEYS_TO_OMIT.includes(key)) {
       finalConfig[key] = wConfig[key]
