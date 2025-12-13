@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import { useRef } from "react";
 
-const Scene = dynamic(() => import("~/components/canvas/Scene"), {
+const Scene = dynamic(() => import("~/components/canvas/scene"), {
   ssr: false,
 });
 
@@ -15,7 +15,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       ref={ref}
       style={{
         position: "relative",
-        width: " 100%",
+        width: "100%",
         height: "100%",
         overflow: "auto",
         touchAction: "auto",

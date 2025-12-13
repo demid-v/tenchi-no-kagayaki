@@ -1,4 +1,4 @@
-import { Layout } from "~/components/dom/Layout";
+import { Layout } from "~/components/dom/layout";
 
 import "./global.css";
 
