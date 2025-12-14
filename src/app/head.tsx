@@ -1,5 +1,4 @@
 const title = "天地の輝き - The shine of the Universe";
-const url = "https://tenchi-no-kagayaki.vercel.app/";
 const description = "Star system discovery game.";
 const author = "demid-v";
 

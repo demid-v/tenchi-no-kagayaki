@@ -3,7 +3,7 @@
 import { useLayoutEffect, useRef } from "react";
 import * as THREE from "three";
 
-import { Planet as PlanetMaterial } from "~/templates/Shader/planet";
+import { Planet as PlanetMaterial } from "~/templates/shader/planet";
 
 export const Planet = () => {
   const meshRef = useRef<THREE.Mesh>(null);
