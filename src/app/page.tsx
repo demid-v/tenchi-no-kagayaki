@@ -1,7 +1,15 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { useRef } from "react";
 import { Suspense } from "react";
+import * as THREE from "three";
+
+import {
+  IcePlanet,
+  LavaPlanet,
+  ParadisePlanet,
+} from "~/components/canvas/planet";
 
 const Planet = dynamic(
   () => import("~/components/canvas/planet").then((mod) => mod.Planet),
@@ -43,6 +51,17 @@ const Common = dynamic(
   { ssr: false },
 );
 
+const Planets = () => {
+  return (
+    <>
+      <ParadisePlanet position={[-50, 0, 0]} />
+      <IcePlanet position={[0, 0, 0]} />
+      <LavaPlanet position={[50, 0, 0]} />
+      <Common color="#000000" />
+    </>
+  );
+};
+
 export default function Page() {
   return (
     <View
@@ -50,8 +69,7 @@ export default function Page() {
       orbit
     >
       <Suspense fallback={null}>
-        <Planet />
-        <Common color="#000000" />
+        <Planets />
       </Suspense>
     </View>
   );

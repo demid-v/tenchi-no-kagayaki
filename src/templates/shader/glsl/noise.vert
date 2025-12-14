@@ -1,10 +1,17 @@
 const float PI = 3.14159265;
 
+uniform float permutation;
+
 //	Simplex 3D Noise 
 //	by Ian McEwan, Ashima Arts
 //
-vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x, 289.0);}
-vec4 taylorInvSqrt(vec4 r){return 1.79284291400159 - 0.85373472095314 * r;}
+vec4 permute(vec4 x) {
+  return mod(((x*34.0)+1.0)*x, permutation);
+}
+
+vec4 taylorInvSqrt(vec4 r) {
+  return 1.79284291400159 - 0.85373472095314 * r;
+}
 
 // 
 float simplex3(vec3 v) { 
@@ -27,7 +34,7 @@ float simplex3(vec3 v) {
   vec3 x3 = x0 - 1. + 3.0 * C.xxx;
 
   // Permutations
-  i = mod(i, 289.0 ); 
+  i = mod(i, permutation); 
   vec4 p = permute( permute( permute( 
             i.z + vec4(0.0, i1.z, i2.z, 1.0 ))
           + i.y + vec4(0.0, i1.y, i2.y, 1.0 )) 

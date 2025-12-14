@@ -127,6 +127,5 @@ void main() {
     color5, 
     smoothstep(transition5 - blend45, transition5 + blend45, h));
   
-  
   gl_FragColor = vec4(light * finalColor * lightColor, 1.0);
 }
