@@ -14,17 +14,11 @@ const withPWA = require("@ducanh2912/next-pwa").default({
 });
 
 const nextConfig: NextConfig = {
-  // uncomment the following snippet if using styled components
-  // compiler: {
-  //   styledComponents: true,
-  // },
-  reactStrictMode: true, // Recommended for the `pages` directory, default in `app`.
-  images: {},
   webpack(config, { isServer }) {
     if (!isServer) {
-      // We're in the browser build, so we can safely exclude the sharp module
       config.externals.push("sharp");
     }
+
     // audio support
     config.module.rules.push({
       test: /\.(ogg|mp3|wav|mpe?g)$/i,
@@ -53,7 +47,22 @@ const nextConfig: NextConfig = {
 
     return config;
   },
-  turbopack: {},
+  turbopack: {
+    rules: {
+      "*.glsl": {
+        loaders: ["raw-loader", "glslify", "glslify-loader"],
+        as: "*.js",
+      },
+      "*.vert": {
+        loaders: ["raw-loader", "glslify", "glslify-loader"],
+        as: "*.js",
+      },
+      "*.frag": {
+        loaders: ["raw-loader", "glslify", "glslify-loader"],
+        as: "*.js",
+      },
+    },
+  },
 };
 
 const KEYS_TO_OMIT = [

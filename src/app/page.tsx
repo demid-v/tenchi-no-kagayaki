@@ -3,8 +3,8 @@
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
 
-const BasePlanet = dynamic(
-  () => import("~/components/canvas/base-planet").then((mod) => mod.BasePlanet),
+const Planet = dynamic(
+  () => import("~/components/canvas/planet").then((mod) => mod.Planet),
   { ssr: false },
 );
 
@@ -50,8 +50,8 @@ export default function Page() {
       orbit
     >
       <Suspense fallback={null}>
-        <BasePlanet />
-        <Common color={"#000000"} />
+        <Planet />
+        <Common color="#000000" />
       </Suspense>
     </View>
   );

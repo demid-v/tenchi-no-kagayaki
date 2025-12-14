@@ -31,7 +31,8 @@
     }
   },
   "include": [
-    ".eslintrc.cjs",
+    "index.d.ts",
+    ".eslint.config.js",
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
