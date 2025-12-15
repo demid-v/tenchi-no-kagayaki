@@ -1,7 +1,9 @@
 "use client";
 
+import { useLoader } from "@react-three/fiber";
 import { useImperativeHandle, useLayoutEffect, useRef } from "react";
 import * as THREE from "three";
+import { TextureLoader } from "three";
 
 import { getRandom } from "~/helpers/utils";
 import {
@@ -39,20 +41,21 @@ export const Planet = ({
 
 export const ParadisePlanet = ({
   position,
+  ref,
 }: {
   position: [number, number, number];
+  ref?: React.RefObject<THREE.Mesh | null>;
 }) => {
-  const sharpness = getRandom(1.6, 3.6);
-  const offset = getRandom(-0.036, 0.016);
+  const period = getRandom(0.3, 2);
   const permutation = Math.floor(getRandom(19, 370));
 
   return (
     <Planet
+      ref={ref}
       position={position}
       planetShaderUni={{
+        period,
         permutation,
-        sharpness,
-        offset,
       }}
     />
   );
@@ -60,8 +63,10 @@ export const ParadisePlanet = ({
 
 export const LavaPlanet = ({
   position,
+  ref,
 }: {
   position: [number, number, number];
+  ref?: React.RefObject<THREE.Mesh | null>;
 }) => {
   const sharpness = getRandom(1.6, 3.6);
   const offset = getRandom(-0.036, 0.016);
@@ -69,6 +74,7 @@ export const LavaPlanet = ({
 
   return (
     <Planet
+      ref={ref}
       position={position}
       planetShaderUni={{
         permutation,
@@ -86,8 +92,10 @@ export const LavaPlanet = ({
 
 export const IcePlanet = ({
   position,
+  ref,
 }: {
   position: [number, number, number];
+  ref?: React.RefObject<THREE.Mesh | null>;
 }) => {
   const sharpness = getRandom(1.6, 3.6);
   const offset = getRandom(0.1, 0.3);
@@ -95,6 +103,7 @@ export const IcePlanet = ({
 
   return (
     <Planet
+      ref={ref}
       position={position}
       planetShaderUni={{
         permutation,
@@ -107,5 +116,28 @@ export const IcePlanet = ({
         color5: [0.98, 1, 1],
       }}
     />
+  );
+};
+
+export const Star = ({ position }: { position: [number, number, number] }) => {
+  const glowMap = useLoader(TextureLoader, "/img/glow.png");
+
+  return (
+    <>
+      <mesh position={position}>
+        <sphereGeometry args={[60, 128, 128]} />
+        <meshStandardMaterial emissive={"yellow"} emissiveIntensity={10} />
+      </mesh>
+      <mesh position={position}>
+        <sprite scale={[600, 600, 1]}>
+          <spriteMaterial
+            color={0x0000ff}
+            map={glowMap}
+            transparent={false}
+            blending={THREE.AdditiveBlending}
+          />
+        </sprite>
+      </mesh>
+    </>
   );
 };

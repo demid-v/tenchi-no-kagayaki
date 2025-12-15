@@ -27,6 +27,7 @@ export type PlanetShaderUni = {
   persistence?: number;
   lacunarity?: number;
   octaves?: number;
+  ambientIntensity?: number;
   color1?: [number, number, number];
   color2?: [number, number, number];
   color3?: [number, number, number];
@@ -44,6 +45,7 @@ export const Planet = ({
   persistence,
   lacunarity,
   octaves,
+  ambientIntensity,
   color1,
   color2,
   color3,
@@ -63,7 +65,7 @@ export const Planet = ({
       lacunarity: { value: lacunarity ? lacunarity : 1.8 },
       octaves: { value: octaves ?? 10 },
       undulation: { value: 0.0 },
-      ambientIntensity: { value: 0.02 },
+      ambientIntensity: { value: ambientIntensity ?? 0.5 },
       diffuseIntensity: { value: 1 },
       specularIntensity: { value: 2 },
       shininess: { value: 10 },
@@ -96,11 +98,6 @@ export const Planet = ({
           ? new THREE.Color(color5[0], color5[1], color5[2])
           : new THREE.Color(0.15, 0.15, 0.15),
       },
-      // color1: { value: new THREE.Color(0.678, 0.184, 0.271) },
-      // color2: { value: new THREE.Color(0.902, 0.271, 0.224) },
-      // color3: { value: new THREE.Color(1, 0.537, 0.2) },
-      // color4: { value: new THREE.Color(0.239, 0.161, 0.212) },
-      // color5: { value: new THREE.Color(0.322, 0.2, 0.247) },
       transition2: { value: 0.071 },
       transition3: { value: 0.215 },
       transition4: { value: 0.372 },

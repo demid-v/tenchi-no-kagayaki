@@ -1,5 +1,6 @@
 "use client";
 
+import { useFrame } from "@react-three/fiber";
 import dynamic from "next/dynamic";
 import { useRef } from "react";
 import { Suspense } from "react";
@@ -9,12 +10,8 @@ import {
   IcePlanet,
   LavaPlanet,
   ParadisePlanet,
+  Star,
 } from "~/components/canvas/planet";
-
-const Planet = dynamic(
-  () => import("~/components/canvas/planet").then((mod) => mod.Planet),
-  { ssr: false },
-);
 
 const View = dynamic(
   () => import("~/components/canvas/view").then((mod) => mod.View),
@@ -52,12 +49,35 @@ const Common = dynamic(
 );
 
 const Planets = () => {
+  const lavaPlanetRef = useRef<THREE.Mesh>(null);
+  const paradisePlanetRef = useRef<THREE.Mesh>(null);
+  const icePlanetRef = useRef<THREE.Mesh>(null);
+
+  useFrame(({ clock: { elapsedTime } }, delta) => {
+    if (
+      !lavaPlanetRef.current ||
+      !paradisePlanetRef.current ||
+      !icePlanetRef.current
+    )
+      return;
+
+    lavaPlanetRef.current.position.x = Math.sin(elapsedTime / 10 - 500) * 500;
+    lavaPlanetRef.current.position.z = Math.cos(elapsedTime / 10 - 500) * 500;
+
+    paradisePlanetRef.current.position.x =
+      Math.sin(elapsedTime / 60 - 700) * 700;
+    paradisePlanetRef.current.position.z =
+      Math.cos(elapsedTime / 60 - 700) * 700;
+
+    icePlanetRef.current.position.x = Math.sin(elapsedTime / 100 - 900) * 900;
+    icePlanetRef.current.position.z = Math.cos(elapsedTime / 100 - 900) * 900;
+  });
+
   return (
     <>
-      <ParadisePlanet position={[-50, 0, 0]} />
-      <IcePlanet position={[0, 0, 0]} />
-      <LavaPlanet position={[50, 0, 0]} />
-      <Common color="#000000" />
+      <LavaPlanet position={[-500, 0, 0]} ref={lavaPlanetRef} />
+      <ParadisePlanet position={[-700, 0, 0]} ref={paradisePlanetRef} />
+      <IcePlanet position={[-900, 0, 0]} ref={icePlanetRef} />
     </>
   );
 };
@@ -70,6 +90,8 @@ export default function Page() {
     >
       <Suspense fallback={null}>
         <Planets />
+        <Star position={[0, 0, 0]} />
+        <Common color="#000000" />
       </Suspense>
     </View>
   );

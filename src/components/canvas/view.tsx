@@ -14,8 +14,7 @@ export const Common = ({ color }: { color?: string }) => (
     {color && <color attach="background" args={[color]} />}
     <PerspectiveCamera
       makeDefault
-      fov={50}
-      position={[window.innerWidth / window.innerHeight, 0.1, 100]}
+      position={[window.innerWidth / window.innerHeight, 200, 1400]}
     />
   </Suspense>
 );
