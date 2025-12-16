@@ -21,7 +21,7 @@ export const Star = ({
   useFrame(({ clock: { elapsedTime }, gl, scene, camera }) => {
     if (
       !groupRef.current ||
-      // !materialRef1.current?.uniforms.time ||
+      !materialRef1.current?.uniforms.time ||
       !materialRef2.current?.uniforms.time
     )
       return;
@@ -30,7 +30,7 @@ export const Star = ({
       planet.lookAt(camera.position);
     });
 
-    // materialRef1.current.uniforms.time.value = elapsedTime;
+    materialRef1.current.uniforms.time.value = elapsedTime;
     materialRef2.current.uniforms.time.value = elapsedTime;
 
     gl.render(scene, camera);
@@ -38,14 +38,14 @@ export const Star = ({
 
   return (
     <group ref={groupRef} position={position}>
-      <mesh>
+      <mesh scale={[2.3, 2.3, 1]}>
         <planeGeometry args={[1, 1]} />
         <StarBlobsShader ref={materialRef2} pixels={pixels} />
       </mesh>
-      {/* <mesh>
+      <mesh>
         <planeGeometry args={[1, 1]} />
         <StarShader ref={materialRef1} pixels={pixels} />
-      </mesh> */}
+      </mesh>
     </group>
   );
 };
