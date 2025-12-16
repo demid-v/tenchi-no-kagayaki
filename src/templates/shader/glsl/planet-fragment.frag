@@ -1,131 +1,97 @@
-// Terrain generation parameters
-uniform int type;
-uniform float radius;
-uniform float amplitude;
-uniform float sharpness;
-uniform float offset;
-uniform float period;
-uniform float persistence;
-uniform float lacunarity;
-uniform int octaves;
+varying vec3 vUv;
+uniform float lightIntensity;
+uniform float pixels;
+uniform float rotation;
+uniform vec2 light_origin;
+uniform float time_speed;
+float dither_size = 2.0;
+float light_border_1 = 0.4;
+float light_border_2 = 0.6;
+uniform vec4 color1;
+uniform vec4 color2;
+uniform vec4 color3;
+float size = 10.0;
+int OCTAVES = 20;
+uniform float seed;
+uniform float time;
+bool should_dither = true;
 
-// Layer colors
-uniform vec3 color1;
-uniform vec3 color2;
-uniform vec3 color3;
-uniform vec3 color4;
-uniform vec3 color5;
+float rand(vec2 coord) {
+    coord = mod(coord, vec2(1.0,1.0)*floor(size+0.5));
+    return fract(sin(dot(coord.xy ,vec2(12.9898,78.233))) * 15.5453 * seed);
+}
 
-// Transition points for each layer
-uniform float transition2;
-uniform float transition3;
-uniform float transition4;
-uniform float transition5;
+float noise(vec2 coord){
+    vec2 i = floor(coord);
+    vec2 f = fract(coord);
+    
+    float a = rand(i);
+    float b = rand(i + vec2(1.0, 0.0));
+    float c = rand(i + vec2(0.0, 1.0));
+    float d = rand(i + vec2(1.0, 1.0));
 
-// Amount of blending between each layer
-uniform float blend12;
-uniform float blend23;
-uniform float blend34;
-uniform float blend45;
+    vec2 cubic = f * f * (3.0 - 2.0 * f);
 
-// Bump mapping parameters
-uniform float bumpStrength;
-uniform float bumpOffset;
+    return mix(a, b, cubic.x) + (c - a) * cubic.y * (1.0 - cubic.x) + (d - b) * cubic.x * cubic.y;
+}
 
-// Lighting parameters
-uniform float ambientIntensity;
-uniform float diffuseIntensity;
-uniform float specularIntensity;
-uniform float shininess;
-uniform vec3 lightDirection;
-uniform vec3 lightColor;
+float fbm(vec2 coord){
+    float value = 0.0;
+    float scale = 0.5;
 
-varying vec3 fragPosition;
-varying vec3 fragNormal;
-varying vec3 fragTangent;
-varying vec3 fragBitangent;
+    for(int i = 0; i < OCTAVES ; i++){
+        value += noise(coord) * scale;
+        coord *= 2.0;
+        scale *= 0.5;
+    }
+    return value;
+}
+
+bool dither(vec2 uv1, vec2 uv2) {
+    return mod(uv1.x+uv2.y,2.0/pixels) <= 1.0 / pixels;
+}
+
+vec2 rotate(vec2 coord, float angle){
+    coord -= 0.5;
+    coord *= mat2(vec2(cos(angle),-sin(angle)),vec2(sin(angle),cos(angle)));
+    return coord + 0.5;
+}
 
 void main() {
-  // Calculate terrain height
-  float h = terrainHeight(
-    type,
-    fragPosition,
-    amplitude, 
-    sharpness,
-    offset,
-    period, 
-    persistence, 
-    lacunarity, 
-    octaves);
+    vec2 uv = (floor(vUv.xy*pixels)/pixels) + 0.5;
 
-  vec3 dx = bumpOffset * fragTangent;
-  float h_dx = terrainHeight(
-    type,
-    fragPosition + dx,
-    amplitude, 
-    sharpness,
-    offset,
-    period, 
-    persistence, 
-    lacunarity, 
-    octaves);
+    // check distance from center & distance to light
+    float d_circle = distance(uv, vec2(0.5));
+    float d_light = distance(uv , vec2(light_origin));
+    // cut out a circle
+    // stepping over 0.5 instead of 0.49999 makes some pixels a little buggy
+    float a = step(d_circle, 0.49999);
+    
+    bool dith = dither(uv ,vUv.xy);
+    uv = rotate(uv, rotation);
 
-  vec3 dy = bumpOffset * fragBitangent;
-  float h_dy = terrainHeight(
-    type,
-    fragPosition + dy,
-    amplitude, 
-    sharpness,
-    offset,
-    period, 
-    persistence, 
-    lacunarity, 
-    octaves);
+    // get a noise value with light distance added
+    // this creates a moving dynamic shape
+    float fbm1 = fbm(uv);
+    d_light += fbm(uv*size+fbm1+vec2(time*0.1+time_speed, 0.0))*lightIntensity;
+    
+    // size of edge in which colors should be dithered
+    float dither_border = (1.0/pixels)*dither_size;
 
-  vec3 pos = fragPosition * (radius + h);
-  vec3 pos_dx = (fragPosition + dx) * (radius + h_dx);
-  vec3 pos_dy = (fragPosition + dy) * (radius + h_dy);
-
-  // Recalculate surface normal post-bump mapping
-  vec3 bumpNormal = normalize(cross(pos_dx - pos, pos_dy - pos));
-  // Mix original normal and bumped normal to control bump strength
-  vec3 N = normalize(mix(fragNormal, bumpNormal, bumpStrength));
-
-  // Normalized light direction (points in direction that light travels)
-  vec3 L = normalize(-lightDirection);
-  // View vector from camera to fragment
-  vec3 V = normalize(cameraPosition - pos);
-  // Reflected light vector
-  vec3 R = normalize(reflect(L, N));
-
-  float diffuse = diffuseIntensity * max(0.0, dot(N, -L));
-
-  // https://ogldev.org/www/tutorial19/tutorial19.html
-  float specularFalloff = clamp((transition3 - h) / transition3, 0.0, 1.0);
-  float specular = max(0.0, specularFalloff * specularIntensity * pow(dot(V, R), shininess));
-
-  float light = ambientIntensity + diffuse + specular;
-
-  // Blender colors layer by layer
-  vec3 color12 = mix(
-    color1, 
-    color2, 
-    smoothstep(transition2 - blend12, transition2 + blend12, h));
-
-  vec3 color123 = mix(
-    color12, 
-    color3, 
-    smoothstep(transition3 - blend23, transition3 + blend23, h));
-
-  vec3 color1234 = mix(
-    color123, 
-    color4, 
-    smoothstep(transition4 - blend34, transition4 + blend34, h));
-
-  vec3 finalColor = mix(
-    color1234, 
-    color5, 
-    smoothstep(transition5 - blend45, transition5 + blend45, h));
-  
-  gl_FragColor = vec4(light * finalColor * lightColor, 1.0);
+    // now we can assign colors based on distance to light origin
+    vec4 col = color1;
+    if (d_light > light_border_1) {
+        col = color2;
+        if (d_light < light_border_1 + dither_border && (dith || !should_dither)) {
+            col = color1;
+        }
+    }
+    if (d_light > light_border_2) {
+        col = color3;
+        if (d_light < light_border_2 + dither_border && (dith || !should_dither)) {
+            col = color2;
+        }
+    }
+    
+    gl_FragColor = vec4(col.rgb, a * col.a);
 }

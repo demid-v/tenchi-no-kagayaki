@@ -14,7 +14,7 @@ export const Common = ({ color }: { color?: string }) => (
     {color && <color attach="background" args={[color]} />}
     <PerspectiveCamera
       makeDefault
-      position={[window.innerWidth / window.innerHeight, 200, 1400]}
+      position={[window.innerWidth / window.innerHeight, 0, 1]}
     />
   </Suspense>
 );
@@ -27,7 +27,7 @@ const View = ({
 }: Readonly<
   {
     children: React.ReactNode;
-    orbit: boolean;
+    orbit?: boolean;
     ref?: React.Ref<HTMLInputElement>;
   } & React.HTMLAttributes<HTMLDivElement>
 >) => {

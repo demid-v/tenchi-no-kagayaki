@@ -1,4 +1,4 @@
-const title = "天地の輝き - The shine of the Universe";
+const title = "天地の輝き - The Shine of the Universe";
 const description = "Star system discovery game.";
 const author = "demid-v";
 

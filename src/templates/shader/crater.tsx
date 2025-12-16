@@ -1,19 +1,16 @@
 "use client";
 
-import { useFrame } from "@react-three/fiber";
-import { useRef } from "react";
 import * as React from "react";
 import { Vector2, Vector4 } from "three";
 import * as THREE from "three";
 
 import { flip } from "~/helpers/utils";
-import fragmentShader from "~/templates/shader/glsl/planet-fragment.frag";
-import vertexShader from "~/templates/shader/glsl/planet-vertex.vert";
+import fragmentShader from "~/templates/shader/glsl/crater-fragment.frag";
+import vertexShader from "~/templates/shader/glsl/crater-vertex.vert";
 
-export const PlanetShader = ({
+export const CraterShader = ({
   pixels = 100.0,
   lightPos = new Vector2(0.39, 0.7),
-  lightIntensity = 0.1,
   colors,
   rotationSpeed = 0.1,
   rotation = 0.0,
@@ -21,8 +18,7 @@ export const PlanetShader = ({
 }: {
   pixels?: number;
   lightPos?: Vector2;
-  lightIntensity?: number;
-  colors?: [Vector4, Vector4, Vector4];
+  colors?: [Vector4, Vector4];
   rotationSpeed?: number;
   rotation?: number;
   position?: [number, number, number];
@@ -31,7 +27,6 @@ export const PlanetShader = ({
   const colorPalette = colors
     ? colors
     : [
-        new Vector4(155 / 255, 158 / 255, 184 / 255, 1),
         new Vector4(71 / 255, 97 / 255, 124 / 255, 1),
         new Vector4(53 / 255, 57 / 255, 85 / 255, 1),
       ];
@@ -41,8 +36,6 @@ export const PlanetShader = ({
       pixels: { value: pixels },
       color1: { value: colorPalette[0] },
       color2: { value: colorPalette[1] },
-      color3: { value: colorPalette[2] },
-      lightIntensity: { value: lightIntensity },
       light_origin: { value: lightPos },
       time_speed: { value: rotationSpeed },
       rotation: { value: rotation },
@@ -51,7 +44,9 @@ export const PlanetShader = ({
     },
     vertexShader,
     fragmentShader,
+    depthTest: true,
     transparent: true,
   };
+
   return <shaderMaterial ref={ref} {...planetOptions} />;
 };

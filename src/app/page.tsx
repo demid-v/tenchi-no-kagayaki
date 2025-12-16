@@ -1,17 +1,9 @@
 "use client";
 
-import { useFrame } from "@react-three/fiber";
 import dynamic from "next/dynamic";
-import { useRef } from "react";
 import { Suspense } from "react";
-import * as THREE from "three";
 
-import {
-  IcePlanet,
-  LavaPlanet,
-  ParadisePlanet,
-  Star,
-} from "~/components/canvas/planet";
+import { DeadPlanet } from "~/components/canvas/dead-planet";
 
 const View = dynamic(
   () => import("~/components/canvas/view").then((mod) => mod.View),
@@ -48,40 +40,6 @@ const Common = dynamic(
   { ssr: false },
 );
 
-const Planets = () => {
-  const lavaPlanetRef = useRef<THREE.Mesh>(null);
-  const paradisePlanetRef = useRef<THREE.Mesh>(null);
-  const icePlanetRef = useRef<THREE.Mesh>(null);
-
-  useFrame(({ clock: { elapsedTime } }, delta) => {
-    if (
-      !lavaPlanetRef.current ||
-      !paradisePlanetRef.current ||
-      !icePlanetRef.current
-    )
-      return;
-
-    lavaPlanetRef.current.position.x = Math.sin(elapsedTime / 10 - 500) * 500;
-    lavaPlanetRef.current.position.z = Math.cos(elapsedTime / 10 - 500) * 500;
-
-    paradisePlanetRef.current.position.x =
-      Math.sin(elapsedTime / 60 - 700) * 700;
-    paradisePlanetRef.current.position.z =
-      Math.cos(elapsedTime / 60 - 700) * 700;
-
-    icePlanetRef.current.position.x = Math.sin(elapsedTime / 100 - 900) * 900;
-    icePlanetRef.current.position.z = Math.cos(elapsedTime / 100 - 900) * 900;
-  });
-
-  return (
-    <>
-      <LavaPlanet position={[-500, 0, 0]} ref={lavaPlanetRef} />
-      <ParadisePlanet position={[-700, 0, 0]} ref={paradisePlanetRef} />
-      <IcePlanet position={[-900, 0, 0]} ref={icePlanetRef} />
-    </>
-  );
-};
-
 export default function Page() {
   return (
     <View
@@ -89,9 +47,8 @@ export default function Page() {
       orbit
     >
       <Suspense fallback={null}>
-        <Planets />
-        <Star position={[0, 0, 0]} />
-        <Common color="#000000" />
+        <DeadPlanet position={[0, 0, 0]} />
+        <Common />
       </Suspense>
     </View>
   );
