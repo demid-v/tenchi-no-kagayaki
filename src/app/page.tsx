@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
 
-import { DeadPlanet } from "~/components/canvas/dead-planet";
+import { Sun } from "~/components/canvas/sun";
 
 const View = dynamic(
   () => import("~/components/canvas/view").then((mod) => mod.View),
@@ -47,7 +47,7 @@ export default function Page() {
       orbit
     >
       <Suspense fallback={null}>
-        <DeadPlanet position={[0, 0, 0]} />
+        <Sun position={[0, 0, 0]} />
         <Common />
       </Suspense>
     </View>
