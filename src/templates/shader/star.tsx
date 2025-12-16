@@ -1,23 +1,21 @@
 "use client";
 
 import * as React from "react";
-import { Vector2, Vector4 } from "three";
+import { Vector4 } from "three";
 import * as THREE from "three";
 
 import { flip } from "~/helpers/utils";
-import fragmentShader from "~/templates/shader/glsl/sun-fragment.frag";
-import vertexShader from "~/templates/shader/glsl/sun-vertex.vert";
+import fragmentShader from "~/templates/shader/glsl/star-fragment.frag";
+import vertexShader from "~/templates/shader/glsl/star-vertex.vert";
 
-export const SunShader = ({
+export const StarShader = ({
   pixels = 100.0,
-  lightPos = new Vector2(0.39, 0.7),
   colors,
   rotationSpeed = 0.01,
   rotation = 0.0,
   ref,
 }: {
   pixels?: number;
-  lightPos?: Vector2;
   colors?: THREE.Color[];
   rotationSpeed?: number;
   rotation?: number;
@@ -38,7 +36,6 @@ export const SunShader = ({
       pixels: { value: pixels },
       colors: { value: colorPalette },
       lightIntensity: { value: 0.1 },
-      light_origin: { value: lightPos },
       time_speed: { value: rotationSpeed },
       rotation: { value: rotation },
       seed: { value: flip() ? Math.random() * 10 : Math.random() * 100 },

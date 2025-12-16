@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
 
-import { Sun } from "~/components/canvas/sun";
+import { Star } from "~/components/canvas/star";
 
 const View = dynamic(
   () => import("~/components/canvas/view").then((mod) => mod.View),
@@ -47,8 +47,8 @@ export default function Page() {
       orbit
     >
       <Suspense fallback={null}>
-        <Sun position={[0, 0, 0]} />
-        <Common />
+        <Star position={[0, 0, 0]} />
+        <Common color="#000" />
       </Suspense>
     </View>
   );
