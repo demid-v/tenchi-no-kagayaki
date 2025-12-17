@@ -15,44 +15,38 @@ export const Star = ({
   position?: [number, number, number];
   pixels?: number;
 }) => {
-  const materialRef1 = useRef<THREE.ShaderMaterial>(null);
-  const materialRef2 = useRef<THREE.ShaderMaterial>(null);
-  const materialRef3 = useRef<THREE.ShaderMaterial>(null);
   const groupRef = useRef<THREE.Group>(null);
 
   useFrame(({ clock: { elapsedTime }, gl, scene, camera }) => {
-    if (
-      !groupRef.current ||
-      !materialRef1.current?.uniforms.time ||
-      !materialRef2.current?.uniforms.time ||
-      !materialRef3.current?.uniforms.time
-    )
-      return;
+    if (!groupRef.current) return;
 
     groupRef.current.children.forEach((planet) => {
       planet.lookAt(camera.position);
     });
 
-    materialRef1.current.uniforms.time.value = elapsedTime;
-    materialRef2.current.uniforms.time.value = elapsedTime;
-    materialRef3.current.uniforms.time.value = elapsedTime;
+    groupRef.current.children.forEach((planet) => {
+      if (planet instanceof THREE.Mesh) {
+        if (planet.material.uniforms.time === undefined) return;
+        planet.material.uniforms.time.value = elapsedTime;
+      }
+    });
 
     gl.render(scene, camera);
   });
 
   return (
-    <group ref={groupRef} position={position}>
+    <group ref={groupRef} position={position} scale={[1.5, 1.5, 1.5]}>
       <mesh scale={[2.3, 2.3, 1]}>
         <planeGeometry args={[1, 1]} />
-        <StarBlobsShader ref={materialRef1} pixels={pixels} />
+        <StarBlobsShader pixels={pixels} />
       </mesh>
       <mesh>
         <planeGeometry args={[1, 1]} />
-        <StarShader ref={materialRef2} pixels={pixels} />
+        <StarShader pixels={pixels} />
       </mesh>
       <mesh scale={[1.8, 1.8, 1]}>
         <planeGeometry args={[1, 1]} />
-        <StarFlaresShader ref={materialRef3} pixels={pixels} />
+        <StarFlaresShader pixels={pixels} />
       </mesh>
     </group>
   );

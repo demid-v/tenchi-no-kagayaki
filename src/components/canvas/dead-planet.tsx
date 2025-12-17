@@ -14,17 +14,21 @@ export const DeadPlanet = ({
   position?: [number, number, number];
   pixels?: number;
 }) => {
-  const materialRef = useRef<THREE.ShaderMaterial>(null);
   const groupRef = useRef<THREE.Group>(null);
 
   useFrame(({ clock: { elapsedTime }, gl, scene, camera }) => {
-    if (!groupRef.current || !materialRef.current?.uniforms.time) return;
+    if (!groupRef.current) return;
 
     groupRef.current.children.forEach((planet) => {
       planet.lookAt(camera.position);
     });
 
-    materialRef.current.uniforms.time.value = elapsedTime;
+    groupRef.current.children.forEach((planet) => {
+      if (planet instanceof THREE.Mesh) {
+        if (planet.material.uniforms.time === undefined) return;
+        planet.material.uniforms.time.value = elapsedTime;
+      }
+    });
 
     gl.render(scene, camera);
   });
@@ -33,11 +37,11 @@ export const DeadPlanet = ({
     <group ref={groupRef}>
       <mesh position={position}>
         <planeGeometry args={[1, 1]} />
-        <PlanetShader ref={materialRef} pixels={pixels} />
+        <PlanetShader pixels={pixels} />
       </mesh>
       <mesh position={position}>
         <planeGeometry args={[1, 1]} />
-        <CraterShader ref={materialRef} pixels={pixels} />
+        <CraterShader pixels={pixels} />
       </mesh>
     </group>
   );

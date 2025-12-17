@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
 
+import { DeadPlanet } from "~/components/canvas/dead-planet";
 import { Star } from "~/components/canvas/star";
 
 const View = dynamic(
@@ -48,6 +49,7 @@ export default function Page() {
     >
       <Suspense fallback={null}>
         <Star position={[0, 0, 0]} />
+        <DeadPlanet position={[-1, -1, 1]} />
         <Common color="#000" />
       </Suspense>
     </View>
