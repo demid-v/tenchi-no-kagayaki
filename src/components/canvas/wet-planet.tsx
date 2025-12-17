@@ -4,6 +4,8 @@ import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import * as THREE from "three";
 
+import { AtmosphereShader } from "~/templates/shader/atmosphere";
+import { CloudsShader } from "~/templates/shader/clouds";
 import { CraterShader } from "~/templates/shader/crater";
 import { Landmass } from "~/templates/shader/landmass";
 import { PlanetShader } from "~/templates/shader/planet";
@@ -44,6 +46,14 @@ export const WetPlanet = ({
       <mesh position={position}>
         <planeGeometry args={[1, 1]} />
         <Landmass pixels={pixels} />
+      </mesh>
+      <mesh position={position}>
+        <planeGeometry args={[1, 1]} />
+        <CloudsShader pixels={pixels} />
+      </mesh>
+      <mesh position={position} scale={[1.01, 1.01, 1]}>
+        <planeGeometry args={[1, 1]} />
+        <AtmosphereShader pixels={pixels} />
       </mesh>
     </group>
   );
