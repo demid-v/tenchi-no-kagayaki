@@ -5,6 +5,7 @@ import { Suspense } from "react";
 
 import { DeadPlanet } from "~/components/canvas/dead-planet";
 import { Star } from "~/components/canvas/star";
+import { WetPlanet } from "~/components/canvas/wet-planet";
 
 const View = dynamic(
   () => import("~/components/canvas/view").then((mod) => mod.View),
@@ -48,8 +49,7 @@ export default function Page() {
       orbit
     >
       <Suspense fallback={null}>
-        <Star position={[0, 0, 0]} />
-        <DeadPlanet position={[-1, -1, 1]} />
+        <WetPlanet position={[0, 0, 0]} />
         <Common color="#000" />
       </Suspense>
     </View>
