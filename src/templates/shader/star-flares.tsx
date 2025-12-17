@@ -5,10 +5,10 @@ import { Vector4 } from "three";
 import * as THREE from "three";
 
 import { flip } from "~/helpers/utils";
-import fragmentShader from "~/templates/shader/glsl/star-blobs-fragment.frag";
+import fragmentShader from "~/templates/shader/glsl/star-flares-fragment.frag";
 import vertexShader from "~/templates/shader/glsl/star-vertex.vert";
 
-export const StarBlobsShader = ({
+export const StarFlaresShader = ({
   pixels = 100.0,
   rotationSpeed = 0.1,
   rotation = 0.0,
@@ -20,18 +20,20 @@ export const StarBlobsShader = ({
   position?: [number, number, number];
   ref?: React.Ref<THREE.ShaderMaterial>;
 }) => {
-  const colorPalette = new Vector4(1, 0.647, 0);
+  const colorPalette = [new Vector4(1, 0.647, 0), new Vector4(1, 1, 0.894118)];
 
   const planetOptions = {
     uniforms: {
       pixels: { value: pixels },
-      color: { value: colorPalette },
+      colors: { value: colorPalette },
       time_speed: { value: rotationSpeed },
       rotation: { value: rotation },
       seed: { value: flip() ? Math.random() * 10 : Math.random() * 100 },
       time: { value: 0.0 },
-      circle_amount: { value: 3.0 },
-      circle_size: { value: 1.5 },
+      storm_width: { value: 0.2 },
+      storm_dither_width: { value: 0.07 },
+      circle_amount: { value: 2.0 },
+      circle_scale: { value: 1.0 },
       scale: { value: 1.0 },
     },
     vertexShader,
