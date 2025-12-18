@@ -4,11 +4,8 @@ import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import * as THREE from "three";
 
-import { AtmosphereShader } from "~/templates/shader/atmosphere";
 import { CloudsShader } from "~/templates/shader/clouds";
-import { CraterShader } from "~/templates/shader/crater";
 import { Landmass } from "~/templates/shader/landmass";
-import { PlanetShader } from "~/templates/shader/planet";
 import { WetPlanetShader } from "~/templates/shader/wet-planet";
 
 export const WetPlanet = ({
@@ -23,9 +20,9 @@ export const WetPlanet = ({
   useFrame(({ clock: { elapsedTime }, gl, scene, camera }) => {
     if (!groupRef.current) return;
 
-    groupRef.current.children.forEach((planet) => {
-      planet.lookAt(camera.position);
-    });
+    // groupRef.current.children.forEach((planet) => {
+    //   planet.lookAt(camera.position);
+    // });
 
     groupRef.current.children.forEach((planet) => {
       if (planet instanceof THREE.Mesh) {
@@ -38,7 +35,7 @@ export const WetPlanet = ({
   });
 
   return (
-    <group ref={groupRef}>
+    <group ref={groupRef} scale={[30, 30, 1]}>
       <mesh position={position}>
         <planeGeometry args={[1, 1]} />
         <WetPlanetShader pixels={pixels} />
@@ -50,10 +47,6 @@ export const WetPlanet = ({
       <mesh position={position}>
         <planeGeometry args={[1, 1]} />
         <CloudsShader pixels={pixels} />
-      </mesh>
-      <mesh position={position} scale={[1.01, 1.01, 1]}>
-        <planeGeometry args={[1, 1]} />
-        <AtmosphereShader pixels={pixels} />
       </mesh>
     </group>
   );

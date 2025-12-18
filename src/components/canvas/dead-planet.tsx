@@ -20,10 +20,6 @@ export const DeadPlanet = ({
     if (!groupRef.current) return;
 
     groupRef.current.children.forEach((planet) => {
-      planet.lookAt(camera.position);
-    });
-
-    groupRef.current.children.forEach((planet) => {
       if (planet instanceof THREE.Mesh) {
         if (planet.material.uniforms.time === undefined) return;
         planet.material.uniforms.time.value = elapsedTime;

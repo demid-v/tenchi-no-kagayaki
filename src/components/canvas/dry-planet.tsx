@@ -4,13 +4,7 @@ import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import * as THREE from "three";
 
-import { AtmosphereShader } from "~/templates/shader/atmosphere";
-import { CloudsShader } from "~/templates/shader/clouds";
-import { CraterShader } from "~/templates/shader/crater";
 import { DryPlanetShader } from "~/templates/shader/dry-planet";
-import { Landmass } from "~/templates/shader/landmass";
-import { PlanetShader } from "~/templates/shader/planet";
-import { WetPlanetShader } from "~/templates/shader/wet-planet";
 
 export const DryPlanet = ({
   position = [0, 0, 0],
@@ -23,10 +17,6 @@ export const DryPlanet = ({
 
   useFrame(({ clock: { elapsedTime }, gl, scene, camera }) => {
     if (!groupRef.current) return;
-
-    groupRef.current.children.forEach((planet) => {
-      planet.lookAt(camera.position);
-    });
 
     groupRef.current.children.forEach((planet) => {
       if (planet instanceof THREE.Mesh) {

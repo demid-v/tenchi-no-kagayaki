@@ -22,7 +22,7 @@ export const StarBlobsShader = ({
 }) => {
   const colorPalette = new Vector4(1, 0.647, 0);
 
-  const planetOptions = {
+  const shaderOptions = {
     uniforms: {
       pixels: { value: pixels },
       color: { value: colorPalette },
@@ -39,5 +39,5 @@ export const StarBlobsShader = ({
     transparent: true,
   };
 
-  return <shaderMaterial ref={ref} {...planetOptions} />;
+  return <shaderMaterial ref={ref} {...shaderOptions} />;
 };

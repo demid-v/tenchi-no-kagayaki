@@ -35,7 +35,7 @@ export const Star = ({
   });
 
   return (
-    <group ref={groupRef} position={position} scale={[1.5, 1.5, 1.5]}>
+    <group ref={groupRef} position={position} scale={[100, 100, 1]}>
       <mesh scale={[2.3, 2.3, 1]}>
         <planeGeometry args={[1, 1]} />
         <StarBlobsShader pixels={pixels} />

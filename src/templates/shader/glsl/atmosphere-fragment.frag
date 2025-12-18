@@ -2,7 +2,7 @@ varying vec3 vUv;
 uniform vec4 color;
 uniform vec4 color2;
 uniform vec4 color3;
-float pixels = 100.0;
+uniform float pixels;
 
 float dist(vec2 p0, vec2 pf){
     return sqrt((pf.x-p0.x)*(pf.x-p0.x)+(pf.y-p0.y)*(pf.y-p0.y));

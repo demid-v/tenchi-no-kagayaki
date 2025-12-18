@@ -1,12 +1,9 @@
 "use client";
 
-import { useFrame } from "@react-three/fiber";
-import { useRef } from "react";
 import * as React from "react";
 import { Vector2, Vector4 } from "three";
 import * as THREE from "three";
 
-import { flip } from "~/helpers/utils";
 import fragmentShader from "~/templates/shader/glsl/planet-fragment.frag";
 import vertexShader from "~/templates/shader/glsl/planet-vertex.vert";
 
@@ -32,13 +29,13 @@ export const WetPlanetShader = ({
 }) => {
   const colorPalette = colors
     ? colors
-    : [
+    : ([
         new Vector4(102 / 255, 176 / 255, 199 / 255, 1),
         new Vector4(102 / 255, 176 / 255, 199 / 255, 1),
         new Vector4(52 / 255, 65 / 255, 157 / 255, 1),
-      ];
+      ] as [Vector4, Vector4, Vector4]);
 
-  const planetOptions = {
+  const shaderOptions = {
     uniforms: {
       pixels: pixels,
       colors: colorPalette,
@@ -53,6 +50,6 @@ export const WetPlanetShader = ({
   };
 
   return (
-    <PlanetShader ref={ref} {...planetOptions} {...planetOptions.uniforms} />
+    <PlanetShader ref={ref} {...shaderOptions} {...shaderOptions.uniforms} />
   );
 };

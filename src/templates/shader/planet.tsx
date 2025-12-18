@@ -1,7 +1,5 @@
 "use client";
 
-import { useFrame } from "@react-three/fiber";
-import { useRef } from "react";
 import * as React from "react";
 import { Vector2, Vector4 } from "three";
 import * as THREE from "three";
@@ -24,7 +22,7 @@ export const PlanetShader = ({
   pixels?: number;
   lightPos?: Vector2;
   lightIntensity?: number;
-  colors?: Vector4[];
+  colors?: [Vector4, Vector4, Vector4];
   rotationSpeed?: number;
   rotation?: number;
   position?: [number, number, number];
@@ -40,7 +38,7 @@ export const PlanetShader = ({
         new Vector4(53 / 255, 57 / 255, 85 / 255, 1),
       ];
 
-  const planetOptions = {
+  const shaderOptions = {
     uniforms: {
       pixels: { value: pixels },
       color1: { value: colorPalette[0] },
@@ -58,5 +56,5 @@ export const PlanetShader = ({
     transparent: true,
   };
 
-  return <shaderMaterial ref={ref} {...planetOptions} />;
+  return <shaderMaterial ref={ref} {...shaderOptions} />;
 };

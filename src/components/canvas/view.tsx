@@ -2,7 +2,7 @@
 
 import {
   OrbitControls,
-  PerspectiveCamera,
+  OrthographicCamera,
   View as ViewImpl,
 } from "@react-three/drei";
 import { Suspense, useRef } from "react";
@@ -12,9 +12,14 @@ import { Three } from "~/helpers/components/three";
 export const Common = ({ color }: { color?: string }) => (
   <Suspense fallback={null}>
     {color && <color attach="background" args={[color]} />}
-    <PerspectiveCamera
+    <OrthographicCamera
       makeDefault
-      position={[window.innerWidth / window.innerHeight, 0, 1]}
+      left={((-window.innerWidth / window.innerHeight) * 900) / 2}
+      right={((window.innerWidth / window.innerHeight) * 900) / 2}
+      top={900}
+      bottom={-900}
+      near={-1000}
+      far={1000}
     />
   </Suspense>
 );

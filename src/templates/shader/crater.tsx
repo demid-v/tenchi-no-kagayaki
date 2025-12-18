@@ -31,7 +31,7 @@ export const CraterShader = ({
         new Vector4(53 / 255, 57 / 255, 85 / 255, 1),
       ];
 
-  const planetOptions = {
+  const shaderOptions = {
     uniforms: {
       pixels: { value: pixels },
       color1: { value: colorPalette[0] },
@@ -48,5 +48,5 @@ export const CraterShader = ({
     transparent: true,
   };
 
-  return <shaderMaterial ref={ref} {...planetOptions} />;
+  return <shaderMaterial ref={ref} {...shaderOptions} />;
 };

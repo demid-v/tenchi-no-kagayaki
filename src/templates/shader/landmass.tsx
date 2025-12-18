@@ -1,7 +1,5 @@
 "use client";
 
-import { useFrame } from "@react-three/fiber";
-import { useRef } from "react";
 import * as React from "react";
 import { Vector2, Vector4 } from "three";
 import * as THREE from "three";
@@ -9,8 +7,6 @@ import * as THREE from "three";
 import { flip } from "~/helpers/utils";
 import fragmentShader from "~/templates/shader/glsl/landmass-fragment.frag";
 import vertexShader from "~/templates/shader/glsl/planet-vertex.vert";
-
-import { PlanetShader } from "./planet";
 
 export const Landmass = ({
   pixels = 100.0,
@@ -41,9 +37,9 @@ export const Landmass = ({
         new Vector4(0.156863, 0.207843, 0.25098, 1),
       ];
 
-  const planetOptions = {
+  const shaderOptions = {
     uniforms: {
-      pixels: { value: 100.0 },
+      pixels: { value: pixels },
       land_cutoff: { value: land },
       col1: { value: colorPalette[0] },
       col2: { value: colorPalette[1] },
@@ -61,5 +57,5 @@ export const Landmass = ({
     transparent: true,
   };
 
-  return <shaderMaterial ref={ref} {...planetOptions} />;
+  return <shaderMaterial ref={ref} {...shaderOptions} />;
 };
