@@ -40,8 +40,6 @@ export const PlanetShader = ({
         new Vector4(53 / 255, 57 / 255, 85 / 255, 1),
       ];
 
-  console.log("colors:", colorPalette);
-
   const planetOptions = {
     uniforms: {
       pixels: { value: pixels },

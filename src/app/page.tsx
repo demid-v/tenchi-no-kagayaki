@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { Suspense } from "react";
 
 import { DeadPlanet } from "~/components/canvas/dead-planet";
+import { DryPlanet } from "~/components/canvas/dry-planet";
 import { Star } from "~/components/canvas/star";
 import { WetPlanet } from "~/components/canvas/wet-planet";
 
@@ -49,7 +50,7 @@ export default function Page() {
       orbit
     >
       <Suspense fallback={null}>
-        <WetPlanet position={[0, 0, 0]} />
+        <DryPlanet position={[0, 0, 0]} />
         <Common color="#000" />
       </Suspense>
     </View>
