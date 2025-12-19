@@ -1,21 +1,19 @@
 varying vec3 vUv;
+
 uniform float pixels;
 uniform float rotation;
 uniform float cloud_cover;
 uniform vec2 light_origin;
 uniform float time_speed;
 uniform float stretch;
-float cloud_curve = 1.3;
-float light_border_1 = 0.4;
-float light_border_2 = 0.6;
+uniform float cloud_curve;
+uniform float light_border_1;
+uniform float light_border_2;
 
-uniform vec4 base_color;
-uniform vec4 outline_color;
-uniform vec4 shadow_base_color;
-uniform vec4 shadow_outline_color;
+uniform vec4[4] colors;
 
-float size = 4.0;
-int OCTAVES = 4;
+uniform float size;
+uniform int OCTAVES;
 uniform float seed;
 
 uniform float time;
@@ -51,14 +49,16 @@ float fbm(vec2 coord){
 	return value;
 }
 
+
+// by Leukbaars from https://www.shadertoy.com/view/4tK3zR
 float circleNoise(vec2 uv) {
-	float uv_y = floor(uv.y);
-	uv.x += uv_y*.31;
-	vec2 f = fract(uv);
+    float uv_y = floor(uv.y);
+    uv.x += uv_y*.31;
+    vec2 f = fract(uv);
 	float h = rand(vec2(floor(uv.x),floor(uv_y)));
-	float m = (length(f-0.25-(h*0.5)));
-	float r = h*0.25;
-	return smoothstep(0.0, r, m*0.75);
+    float m = (length(f-0.25-(h*0.5)));
+    float r = h*0.25;
+    return smoothstep(0.0, r, m*0.75);
 }
 
 float cloud_alpha(vec2 uv) {
@@ -92,15 +92,15 @@ vec2 rotate(vec2 coord, float angle){
 
 void main() {
 	// pixelize uv
-	vec2 uv = (floor(vUv.xy*pixels)/pixels) + 0.5;
+	vec2 uv = floor(vUv.xy*pixels)/pixels+0.5;
 	
 	// distance to light source
 	float d_light = distance(uv , light_origin);
 	
-	// cut out a circle
-	float d_circle = distance(uv, vec2(0.5));
-	float a = step(d_circle, 0.5);
 	
+	// stepping over 0.5 instead of 0.49999 makes some pixels a little buggy
+	float a = step(length(uv-vec2(0.5)), 0.49999);
+	// cut out a circle
 	float d_to_center = distance(uv, vec2(0.5));
 	
 	uv = rotate(uv, rotation);
@@ -108,22 +108,22 @@ void main() {
 	// map to sphere
 	uv = spherify(uv);
 	// slightly make uv go down on the right, and up in the left
-	uv.y += smoothstep(0.0, cloud_curve, abs(uv.x-0.4));
+	uv.y -= smoothstep(0.0, cloud_curve, abs(uv.x-0.4));
 	
 	
 	float c = cloud_alpha(uv*vec2(1.0, stretch));
 	
 	// assign some colors based on cloud depth & distance from light
-	vec4 col = base_color;
+	vec4 col = colors[0];
 	if (c < cloud_cover + 0.03) {
-		col = outline_color;
+		col = colors[1];
 	}
 	if (d_light + c*0.2 > light_border_1) {
-		col = shadow_base_color;
+		col = colors[2];
 
 	}
 	if (d_light + c*0.2 > light_border_2) {
-		col = shadow_outline_color;
+		col = colors[3];
 	}
 	
 	c *= step(d_to_center, 0.5);

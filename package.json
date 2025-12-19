@@ -23,6 +23,7 @@
     "@ducanh2912/next-pwa": "^10.0.0",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.4.2",
+    "color": "^5.0.3",
     "glsl-random": "^0.0.5",
     "next": "^16.0.10",
     "react": "^19.2.3",

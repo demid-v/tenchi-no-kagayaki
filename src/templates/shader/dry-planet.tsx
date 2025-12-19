@@ -5,23 +5,40 @@ import { Vector2, Vector4 } from "three";
 import * as THREE from "three";
 
 import { flip } from "~/helpers/utils";
-import fragmentShader from "~/templates/shader/glsl/dry-terrain-fragment.frag";
-import vertexShader from "~/templates/shader/glsl/planet-vertex.vert";
+import fragmentShader from "~/templates/shader/glsl/dry-terrain.frag";
+import vertexShader from "~/templates/shader/glsl/planet.vert";
 
 export const DryPlanetShader = ({
   pixels = 100.0,
-  lightPos = new Vector2(0.39, 0.7),
-  colors,
-  rotationSpeed = 0.1,
+  lightPosition = new Vector2(0.39, 0.7),
   rotation = 0.0,
+  rotationSpeed = 0.1,
+  lightDistance1 = 0.362,
+  lightDistance2 = 0.525,
+  ditherSize = 2.0,
+  colors,
+  numOfColors = 5,
+  size = 8.0,
+  octaves = 3,
+  seed = flip() ? Math.random() * 10 : Math.random() * 100,
+  time = 0.0,
+  shouldDither = true,
   ref,
 }: {
   pixels?: number;
-  lightPos?: Vector2;
-  colors?: [Vector4, Vector4, Vector4, Vector4, Vector4];
-  rotationSpeed?: number;
+  lightPosition?: Vector2;
   rotation?: number;
-  position?: [number, number, number];
+  rotationSpeed?: number;
+  lightDistance1?: number;
+  lightDistance2?: number;
+  ditherSize?: number;
+  colors?: Vector4[];
+  numOfColors?: number;
+  size?: number;
+  octaves?: number;
+  seed?: number;
+  time?: number;
+  shouldDither?: boolean;
   ref?: React.Ref<THREE.ShaderMaterial>;
 }) => {
   const colorPalette = colors
@@ -37,12 +54,19 @@ export const DryPlanetShader = ({
   const shaderOptions = {
     uniforms: {
       pixels: { value: pixels },
-      colors: { value: colorPalette },
-      light_origin: { value: lightPos },
-      time_speed: { value: rotationSpeed },
       rotation: { value: rotation },
-      seed: { value: flip() ? Math.random() * 10 : Math.random() * 100 },
-      time: { value: 0.0 },
+      colors: { value: colorPalette },
+      light_origin: { value: lightPosition },
+      light_distance1: { value: lightDistance1 },
+      light_distance2: { value: lightDistance2 },
+      time_speed: { value: rotationSpeed },
+      dither_size: { value: ditherSize },
+      n_colors: { value: numOfColors },
+      size: { value: size },
+      OCTAVES: { value: octaves },
+      seed: { value: seed },
+      time: { value: time },
+      should_dither: { value: shouldDither },
     },
     vertexShader,
     fragmentShader,

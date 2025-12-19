@@ -1,4 +1,5 @@
 varying vec3 vUv;
+
 uniform vec4 color;
 uniform vec4 color2;
 uniform vec4 color3;

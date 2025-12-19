@@ -5,27 +5,40 @@ import { Vector2, Vector4 } from "three";
 import * as THREE from "three";
 
 import { flip } from "~/helpers/utils";
-import fragmentShader from "~/templates/shader/glsl/clouds-fragment.frag";
-import vertexShader from "~/templates/shader/glsl/planet-vertex.vert";
+import fragmentShader from "~/templates/shader/glsl/clouds.frag";
+import vertexShader from "~/templates/shader/glsl/planet.vert";
 
 export const CloudsShader = ({
   pixels = 100.0,
-  lightPos = new Vector2(0.39, 0.7),
-  colors,
-  cloudCover = 0.546,
-  stretch = 2.5,
-  rotationSpeed = 0.1,
+  lightPosition = new Vector2(0.41, 0.67),
   rotation = 0.0,
+  rotationSpeed = 0.1,
+  cloudCover = 0.47,
+  stretch = 2.0,
+  cloudCurve = 1.3,
+  lightBorder1 = 0.52,
+  lightBorder2 = 0.62,
+  colors,
+  size = 7.315,
+  octaves = 2,
+  seed = flip() ? Math.random() * 10 : Math.random() * 100,
+  time = 0.0,
   ref,
 }: {
   pixels?: number;
-  lightPos?: Vector2;
-  colors?: [Vector4, Vector4, Vector4, Vector4];
+  lightPosition?: Vector2;
+  rotation?: number;
+  rotationSpeed?: number;
   cloudCover?: number;
   stretch?: number;
-  rotationSpeed?: number;
-  rotation?: number;
-  position?: [number, number, number];
+  cloudCurve?: number;
+  lightBorder1?: number;
+  lightBorder2?: number;
+  colors?: [Vector4, Vector4, Vector4, Vector4];
+  size?: number;
+  octaves?: number;
+  seed?: number;
+  time?: number;
   ref?: React.Ref<THREE.ShaderMaterial>;
 }) => {
   const colorPalette = colors
@@ -39,18 +52,20 @@ export const CloudsShader = ({
 
   const shaderOptions = {
     uniforms: {
-      light_origin: { value: lightPos },
       pixels: { value: pixels },
-      seed: { value: flip() ? Math.random() * 10 : Math.random() * 100 },
-      time_speed: { value: rotationSpeed },
-      base_color: { value: colorPalette[0] },
-      outline_color: { value: colorPalette[1] },
-      shadow_base_color: { value: colorPalette[2] },
-      shadow_outline_color: { value: colorPalette[3] },
-      cloud_cover: { value: cloudCover },
       rotation: { value: rotation },
+      cloud_cover: { value: cloudCover },
+      light_origin: { value: lightPosition },
+      time_speed: { value: rotationSpeed },
       stretch: { value: stretch },
-      time: { value: 0.0 },
+      cloud_curve: { value: cloudCurve },
+      light_border_1: { value: lightBorder1 },
+      light_border_2: { value: lightBorder2 },
+      colors: { value: colorPalette },
+      size: { value: size },
+      OCTAVES: { value: octaves },
+      seed: { value: seed },
+      time: { value: time },
     },
     vertexShader,
     fragmentShader,

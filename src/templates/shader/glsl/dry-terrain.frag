@@ -1,18 +1,19 @@
 varying vec3 vUv;
+
 uniform float pixels;
-float rotation = 0.0;
-vec2 light_origin = vec2(0.39, 0.7);
-float light_distance1 = 0.362;
-float light_distance2 = 0.525;
-float time_speed = 0.1;
-float dither_size = 2.0;
+uniform float rotation;
+uniform vec2 light_origin;
+uniform float light_distance1;
+uniform loat light_distance2;
+uniform float time_speed;
+uniform float dither_size;
 uniform vec4 colors[5];
-int n_colors = 5;
-float size = 8.0;
-int OCTAVES = 3;
+uniform int n_colors;
+uniform float size;
+uniform int OCTAVES;
 uniform float seed;
 uniform float time;
-bool should_dither = true;
+uniform bool should_dither = true;
 
 float rand(vec2 coord) {
 	// land has to be tiled

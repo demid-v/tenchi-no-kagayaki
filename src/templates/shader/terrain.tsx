@@ -5,64 +5,70 @@ import { Vector2, Vector4 } from "three";
 import * as THREE from "three";
 
 import { flip } from "~/helpers/utils";
-import fragmentShader from "~/templates/shader/glsl/crater.frag";
-import vertexShader from "~/templates/shader/glsl/crater.vert";
+import vertexShader from "~/templates/shader/glsl/planet.vert";
+import fragmentShader from "~/templates/shader/glsl/terrain.frag";
 
-export const CraterShader = ({
+export const Landmass = ({
   pixels = 100.0,
+  lightIntensity = 0.1,
   lightPosition = new Vector2(0.39, 0.7),
-  rotationSpeed = 0.1,
   rotation = 0.0,
+  rotationSpeed = 0.1,
   ditherSize = 2.0,
+  landCutoff = 0.5,
+  lightBorder1 = 0.4,
+  lightBorder2 = 0.6,
   colors,
-  lightBorder = 0.4,
-  size = 5.0,
-  octaves = 20,
+  size = 10.0,
+  octaves = 6,
   seed = flip() ? Math.random() * 10 : Math.random() * 100,
   time = 0.0,
-  shouldDither = true,
   ref,
 }: {
   pixels?: number;
   lightPosition?: Vector2;
+  lightIntensity?: number;
   rotation?: number;
   rotationSpeed?: number;
+  landCutoff?: number;
   ditherSize?: number;
-  lightBorder?: number;
+  lightBorder1?: number;
+  lightBorder2?: number;
   colors?: Vector4[];
   size?: number;
   octaves?: number;
   seed?: number;
   time?: number;
-  shouldDither?: boolean;
   ref?: React.Ref<THREE.ShaderMaterial>;
 }) => {
   const colorPalette = colors
     ? colors
     : [
-        new Vector4(71 / 255, 97 / 255, 124 / 255, 1),
-        new Vector4(53 / 255, 57 / 255, 85 / 255, 1),
+        new Vector4(0.784314, 0.831373, 0.364706, 1),
+        new Vector4(0.388235, 0.670588, 0.247059, 1),
+        new Vector4(0.184314, 0.341176, 0.32549, 1),
+        new Vector4(0.156863, 0.207843, 0.25098, 1),
       ];
 
   const shaderOptions = {
     uniforms: {
       pixels: { value: pixels },
+      lightIntensity: { value: lightIntensity },
       rotation: { value: rotation },
-      light_origin: { value: lightPosition },
       time_speed: { value: rotationSpeed },
       dither_size: { value: ditherSize },
-      light_border: { value: lightBorder },
-      color1: { value: colorPalette[0] },
-      color2: { value: colorPalette[1] },
+      light_origin: { value: lightPosition },
+      land_cutoff: { value: landCutoff },
+      light_border_1: { value: lightBorder1 },
+      light_border_2: { value: lightBorder2 },
+      colors: { value: colorPalette },
       size: { value: size },
       OCTAVES: { value: octaves },
       seed: { value: seed },
       time: { value: time },
-      should_dither: { value: shouldDither },
     },
     vertexShader,
     fragmentShader,
-    depthTest: true,
     transparent: true,
   };
 

@@ -1,16 +1,18 @@
 varying vec3 vUv;
+
 uniform float pixels;
 uniform float time_speed;
-uniform float time;
 uniform float rotation;
 uniform vec4 colors[4];
-bool should_dither = true;
+
+float size;
+int OCTAVES;
+float TILES;
+bool should_dither;
+
 
 uniform float seed;
-float size = 15.0;
-int OCTAVES = 5;
-float TILES = 2.0;
-
+uniform float time;
 
 float rand(vec2 co) {
 	co = mod(co, vec2(1.0,1.0)*floor(size+0.5));

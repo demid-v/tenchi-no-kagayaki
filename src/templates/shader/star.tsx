@@ -5,21 +5,33 @@ import { Vector4 } from "three";
 import * as THREE from "three";
 
 import { flip } from "~/helpers/utils";
-import fragmentShader from "~/templates/shader/glsl/star-fragment.frag";
-import vertexShader from "~/templates/shader/glsl/star-vertex.vert";
+import fragmentShader from "~/templates/shader/glsl/star.frag";
+import vertexShader from "~/templates/shader/glsl/star.vert";
 
 export const StarShader = ({
   pixels = 100.0,
-  colors,
   rotationSpeed = 0.01,
   rotation = 0.0,
+  colors,
+  size = 15.0,
+  octaves = 2.0,
+  tiles = 5,
+  shouldDither = true,
+  seed = flip() ? Math.random() * 10 : Math.random() * 100,
+  time = 0.0,
   ref,
 }: {
   pixels?: number;
-  colors?: THREE.Color[];
+  colors?: Vector4[];
+  lightIntensity?: number;
   rotationSpeed?: number;
   rotation?: number;
-  position?: [number, number, number];
+  size?: number;
+  octaves?: number;
+  tiles?: number;
+  shouldDither?: boolean;
+  seed?: number;
+  time?: number;
   ref?: React.Ref<THREE.ShaderMaterial>;
 }) => {
   const colorPalette = colors
@@ -35,11 +47,14 @@ export const StarShader = ({
     uniforms: {
       pixels: { value: pixels },
       colors: { value: colorPalette },
-      lightIntensity: { value: 0.1 },
       time_speed: { value: rotationSpeed },
       rotation: { value: rotation },
-      seed: { value: flip() ? Math.random() * 10 : Math.random() * 100 },
-      time: { value: 0.0 },
+      size: { value: size },
+      TILES: { value: tiles },
+      OCTAVES: { value: octaves },
+      shoul_dither: { value: shouldDither },
+      seed: { value: seed },
+      time: { value: time },
     },
     vertexShader,
     fragmentShader,

@@ -50,8 +50,8 @@ export default function Page() {
       orbit
     >
       <Suspense fallback={null}>
-        <Star position={[0, 0, 0]} />
-        <WetPlanet position={[-4, -3, 0]} />
+        {/* <Star position={[0, 0, 0]} /> */}
+        <WetPlanet position={[0, 0, 0]} />
         {/* <DryPlanet position={[-2, 0, 2]} /> */}
         {/* <DeadPlanet position={[6, 0, -10]} /> */}
         <Common color="#000" />

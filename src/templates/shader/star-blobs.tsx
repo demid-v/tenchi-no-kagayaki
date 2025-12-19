@@ -5,34 +5,55 @@ import { Vector4 } from "three";
 import * as THREE from "three";
 
 import { flip } from "~/helpers/utils";
-import fragmentShader from "~/templates/shader/glsl/star-blobs-fragment.frag";
-import vertexShader from "~/templates/shader/glsl/star-vertex.vert";
+import fragmentShader from "~/templates/shader/glsl/star-blobs.frag";
+import vertexShader from "~/templates/shader/glsl/star.vert";
 
 export const StarBlobsShader = ({
   pixels = 100.0,
+  color = new Vector4(1, 0.647, 0),
   rotationSpeed = 0.1,
   rotation = 0.0,
+  circleAmount = 3.0,
+  circleSize = 3.0,
+  scale = 1.0,
+  size = 4.0,
+  tiles = 1.0,
+  octaves = 4,
+  shouldDither = true,
+  seed = flip() ? Math.random() * 10 : Math.random() * 100,
+  time = 0.0,
   ref,
 }: {
   pixels?: number;
+  color?: Vector4;
   rotationSpeed?: number;
   rotation?: number;
-  position?: [number, number, number];
+  circleAmount?: number;
+  circleSize?: number;
+  scale?: number;
+  size?: number;
+  tiles?: number;
+  octaves?: number;
+  shouldDither?: boolean;
+  seed?: number;
+  time?: number;
   ref?: React.Ref<THREE.ShaderMaterial>;
 }) => {
-  const colorPalette = new Vector4(1, 0.647, 0);
-
   const shaderOptions = {
     uniforms: {
       pixels: { value: pixels },
-      color: { value: colorPalette },
       time_speed: { value: rotationSpeed },
       rotation: { value: rotation },
-      seed: { value: flip() ? Math.random() * 10 : Math.random() * 100 },
-      time: { value: 0.0 },
-      circle_amount: { value: 3.0 },
-      circle_size: { value: 1.5 },
-      scale: { value: 1.0 },
+      color: { value: color },
+      circle_amount: { value: circleAmount },
+      circle_size: { value: circleSize },
+      scale: { value: scale },
+      size: { value: size },
+      TILES: { value: tiles },
+      OCTAVES: { value: octaves },
+      should_dither: { value: shouldDither },
+      seed: { value: seed },
+      time: { value: time },
     },
     vertexShader,
     fragmentShader,

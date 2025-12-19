@@ -1,19 +1,21 @@
 varying vec3 vUv;
+
 uniform float pixels;
 uniform float time_speed;
-uniform float time;
 uniform float rotation;
 uniform vec4 color;
-bool should_dither = true;
 
 uniform float circle_amount;
 uniform float circle_size;
 uniform float scale;
 
+uniform float size;
+uniform float TILES;
+uniform int OCTAVES;
+uniform bool should_dither;
+
 uniform float seed;
-float size = 4.0;
-int OCTAVES = 4;
-float TILES = 1.0;
+uniform float time;
 
 
 float rand(vec2 co){

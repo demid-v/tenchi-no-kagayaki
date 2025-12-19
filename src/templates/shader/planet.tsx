@@ -5,29 +5,40 @@ import { Vector2, Vector4 } from "three";
 import * as THREE from "three";
 
 import { flip } from "~/helpers/utils";
-import fragmentShaderTemp from "~/templates/shader/glsl/planet-fragment.frag";
-import vertexShaderTemp from "~/templates/shader/glsl/planet-vertex.vert";
+import fragmentShader from "~/templates/shader/glsl/planet.frag";
+import vertexShader from "~/templates/shader/glsl/planet.vert";
 
 export const PlanetShader = ({
   pixels = 100.0,
-  lightPos = new Vector2(0.39, 0.7),
   lightIntensity = 0.1,
-  colors,
-  rotationSpeed = 0.1,
+  lightPos = new Vector2(0.39, 0.7),
   rotation = 0.0,
-  vertexShader = vertexShaderTemp,
-  fragmentShader = fragmentShaderTemp,
+  rotationSpeed = 0.1,
+  ditherSize = 2.0,
+  lightBorder1 = 0.4,
+  lightBorder2 = 0.6,
+  colors,
+  size = 10.0,
+  octaves = 20,
+  seed = flip() ? Math.random() * 10 : Math.random() * 100,
+  time = 0.0,
+  shouldDither = true,
   ref,
 }: {
   pixels?: number;
-  lightPos?: Vector2;
   lightIntensity?: number;
-  colors?: [Vector4, Vector4, Vector4];
-  rotationSpeed?: number;
+  lightPos?: Vector2;
   rotation?: number;
-  position?: [number, number, number];
-  vertexShader?: string;
-  fragmentShader?: string;
+  rotationSpeed?: number;
+  ditherSize?: number;
+  lightBorder1?: number;
+  lightBorder2?: number;
+  colors?: Vector4[];
+  size?: number;
+  octaves?: number;
+  seed?: number;
+  time?: number;
+  shouldDither?: boolean;
   ref?: React.Ref<THREE.ShaderMaterial>;
 }) => {
   const colorPalette = colors
@@ -41,15 +52,21 @@ export const PlanetShader = ({
   const shaderOptions = {
     uniforms: {
       pixels: { value: pixels },
+      lightIntensity: { value: lightIntensity },
+      rotation: { value: rotation },
+      light_origin: { value: lightPos },
       color1: { value: colorPalette[0] },
       color2: { value: colorPalette[1] },
       color3: { value: colorPalette[2] },
-      lightIntensity: { value: lightIntensity },
-      light_origin: { value: lightPos },
       time_speed: { value: rotationSpeed },
-      rotation: { value: rotation },
-      seed: { value: flip() ? Math.random() * 10 : Math.random() * 100 },
-      time: { value: 0.0 },
+      dither_size: { value: ditherSize },
+      light_border_1: { value: lightBorder1 },
+      light_border_2: { value: lightBorder2 },
+      size: { value: size },
+      OCTAVES: { value: octaves },
+      seed: { value: seed },
+      time: { value: time },
+      should_dither: { value: shouldDither },
     },
     vertexShader,
     fragmentShader,

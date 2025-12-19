@@ -1,20 +1,21 @@
 varying vec3 vUv;
-uniform float lightIntensity;
+
 uniform float pixels;
+uniform float lightIntensity;
 uniform float rotation;
 uniform vec2 light_origin;
 uniform float time_speed;
-float dither_size = 2.0;
-float light_border_1 = 0.4;
-float light_border_2 = 0.6;
+uniform float dither_size;
+uniform float light_border_1;
+uniform float light_border_2;
 uniform vec4 color1;
 uniform vec4 color2;
 uniform vec4 color3;
-float size = 10.0;
-int OCTAVES = 20;
+uniform float size;
+uniform int OCTAVES;
 uniform float seed;
 uniform float time;
-bool should_dither = true;
+uniform bool should_dither;
 
 float rand(vec2 coord) {
     coord = mod(coord, vec2(1.0,1.0)*floor(size+0.5));

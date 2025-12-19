@@ -4,8 +4,8 @@ import * as React from "react";
 import { Vector4 } from "three";
 import * as THREE from "three";
 
-import fragmentShader from "~/templates/shader/glsl/atmosphere-fragment.frag";
-import vertexShader from "~/templates/shader/glsl/planet-vertex.vert";
+import fragmentShader from "~/templates/shader/glsl/atmosphere.frag";
+import vertexShader from "~/templates/shader/glsl/planet.vert";
 
 export const AtmosphereShader = ({
   pixels = 100.0,
