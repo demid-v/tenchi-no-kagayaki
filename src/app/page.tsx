@@ -3,10 +3,10 @@
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
 
-import { DeadPlanet } from "~/components/canvas/dead-planet";
-import { DryPlanet } from "~/components/canvas/dry-planet";
-import { Star } from "~/components/canvas/star";
-import { WetPlanet } from "~/components/canvas/wet-planet";
+const StarSystem = dynamic(
+  () => import("~/components/canvas/star-system").then((mod) => mod.StarSystem),
+  { ssr: false },
+);
 
 const View = dynamic(
   () => import("~/components/canvas/view").then((mod) => mod.View),
@@ -50,10 +50,7 @@ export default function Page() {
       orbit
     >
       <Suspense fallback={null}>
-        {/* <Star position={[0, 0, 0]} /> */}
-        <WetPlanet position={[0, 0, 0]} />
-        {/* <DryPlanet position={[-2, 0, 2]} /> */}
-        {/* <DeadPlanet position={[6, 0, -10]} /> */}
+        <StarSystem />
         <Common color="#000" />
       </Suspense>
     </View>

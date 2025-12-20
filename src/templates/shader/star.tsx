@@ -46,12 +46,12 @@ export const StarShader = ({
   const shaderOptions = {
     uniforms: {
       pixels: { value: pixels },
-      colors: { value: colorPalette },
       time_speed: { value: rotationSpeed },
       rotation: { value: rotation },
+      colors: { value: colorPalette },
       size: { value: size },
-      TILES: { value: tiles },
       OCTAVES: { value: octaves },
+      TILES: { value: tiles },
       shoul_dither: { value: shouldDither },
       seed: { value: seed },
       time: { value: time },

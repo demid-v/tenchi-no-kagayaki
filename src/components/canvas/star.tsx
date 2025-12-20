@@ -2,6 +2,7 @@
 
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
+import * as React from "react";
 import * as THREE from "three";
 
 import { StarShader } from "~/templates/shader/star";
@@ -9,12 +10,11 @@ import { StarBlobsShader } from "~/templates/shader/star-blobs";
 import { StarFlaresShader } from "~/templates/shader/star-flares";
 
 export const Star = ({
-  position = [0, 0, 0],
   pixels = 100.0,
+  ...props
 }: {
-  position?: [number, number, number];
   pixels?: number;
-}) => {
+} & React.ComponentProps<"group">) => {
   const groupRef = useRef<THREE.Group>(null);
 
   useFrame(({ clock: { elapsedTime }, gl, scene, camera }) => {
@@ -35,8 +35,8 @@ export const Star = ({
   });
 
   return (
-    <group ref={groupRef} position={position} scale={[100, 100, 1]}>
-      <mesh scale={[2.3, 2.3, 1]}>
+    <group ref={groupRef} {...props}>
+      <mesh scale={[2, 2, 1]}>
         <planeGeometry args={[1, 1]} />
         <StarBlobsShader pixels={pixels} />
       </mesh>
@@ -44,7 +44,7 @@ export const Star = ({
         <planeGeometry args={[1, 1]} />
         <StarShader pixels={pixels} />
       </mesh>
-      <mesh scale={[1.8, 1.8, 1]}>
+      <mesh scale={[1.7, 1.7, 1]}>
         <planeGeometry args={[1, 1]} />
         <StarFlaresShader pixels={pixels} />
       </mesh>

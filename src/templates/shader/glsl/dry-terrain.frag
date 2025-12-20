@@ -4,7 +4,7 @@ uniform float pixels;
 uniform float rotation;
 uniform vec2 light_origin;
 uniform float light_distance1;
-uniform loat light_distance2;
+uniform float light_distance2;
 uniform float time_speed;
 uniform float dither_size;
 uniform vec4 colors[5];

@@ -15,7 +15,6 @@ uniform vec4[4] colors;
 uniform float size;
 uniform int OCTAVES;
 uniform float seed;
-
 uniform float time;
 
 float rand(vec2 coord) {

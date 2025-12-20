@@ -8,7 +8,6 @@ uniform float dither_size;
 uniform float light_border_1;
 uniform float light_border_2;
 uniform float river_cutoff;
-
 uniform vec4[6] colors;
 
 uniform float size;

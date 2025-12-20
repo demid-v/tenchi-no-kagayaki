@@ -8,6 +8,7 @@ uniform float dither_size;
 uniform float light_border;
 uniform vec4 color1;
 uniform vec4 color2;
+
 uniform float size;
 uniform int OCTAVES;
 uniform float seed;

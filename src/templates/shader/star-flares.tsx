@@ -17,8 +17,7 @@ export const StarFlaresShader = ({
   circleAmount = 2.0,
   circleScale = 1.0,
   scale = 1.0,
-  size = 2.0,
-  tiles = 1.0,
+  size = 1.6,
   octaves = 4,
   shouldDither = true,
   seed = flip() ? Math.random() * 10 : Math.random() * 100,
@@ -34,7 +33,6 @@ export const StarFlaresShader = ({
   circleScale?: number;
   scale?: number;
   size?: number;
-  tiles?: number;
   octaves?: number;
   shouldDither?: boolean;
   seed?: number;
@@ -55,7 +53,6 @@ export const StarFlaresShader = ({
       circle_scale: { value: circleScale },
       scale: { value: scale },
       size: { value: size },
-      TILES: { value: tiles },
       OCTAVES: { value: octaves },
       shoul_dither: { value: shouldDither },
       seed: { value: seed },

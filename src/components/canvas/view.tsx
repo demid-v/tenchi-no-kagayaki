@@ -14,7 +14,7 @@ export const Common = ({ color }: { color?: string }) => (
   <Suspense fallback={null}>
     {color && <color attach="background" args={[color]} />}
     <ambientLight />
-    <OrthographicCamera makeDefault far={-1} near={1} />
+    <OrthographicCamera makeDefault far={-1} near={1} position={[0, 0, 1]} />
   </Suspense>
 );
 

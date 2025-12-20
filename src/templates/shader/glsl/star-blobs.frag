@@ -7,12 +7,9 @@ uniform vec4 color;
 
 uniform float circle_amount;
 uniform float circle_size;
-uniform float scale;
 
 uniform float size;
-uniform float TILES;
 uniform int OCTAVES;
-uniform bool should_dither;
 
 uniform float seed;
 uniform float time;

@@ -5,11 +5,10 @@ uniform float time_speed;
 uniform float rotation;
 uniform vec4 colors[4];
 
-float size;
-int OCTAVES;
-float TILES;
-bool should_dither;
-
+uniform float size;
+uniform int OCTAVES;
+uniform float TILES;
+uniform bool should_dither;
 
 uniform float seed;
 uniform float time;

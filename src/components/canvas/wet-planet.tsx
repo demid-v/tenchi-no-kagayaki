@@ -102,12 +102,11 @@ const randomizeColors = () => {
 const randomColors = randomizeColors();
 
 export const WetPlanet = ({
-  position = [0, 0, 0],
   pixels = 100.0,
+  ...props
 }: {
-  position?: [number, number, number];
   pixels?: number;
-}) => {
+} & React.ComponentProps<"group">) => {
   const groupRef = useRef<THREE.Group>(null);
 
   const riversRef = useRef<THREE.ShaderMaterial>(null);
@@ -134,12 +133,12 @@ export const WetPlanet = ({
   });
 
   return (
-    <group ref={groupRef} scale={[300, 300, 1]}>
-      <mesh position={position}>
+    <group ref={groupRef} {...props}>
+      <mesh>
         <planeGeometry args={[1, 1]} />
         <RiversShader ref={riversRef} pixels={pixels} />
       </mesh>
-      <mesh position={position}>
+      <mesh>
         <planeGeometry args={[1, 1]} />
         <CloudsShader ref={cloudsRef} pixels={pixels} />
       </mesh>
