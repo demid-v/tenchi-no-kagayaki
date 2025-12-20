@@ -7,7 +7,9 @@ export default {
     "@trivago/prettier-plugin-sort-imports",
     // Must come last. https://dev.to/kachidk/common-prettier-plugins-installation-30hc
     "prettier-plugin-tailwindcss",
+    "prettier-plugin-glsl",
   ],
+  overrides: [{ files: ["*.frag"], options: { parser: "glsl-parser" } }],
   importOrder: ["^~/styles/(.*)$", "<THIRD_PARTY_MODULES>", "^[~/]", "^[./]"],
   importOrderSortSpecifiers: true,
   importOrderSeparation: true,

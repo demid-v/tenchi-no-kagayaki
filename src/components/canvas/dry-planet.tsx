@@ -10,7 +10,6 @@ export const DryPlanet = ({
   pixels = 100.0,
   ...props
 }: {
-  position?: [number, number, number];
   pixels?: number;
 } & React.ComponentProps<"group">) => {
   const groupRef = useRef<THREE.Group>(null);
