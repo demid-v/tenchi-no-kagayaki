@@ -12,7 +12,7 @@ import { Three } from "~/helpers/components/three";
 export const Common = ({ color }: { color?: string }) => (
   <Suspense fallback={null}>
     {color && <color attach="background" args={[color]} />}
-    <OrthographicCamera makeDefault far={-1} near={1} />
+    <OrthographicCamera makeDefault far={-1000} near={1000} />
   </Suspense>
 );
 

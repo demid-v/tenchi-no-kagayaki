@@ -26,10 +26,10 @@ const WetPlanet = dynamic(
 export const StarSystem = () => {
   return (
     <Suspense fallback={null}>
-      <Star position={[0, 0, 0]} scale={[200, 200, 0]} />
-      <WetPlanet position={[-400, -200, 0]} scale={[100, 100, 1]} />
-      {/* <DryPlanet position={[-2, 0, 2]} /> */}
-      {/* <DeadPlanet position={[6, 0, -10]} /> */}
+      <Star position={[0, 0, 0]} scale={[120, 120, 0]} />
+      <DryPlanet position={[-200, -90, 0]} scale={[40, 40, 0]} />
+      <WetPlanet position={[-400, -200, 0]} scale={[50, 50, 0]} />
+      <DeadPlanet position={[700, 500, 0]} scale={[20, 20, 0]} />
     </Suspense>
   );
 };

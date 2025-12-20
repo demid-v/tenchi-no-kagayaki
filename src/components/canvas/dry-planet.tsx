@@ -7,12 +7,12 @@ import * as THREE from "three";
 import { DryPlanetShader } from "~/templates/shader/dry-planet";
 
 export const DryPlanet = ({
-  position = [0, 0, 0],
   pixels = 100.0,
+  ...props
 }: {
   position?: [number, number, number];
   pixels?: number;
-}) => {
+} & React.ComponentProps<"group">) => {
   const groupRef = useRef<THREE.Group>(null);
 
   useFrame(({ clock: { elapsedTime }, gl, scene, camera }) => {
@@ -29,8 +29,8 @@ export const DryPlanet = ({
   });
 
   return (
-    <group ref={groupRef}>
-      <mesh position={position}>
+    <group ref={groupRef} {...props}>
+      <mesh>
         <planeGeometry args={[1, 1]} />
         <DryPlanetShader pixels={pixels} />
       </mesh>

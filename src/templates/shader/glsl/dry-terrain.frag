@@ -7,13 +7,16 @@ uniform float light_distance1;
 uniform float light_distance2;
 uniform float time_speed;
 uniform float dither_size;
+
 uniform vec4 colors[5];
 uniform int n_colors;
+
 uniform float size;
 uniform int OCTAVES;
+
 uniform float seed;
 uniform float time;
-uniform bool should_dither = true;
+uniform bool should_dither;
 
 float rand(vec2 coord) {
 	// land has to be tiled
