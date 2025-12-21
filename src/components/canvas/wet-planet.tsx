@@ -2,7 +2,7 @@
 
 import { useFrame } from "@react-three/fiber";
 import Color from "color";
-import { useLayoutEffect, useRef } from "react";
+import { useImperativeHandle, useRef } from "react";
 import * as THREE from "three";
 import { Vector3, Vector4 } from "three";
 
@@ -103,14 +103,18 @@ const randomColors = randomizeColors();
 
 export const WetPlanet = ({
   pixels = 100.0,
+  ref,
   ...props
 }: {
   pixels?: number;
+  ref?: React.RefObject<THREE.Group | null>;
 } & React.ComponentProps<"group">) => {
   const groupRef = useRef<THREE.Group>(null);
 
   const riversRef = useRef<THREE.ShaderMaterial>(null);
   const cloudsRef = useRef<THREE.ShaderMaterial>(null);
+
+  useImperativeHandle(ref, () => groupRef.current!);
 
   // useLayoutEffect(() => {
   //   if (!riversRef.current || !cloudsRef.current) return;

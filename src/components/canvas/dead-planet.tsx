@@ -1,7 +1,7 @@
 "use client";
 
 import { useFrame } from "@react-three/fiber";
-import { useRef } from "react";
+import { useImperativeHandle, useRef } from "react";
 import * as THREE from "three";
 
 import { CraterShader } from "~/templates/shader/crater";
@@ -9,11 +9,15 @@ import { PlanetShader } from "~/templates/shader/planet";
 
 export const DeadPlanet = ({
   pixels = 100.0,
+  ref,
   ...props
 }: {
   pixels?: number;
+  ref?: React.RefObject<THREE.Group | null>;
 } & React.ComponentProps<"group">) => {
   const groupRef = useRef<THREE.Group>(null);
+
+  useImperativeHandle(ref, () => groupRef.current!);
 
   useFrame(({ clock: { elapsedTime }, gl, scene, camera }) => {
     if (!groupRef.current) return;

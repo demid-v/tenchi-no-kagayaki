@@ -3,6 +3,11 @@
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
 
+const Stars = dynamic(
+  () => import("~/components/canvas/stars").then((mod) => mod.Stars),
+  { ssr: false },
+);
+
 const StarSystem = dynamic(
   () => import("~/components/canvas/star-system").then((mod) => mod.StarSystem),
   { ssr: false },
@@ -50,6 +55,7 @@ export default function Page() {
       orbit
     >
       <Suspense fallback={null}>
+        <Stars />
         <StarSystem />
         <Common color="#000" />
       </Suspense>
