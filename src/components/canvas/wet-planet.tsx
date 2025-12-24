@@ -1,11 +1,12 @@
 "use client";
 
-import { useFrame } from "@react-three/fiber";
 import Color from "color";
 import { useImperativeHandle, useRef } from "react";
 import * as THREE from "three";
 import { Vector3, Vector4 } from "three";
 
+import { useRotation } from "~/helpers/use-rotation";
+import { useUpdate } from "~/helpers/use-update";
 import { getRandom } from "~/helpers/utils";
 import { CloudsShader } from "~/templates/shader/clouds";
 import { RiversShader } from "~/templates/shader/wet-planet";
@@ -103,6 +104,7 @@ const randomColors = randomizeColors();
 
 export const WetPlanet = ({
   pixels = 100.0,
+  position,
   ref,
   ...props
 }: {
@@ -123,21 +125,11 @@ export const WetPlanet = ({
   //   cloudsRef.current.uniforms.colors!.value = randomColors.cloud_colors;
   // });
 
-  useFrame(({ clock: { elapsedTime }, gl, scene, camera }) => {
-    if (!groupRef.current) return;
-
-    groupRef.current.children.forEach((planet) => {
-      if (planet instanceof THREE.Mesh) {
-        if (planet.material.uniforms.time === undefined) return;
-        planet.material.uniforms.time.value = elapsedTime;
-      }
-    });
-
-    gl.render(scene, camera);
-  });
+  useUpdate(groupRef);
+  useRotation(groupRef, position);
 
   return (
-    <group ref={groupRef} {...props}>
+    <group ref={groupRef} position={position} {...props}>
       <mesh>
         <planeGeometry args={[1, 1]} />
         <RiversShader ref={riversRef} pixels={pixels} />
