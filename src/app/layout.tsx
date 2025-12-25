@@ -1,11 +1,8 @@
+import { Metadata } from "next";
+
 import { Layout } from "~/components/dom/layout";
 
 import "./global.css";
-
-export const metadata = {
-  title: "天地の輝き",
-  description: "Star system discovery game.",
-};
 
 export default function RootLayout({
   children,
@@ -14,11 +11,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="antialiased">
-      {/*
-        <head /> will contain the components returned by the nearest parent
-        head.tsx. Find out more at https://beta.nextjs.org/docs/api-reference/file-conventions/head
-      */}
-      <head />
       <body>
         {/* To avoid FOUT with styled-components wrap Layout with StyledComponentsRegistry https://beta.nextjs.org/docs/styling/css-in-js#styled-components */}
         <Layout>{children}</Layout>
@@ -26,3 +18,19 @@ export default function RootLayout({
     </html>
   );
 }
+
+export const metadata: Metadata = {
+  title: "天地の輝き",
+  description: "Space exploration game.",
+  authors: [{ name: "Demid Vasilyev", url: "https://t.me/demid_v" }],
+  creator: "Demid Vasilyev",
+  publisher: "Demid Vasilyev",
+  keywords: [
+    "universe",
+    "space",
+    "planets",
+    "space exploration",
+    "procedurally generated",
+  ],
+  robots: { index: true, follow: true },
+};
