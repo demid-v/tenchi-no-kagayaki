@@ -3,7 +3,7 @@ varying vec3 vUv;
 uniform float pixels;
 uniform float time_speed;
 uniform float rotation;
-uniform vec4 color;
+uniform vec4 colors[1];
 
 uniform float circle_amount;
 uniform float circle_size;
@@ -99,5 +99,5 @@ void main() {
   c *= 0.37 - d;
   c = step(0.07, c - d);
 
-  gl_FragColor = vec4(color.rgb, c * color.a);
+  gl_FragColor = vec4(colors[0].rgb, c * colors[0].a);
 }

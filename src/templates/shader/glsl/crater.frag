@@ -6,8 +6,7 @@ uniform vec2 light_origin;
 uniform float time_speed;
 uniform float dither_size;
 uniform float light_border;
-uniform vec4 color1;
-uniform vec4 color2;
+uniform vec4 colors[2];
 
 uniform float size;
 uniform int OCTAVES;
@@ -68,14 +67,14 @@ void main() {
 
   float c1 = crater(uv);
   float c2 = crater(uv + (light_origin - 0.5) * 0.04);
-  vec4 col = color1;
+  vec4 col = colors[0];
 
   a *= step(0.5, c1);
   if (c2 < c1 - (0.5 - d_light) * 2.0) {
-    col = color2;
+    col = colors[1];
   }
   if (d_light > light_border) {
-    col = color2;
+    col = colors[1];
   }
 
   // cut out a circle

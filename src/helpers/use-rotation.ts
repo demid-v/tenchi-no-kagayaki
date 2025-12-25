@@ -1,7 +1,7 @@
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
-export const useRotation = (
+const useRotation = (
   object: React.RefObject<THREE.Group | null>,
   position: React.ComponentProps<"group">["position"],
 ) => {
@@ -20,3 +20,5 @@ export const useRotation = (
       Math.sin(startPosition + elapsedTime / (radius / 2.5)) * radius;
   });
 };
+
+export default useRotation;

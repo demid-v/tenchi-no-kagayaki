@@ -8,9 +8,7 @@ uniform float time_speed;
 uniform float dither_size;
 uniform float light_border_1;
 uniform float light_border_2;
-uniform vec4 color1;
-uniform vec4 color2;
-uniform vec4 color3;
+uniform vec4 colors[3];
 uniform float size;
 uniform int OCTAVES;
 uniform float seed;
@@ -83,17 +81,17 @@ void main() {
   float dither_border = 1.0 / pixels * dither_size;
 
   // now we can assign colors based on distance to light origin
-  vec4 col = color1;
+  vec4 col = colors[0];
   if (d_light > light_border_1) {
-    col = color2;
+    col = colors[1];
     if (d_light < light_border_1 + dither_border && (dith || !should_dither)) {
-      col = color1;
+      col = colors[0];
     }
   }
   if (d_light > light_border_2) {
-    col = color3;
+    col = colors[2];
     if (d_light < light_border_2 + dither_border && (dith || !should_dither)) {
-      col = color2;
+      col = colors[1];
     }
   }
 

@@ -39,7 +39,7 @@ export const StarBlobsShader = ({
       pixels: { value: pixels },
       time_speed: { value: rotationSpeed },
       rotation: { value: rotation },
-      color: { value: color },
+      colors: { value: [color] },
       circle_amount: { value: circleAmount },
       circle_size: { value: circleSize },
       size: { value: size },
