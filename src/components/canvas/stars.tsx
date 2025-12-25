@@ -6,8 +6,8 @@ import { Suspense, useRef } from "react";
 import * as THREE from "three";
 import { Vector3 } from "three";
 
-import vertexShader from "~/templates/shader/glsl/crater.vert";
 import fragmentShader from "~/templates/shader/glsl/stars.frag";
+import vertexShader from "~/templates/shader/glsl/stars.vert";
 
 export const Stars = () => {
   const shaderOptions = {

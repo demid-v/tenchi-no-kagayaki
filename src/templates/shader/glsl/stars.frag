@@ -1,4 +1,4 @@
-varying vec3 vUv;
+varying vec2 vUv;
 
 uniform vec3 resolution;
 uniform float time;
@@ -42,7 +42,7 @@ float ease(float time, vec2 uv) {
 }
 
 void main() {
-  vec2 uv = (vUv.xy - 0.5 / resolution.xy) / resolution.y;
+  vec2 uv = vUv.xy - 0.5;
 
   float stars = pow(rand21(uv), 200.0) * (ease(time * 2.0, uv) * 0.7 + 0.3);
 

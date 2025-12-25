@@ -57,7 +57,7 @@ export default function Page() {
       <Suspense fallback={null}>
         <Stars />
         <StarSystem />
-        <Common color="#000" />
+        <Common />
       </Suspense>
     </View>
   );
