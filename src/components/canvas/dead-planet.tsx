@@ -41,6 +41,7 @@ export const DeadPlanet = ({
   ...props
 }: {
   pixels?: number;
+  position: [number, number, number];
   ref?: React.RefObject<THREE.Group | null>;
 } & React.ComponentProps<"group">) => {
   const groupRef = useRef<THREE.Group>(null);

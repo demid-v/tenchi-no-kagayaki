@@ -22,12 +22,15 @@ export default function RootLayout({
 export const metadata: Metadata = {
   title: "天地の輝き",
   description: "Space exploration game.",
+  icons: [{ rel: "icon", url: "/icons/favicon.ico" }],
   authors: [{ name: "Demid Vasilyev", url: "https://t.me/demid_v" }],
   creator: "Demid Vasilyev",
   publisher: "Demid Vasilyev",
   keywords: [
+    "pixel",
     "universe",
     "space",
+    "stars",
     "planets",
     "space exploration",
     "procedurally generated",
