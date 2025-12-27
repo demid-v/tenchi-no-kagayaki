@@ -7,11 +7,11 @@ const useRandomColors = (
     colors: THREE.Vector4[];
   }[],
 ) => {
-  useLayoutEffect(() => {
-    for (const object of objects) {
-      object.object.current!.uniforms.colors!.value = object.colors;
-    }
-  });
+  // useLayoutEffect(() => {
+  //   for (const object of objects) {
+  //     object.object.current!.uniforms.colors!.value = object.colors;
+  //   }
+  // });
 };
 
 export default useRandomColors;
