@@ -3,33 +3,76 @@
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
 
-const DeadPlanet = dynamic(
-  () => import("~/components/canvas/dead-planet").then((mod) => mod.DeadPlanet),
-  { ssr: false },
-);
+import { getRandom } from "~/helpers/utils";
 
-const DryPlanet = dynamic(
-  () => import("~/components/canvas/dry-planet").then((mod) => mod.DryPlanet),
-  { ssr: false },
-);
+const DeadPlanet = dynamic(() => import("~/components/canvas/dead-planet"), {
+  ssr: false,
+});
 
-const Star = dynamic(
-  () => import("~/components/canvas/star").then((mod) => mod.Star),
-  { ssr: false },
-);
+const DryPlanet = dynamic(() => import("~/components/canvas/dry-planet"), {
+  ssr: false,
+});
 
-const WetPlanet = dynamic(
-  () => import("~/components/canvas/wet-planet").then((mod) => mod.WetPlanet),
-  { ssr: false },
-);
+const Star = dynamic(() => import("~/components/canvas/star"), { ssr: false });
+
+const WetPlanet = dynamic(() => import("~/components/canvas/wet-planet"), {
+  ssr: false,
+});
 
 export const StarSystem = () => {
+  const starScale = getRandom(80, 150);
+
+  const planets = [];
+
+  const scale1 = getRandom(10, 50);
+  const radius1 = getRandom(200, 300);
+
+  planets.push(
+    <DryPlanet
+      key={1}
+      radius={radius1}
+      period={Math.PI * (2 / 3)}
+      relativeSpeed={getRandom(Math.PI / 16, Math.PI / 8)}
+      eccentricity={getRandom(0, 30)}
+      orbitAngle={getRandom(0, Math.PI)}
+      scale={[scale1, scale1, 0]}
+    />,
+  );
+
+  const scale2 = getRandom(40, 60);
+  const radius2 = getRandom(radius1 + 150, radius1 + 200);
+
+  planets.push(
+    <WetPlanet
+      key={2}
+      radius={radius2}
+      period={-Math.PI * (2 / 3)}
+      relativeSpeed={getRandom(Math.PI / 16, Math.PI / 8)}
+      eccentricity={getRandom(0, 50)}
+      orbitAngle={getRandom(0, Math.PI)}
+      scale={[scale2, scale2, 0]}
+    />,
+  );
+
+  const scale3 = getRandom(10, 30);
+  const radius3 = getRandom(radius2 + 250, radius2 + 300);
+
+  planets.push(
+    <DeadPlanet
+      key={3}
+      radius={radius3}
+      period={Math.PI * (1 / 3)}
+      relativeSpeed={getRandom(Math.PI / 16, Math.PI / 8)}
+      eccentricity={getRandom(0, 200)}
+      orbitAngle={getRandom(0, Math.PI)}
+      scale={[scale3, scale3, 0]}
+    />,
+  );
+
   return (
     <Suspense fallback={null}>
-      <Star position={[0, 0, 0]} scale={[120, 120, 0]} />
-      <DryPlanet position={[150, -140, 0]} scale={[40, 40, 0]} />
-      <WetPlanet position={[-250, -250, 0]} scale={[50, 50, 0]} />
-      <DeadPlanet position={[-300, 300, 0]} scale={[20, 20, 0]} />
+      <Star position={[0, 0, 0]} scale={[starScale, starScale, 0]} />
+      {planets}
     </Suspense>
   );
 };

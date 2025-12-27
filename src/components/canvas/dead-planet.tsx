@@ -34,14 +34,22 @@ const randomizeColors = () => {
 
 const randomColors = randomizeColors();
 
-export const DeadPlanet = ({
+const DeadPlanet = ({
   pixels = 100.0,
-  position,
+  radius,
+  period,
+  relativeSpeed,
+  eccentricity,
+  orbitAngle,
   ref,
   ...props
 }: {
   pixels?: number;
-  position: [number, number, number];
+  radius: number;
+  period: number;
+  relativeSpeed: number;
+  eccentricity: number;
+  orbitAngle: number;
   ref?: React.RefObject<THREE.Group | null>;
 } & React.ComponentProps<"group">) => {
   const groupRef = useRef<THREE.Group>(null);
@@ -57,10 +65,17 @@ export const DeadPlanet = ({
   ]);
 
   useUpdate(groupRef);
-  useRotation(groupRef, position);
+  useRotation(
+    groupRef,
+    radius,
+    period,
+    relativeSpeed,
+    eccentricity,
+    orbitAngle,
+  );
 
   return (
-    <group ref={groupRef} position={position} {...props}>
+    <group ref={groupRef} {...props}>
       <mesh>
         <planeGeometry args={[1, 1]} />
         <PlanetShader pixels={pixels} ref={groundRef} />
@@ -72,3 +87,5 @@ export const DeadPlanet = ({
     </group>
   );
 };
+
+export default DeadPlanet;

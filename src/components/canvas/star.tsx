@@ -1,7 +1,5 @@
 "use client";
 
-import { useFrame } from "@react-three/fiber";
-import Color from "color";
 import { useRef } from "react";
 import * as React from "react";
 import * as THREE from "three";
@@ -38,7 +36,7 @@ const randomizeColors = () => {
 
 const randomColors = randomizeColors();
 
-export const Star = ({
+const Star = ({
   pixels = 100.0,
   ...props
 }: {
@@ -75,3 +73,5 @@ export const Star = ({
     </group>
   );
 };
+
+export default Star;

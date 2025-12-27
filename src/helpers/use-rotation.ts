@@ -3,23 +3,25 @@ import * as THREE from "three";
 
 const useRotation = (
   object: React.RefObject<THREE.Group | null>,
-  position: [number, number, number],
+  radius: number,
+  period: number,
+  relativeSpeed: number,
+  eccentricity: number,
+  orbitAngle: number,
 ) => {
-  const x = position[0];
-  const y = position[1];
-
-  const startPosition = Math.atan(y / x) + (x < 0 ? Math.PI : 0);
-  const radius = Math.sqrt(x * x + y * y);
-
-  const slowCoef = Math.pow(radius / 50, 2);
-
   useFrame(({ clock: { elapsedTime } }) => {
     if (!object.current) return;
 
-    object.current.position.x =
-      Math.cos(startPosition + elapsedTime / slowCoef) * radius;
-    object.current.position.y =
-      Math.sin(startPosition + elapsedTime / slowCoef) * radius;
+    const speed = relativeSpeed / Math.pow(radius / 100, 2);
+
+    const c = Math.cos(orbitAngle);
+    const s = Math.sin(orbitAngle);
+
+    const x0 = Math.cos(period + elapsedTime * speed) * radius;
+    const y0 = Math.sin(period + elapsedTime * speed) * (radius - eccentricity);
+
+    object.current.position.x = x0 * c - y0 * s;
+    object.current.position.y = y0 * c + x0 * s;
   });
 };
 
