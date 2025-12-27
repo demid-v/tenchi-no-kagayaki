@@ -21,7 +21,7 @@ const randomizeColors = () => {
 
   const cols = seedColors.slice(0, 3).map((color, index) => {
     const newCol = color.darken(index / 3.0).lighten((1.0 - index / 3.0) * 0.2);
-    return new Vector4().fromArray(newCol.lch().array()).setW(1);
+    return new Vector4().fromArray(newCol.hsv().array()).setW(1);
   });
 
   const newCols = [...cols, cols[1]!, cols[2]!];

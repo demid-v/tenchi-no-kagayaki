@@ -20,7 +20,7 @@ const randomizeColors = () => {
   const cols = seedColors.slice(0, 5).map((color, index) => {
     const newCol = color.darken(index / 5.0).lighten((1.0 - index / 5.0) * 0.2);
 
-    return new Vector4().fromArray(newCol.lch().array()).setW(1);
+    return new Vector4().fromArray(newCol.hsv().array()).setW(1);
   });
 
   return cols;

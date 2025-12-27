@@ -23,7 +23,7 @@ const generateColors = (numOfColors = 4, hueDiff = 0.9, saturation = 0.5) => {
   const cols = [];
   for (let i = 0; i < numOfColors; i++) {
     cols.push(
-      Color.lch(
+      Color.hsv(
         a.x + b.x * Math.cos(6.28318 * (c.x * (i / numOfColors) + d.x)),
         a.y + b.y * Math.cos(6.28318 * (c.y * (i / numOfColors) + d.y)),
         a.z + b.z * Math.cos(6.28318 * (c.z * (i / numOfColors) + d.z)),

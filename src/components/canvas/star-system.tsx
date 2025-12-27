@@ -5,6 +5,8 @@ import { Suspense } from "react";
 
 import { getRandom } from "~/helpers/utils";
 
+import LavaPlanet from "./lava-planet";
+
 const DeadPlanet = dynamic(() => import("~/components/canvas/dead-planet"), {
   ssr: false,
 });
@@ -24,48 +26,63 @@ export const StarSystem = () => {
 
   const planets = [];
 
-  const scale1 = getRandom(10, 50);
-  const radius1 = getRandom(200, 300);
+  let scale = getRandom(10, 40);
+  let radius = getRandom(200, 300);
+
+  planets.push(
+    <LavaPlanet
+      key={0}
+      radius={radius}
+      period={Math.PI * (1 / 3)}
+      relativeSpeed={getRandom(Math.PI / 16, Math.PI / 8)}
+      eccentricity={getRandom(0, 10)}
+      orbitAngle={getRandom(0, Math.PI)}
+      scale={[scale, scale, 0]}
+    />,
+  );
+
+  scale = getRandom(10, 50);
+  radius = getRandom(radius + 150, radius + 200);
 
   planets.push(
     <DryPlanet
       key={1}
-      radius={radius1}
+      radius={radius}
       period={Math.PI * (2 / 3)}
       relativeSpeed={getRandom(Math.PI / 16, Math.PI / 8)}
       eccentricity={getRandom(0, 30)}
       orbitAngle={getRandom(0, Math.PI)}
-      scale={[scale1, scale1, 0]}
+      scale={[scale, scale, 0]}
     />,
   );
 
-  const scale2 = getRandom(40, 60);
-  const radius2 = getRandom(radius1 + 150, radius1 + 200);
+  scale = getRandom(40, 60);
+  radius = getRandom(radius + 150, radius + 200);
 
   planets.push(
     <WetPlanet
       key={2}
-      radius={radius2}
+      radius={radius}
       period={-Math.PI * (2 / 3)}
       relativeSpeed={getRandom(Math.PI / 16, Math.PI / 8)}
       eccentricity={getRandom(0, 50)}
       orbitAngle={getRandom(0, Math.PI)}
-      scale={[scale2, scale2, 0]}
+      scale={[scale, scale, 0]}
     />,
   );
 
-  const scale3 = getRandom(10, 30);
-  const radius3 = getRandom(radius2 + 250, radius2 + 300);
+  scale = getRandom(10, 30);
+  radius = getRandom(radius + 250, radius + 300);
 
   planets.push(
     <DeadPlanet
       key={3}
-      radius={radius3}
+      radius={radius}
       period={Math.PI * (1 / 3)}
       relativeSpeed={getRandom(Math.PI / 16, Math.PI / 8)}
       eccentricity={getRandom(0, 200)}
       orbitAngle={getRandom(0, Math.PI)}
-      scale={[scale3, scale3, 0]}
+      scale={[scale, scale, 0]}
     />,
   );
 

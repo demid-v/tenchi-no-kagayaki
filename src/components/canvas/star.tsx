@@ -22,7 +22,7 @@ const randomizeColors = () => {
 
     if (index === 0) newCol = newCol.lighten(0.8);
 
-    return new Vector4().fromArray(newCol.lch().array()).setW(1);
+    return new Vector4().fromArray(newCol.hsv().array()).setW(1);
   });
 
   const newCols = [cols[0]!, ...cols, cols[1]!, cols[0]!];

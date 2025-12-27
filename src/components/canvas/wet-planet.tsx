@@ -24,17 +24,35 @@ const randomizeColors = () => {
 
   for (let i = 0; i < 4; i++) {
     const newCol = seedColors[0]!.darken(i / 4.0);
-    rivers.push(new Vector4().fromArray(newCol.lch().array()).setW(1));
+    rivers.push(
+      new Vector4(
+        newCol.hue() + 0.2 * (i / 4.0),
+        newCol.saturationv(),
+        newCol.value(),
+      ).setW(1),
+    );
   }
 
   for (let i = 0; i < 2; i++) {
     const newCol = seedColors[1]!.darken(i / 2.0);
-    rivers.push(new Vector4().fromArray(newCol.lch().array()).setW(1));
+    rivers.push(
+      new Vector4(
+        newCol.hue() + 0.2 * (i / 2.0),
+        newCol.saturationv(),
+        newCol.value(),
+      ).setW(1),
+    );
   }
 
   for (let i = 0; i < 4; i++) {
     const newCol = seedColors[2]!.lighten((1.0 - i / 4.0) * 0.8);
-    clouds.push(new Vector4().fromArray(newCol.lch().array()).setW(1));
+    clouds.push(
+      new Vector4(
+        newCol.hue() + 0.2 * (i / 4.0),
+        newCol.saturationv(),
+        newCol.value(),
+      ).setW(1),
+    );
   }
 
   return { riverColors: rivers, cloudColors: clouds };
