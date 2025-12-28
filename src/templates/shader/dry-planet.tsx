@@ -15,7 +15,6 @@ export const DryPlanetShader = ({
   rotationSpeed = 0.1,
   lightDistance1 = 0.362,
   lightDistance2 = 0.525,
-  ditherSize = 2.0,
   colors,
   numOfColors = 5,
   size = 8.0,
@@ -31,7 +30,6 @@ export const DryPlanetShader = ({
   rotationSpeed?: number;
   lightDistance1?: number;
   lightDistance2?: number;
-  ditherSize?: number;
   colors?: Vector4[];
   numOfColors?: number;
   size?: number;
@@ -60,7 +58,6 @@ export const DryPlanetShader = ({
       light_distance1: { value: lightDistance1 },
       light_distance2: { value: lightDistance2 },
       time_speed: { value: rotationSpeed },
-      dither_size: { value: ditherSize },
       n_colors: { value: numOfColors },
       size: { value: size },
       OCTAVES: { value: octaves },

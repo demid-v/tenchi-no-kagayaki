@@ -53,24 +53,6 @@ float fbm(vec2 coord) {
   return value;
 }
 
-// by Leukbaars from https://www.shadertoy.com/view/4tK3zR
-float circleNoise(vec2 uv) {
-  float uv_y = floor(uv.y);
-  uv.x += uv_y * 0.31;
-  vec2 f = fract(uv);
-  float h = rand(vec2(floor(uv.x), floor(uv_y)));
-  float m = length(f - 0.25 - h * 0.5);
-  float r = h * 0.25;
-  return smoothstep(0.0, r, m * 0.75);
-}
-
-vec2 spherify(vec2 uv) {
-  vec2 centered = uv * 2.0 - 1.0;
-  float z = sqrt(1.0 - dot(centered.xy, centered.xy));
-  vec2 sphere = centered / (z + 1.0);
-  return sphere * 0.5 + 0.5;
-}
-
 vec2 rotate(vec2 coord, float angle) {
   coord -= 0.5;
   coord *= mat2(vec2(cos(angle), -sin(angle)), vec2(sin(angle), cos(angle)));
@@ -117,6 +99,7 @@ void main() {
   float posterized = floor((ring + pow(light_d, 2.0) * 2.0) * 4.0) / 4.0;
   posterized = min(posterized, 2.0);
   vec4 col;
+
   if (posterized <= 1.0) {
     col = light_colors[int(posterized * float(n_colors - 1))];
   } else {

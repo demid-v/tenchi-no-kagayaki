@@ -1,3 +1,5 @@
+precision mediump float;
+
 varying vec3 vUv;
 
 uniform float pixels;
@@ -6,7 +8,6 @@ uniform float rotation;
 uniform vec4 colors[4];
 
 uniform float size;
-uniform int OCTAVES;
 uniform float TILES;
 uniform bool should_dither;
 
@@ -23,22 +24,6 @@ vec2 rotate(vec2 vec, float angle) {
   vec *= mat2(vec2(cos(angle), -sin(angle)), vec2(sin(angle), cos(angle)));
   vec += vec2(0.5);
   return vec;
-}
-
-float noise(vec2 coord) {
-  vec2 i = floor(coord);
-  vec2 f = fract(coord);
-
-  float a = rand(i);
-  float b = rand(i + vec2(1.0, 0.0));
-  float c = rand(i + vec2(0.0, 1.0));
-  float d = rand(i + vec2(1.0, 1.0));
-
-  vec2 cubic = f * f * (3.0 - 2.0 * f);
-
-  return mix(a, b, cubic.x) +
-  (c - a) * cubic.y * (1.0 - cubic.x) +
-  (d - b) * cubic.x * cubic.y;
 }
 
 vec2 Hash2(vec2 p) {

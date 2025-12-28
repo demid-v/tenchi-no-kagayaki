@@ -1,3 +1,5 @@
+precision mediump float;
+
 varying vec3 vUv;
 
 uniform float pixels;
@@ -82,12 +84,14 @@ void main() {
 
   // now we can assign colors based on distance to light origin
   vec4 col = colors[0];
+
   if (d_light > light_border_1) {
     col = colors[1];
     if (d_light < light_border_1 + dither_border && (dith || !should_dither)) {
       col = colors[0];
     }
   }
+
   if (d_light > light_border_2) {
     col = colors[2];
     if (d_light < light_border_2 + dither_border && (dith || !should_dither)) {

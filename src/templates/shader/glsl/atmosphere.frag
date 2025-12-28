@@ -1,13 +1,11 @@
+precision mediump float;
+
 varying vec3 vUv;
 
 uniform vec4 color;
 uniform vec4 color2;
 uniform vec4 color3;
 uniform float pixels;
-
-float dist(vec2 p0, vec2 pf) {
-  return sqrt((pf.x - p0.x) * (pf.x - p0.x) + (pf.y - p0.y) * (pf.y - p0.y));
-}
 
 void main() {
   vec2 uv = floor(vUv.xy * pixels) / pixels + 0.5;

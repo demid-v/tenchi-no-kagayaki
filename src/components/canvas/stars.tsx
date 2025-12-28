@@ -12,9 +12,6 @@ import vertexShader from "~/templates/shader/glsl/stars.vert";
 export const Stars = () => {
   const shaderOptions = {
     uniforms: {
-      resolution: {
-        value: new Vector3(window.innerWidth, window.innerHeight, 1),
-      },
       time: { value: 0.0 },
     },
     vertexShader,

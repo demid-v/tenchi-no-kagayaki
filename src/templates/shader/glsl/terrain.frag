@@ -1,16 +1,16 @@
+precision mediump float;
+
 varying vec3 vUv;
 
 uniform float pixels;
-uniform float lightIntensity;
 uniform float rotation;
 uniform float time_speed;
 uniform vec2 light_origin;
 uniform float land_cutoff;
-uniform float dither_size = 2.0;
 uniform float light_border_1;
 uniform float light_border_2;
 
-uniform vec4[4] colors;
+uniform vec4 colors[4];
 
 uniform float size;
 uniform int OCTAVES;
@@ -93,11 +93,13 @@ void main() {
   if (d_light < light_border_1) {
     fbm4 *= 0.9;
   }
+
   if (d_light > light_border_1) {
     fbm2 *= 1.05;
     fbm3 *= 1.05;
     fbm4 *= 1.05;
   }
+
   if (d_light > light_border_2) {
     fbm2 *= 1.3;
     fbm3 *= 1.4;
@@ -107,14 +109,17 @@ void main() {
   // increase contrast on d_light
   d_light = pow(d_light, 2.0) * 0.1;
   vec4 col = colors[3];
+
   // assign colors based on if there is noise to the top-left of noise
   // and also based on how far noise is from light
   if (fbm4 + d_light < fbm1) {
     col = colors[2];
   }
+
   if (fbm3 + d_light < fbm1) {
     col = colors[1];
   }
+
   if (fbm2 + d_light < fbm1) {
     col = colors[0];
   }

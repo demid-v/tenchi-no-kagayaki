@@ -1,3 +1,5 @@
+precision mediump float;
+
 varying vec3 vUv;
 
 uniform float pixels;
@@ -10,7 +12,7 @@ uniform float cloud_curve;
 uniform float light_border_1;
 uniform float light_border_2;
 
-uniform vec4[4] colors;
+uniform vec4 colors[4];
 
 uniform float size;
 uniform int OCTAVES;
@@ -73,10 +75,6 @@ float cloud_alpha(vec2 uv) {
   float fbm = fbm(uv * size + c_noise + vec2(time * time_speed, 0.0));
 
   return fbm; //step(a_cutoff, fbm);
-}
-
-bool dither(vec2 uv_pixel, vec2 uv_real) {
-  return mod(uv_pixel.x + uv_real.y, 2.0 / pixels) <= 1.0 / pixels;
 }
 
 vec2 spherify(vec2 uv) {

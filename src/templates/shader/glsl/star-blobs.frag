@@ -1,3 +1,5 @@
+precision mediump float;
+
 varying vec3 vUv;
 
 uniform float pixels;
@@ -9,7 +11,6 @@ uniform float circle_amount;
 uniform float circle_size;
 
 uniform float size;
-uniform int OCTAVES;
 
 uniform float seed;
 uniform float time;
@@ -43,41 +44,6 @@ float circle(vec2 uv) {
     circle + 0.5,
     invert * circle_size * rand(rand_co * 1.5)
   );
-}
-
-float noise(vec2 coord) {
-  vec2 i = floor(coord);
-  vec2 f = fract(coord);
-
-  float a = rand(i);
-  float b = rand(i + vec2(1.0, 0.0));
-  float c = rand(i + vec2(0.0, 1.0));
-  float d = rand(i + vec2(1.0, 1.0));
-
-  vec2 cubic = f * f * (3.0 - 2.0 * f);
-
-  return mix(a, b, cubic.x) +
-  (c - a) * cubic.y * (1.0 - cubic.x) +
-  (d - b) * cubic.x * cubic.y;
-}
-
-float fbm(vec2 coord) {
-  float value = 0.0;
-  float scl = 0.5;
-
-  for (int i = 0; i < OCTAVES; i++) {
-    value += noise(coord) * scl;
-    coord *= 2.0;
-    scl *= 0.5;
-  }
-  return value;
-}
-
-vec2 spherify(vec2 uv) {
-  vec2 centered = uv * 2.0 - 1.0;
-  float z = sqrt(1.0 - dot(centered.xy, centered.xy));
-  vec2 sphere = centered / (z + 1.0);
-  return sphere * 0.5 + 0.5;
 }
 
 void main() {

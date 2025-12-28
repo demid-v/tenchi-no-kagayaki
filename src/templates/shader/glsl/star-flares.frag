@@ -1,3 +1,5 @@
+precision mediump float;
+
 varying vec3 vUv;
 
 uniform float pixels;
@@ -79,13 +81,6 @@ float fbm(vec2 coord) {
 
 bool dither(vec2 uv1, vec2 uv2) {
   return mod(uv1.x + uv2.y, 2.0 / pixels) <= 1.0 / pixels;
-}
-
-vec2 spherify(vec2 uv) {
-  vec2 centered = uv * 2.0 - 1.0;
-  float z = sqrt(1.0 - dot(centered.xy, centered.xy));
-  vec2 sphere = centered / (z + 1.0);
-  return sphere * 0.5 + 0.5;
 }
 
 void main() {

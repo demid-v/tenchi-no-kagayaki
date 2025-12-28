@@ -1,18 +1,17 @@
+precision mediump float;
+
 varying vec3 vUv;
 
 uniform float pixels;
 uniform float rotation;
 uniform vec2 light_origin;
 uniform float time_speed;
-uniform float dither_size;
 uniform float light_border;
 uniform vec4 colors[2];
 
 uniform float size;
-uniform int OCTAVES;
 uniform float seed;
 uniform float time;
-uniform bool should_dither;
 
 float rand(vec2 coord) {
   coord = mod(coord, vec2(1.0, 1.0) * floor(size + 0.5));

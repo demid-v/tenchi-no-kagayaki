@@ -13,28 +13,24 @@ export const CraterShader = ({
   lightPosition = new Vector2(0.39, 0.7),
   rotationSpeed = 0.1,
   rotation = 0.0,
-  ditherSize = 2.0,
   colors,
   lightBorder = 0.4,
   size = 5.0,
   octaves = 20,
   seed = flip() ? Math.random() * 10 : Math.random() * 100,
   time = 0.0,
-  shouldDither = true,
   ref,
 }: {
   pixels?: number;
   lightPosition?: Vector2;
   rotation?: number;
   rotationSpeed?: number;
-  ditherSize?: number;
   lightBorder?: number;
   colors?: Vector4[];
   size?: number;
   octaves?: number;
   seed?: number;
   time?: number;
-  shouldDither?: boolean;
   ref?: React.Ref<THREE.ShaderMaterial>;
 }) => {
   const colorPalette = colors
@@ -50,14 +46,12 @@ export const CraterShader = ({
       rotation: { value: rotation },
       light_origin: { value: lightPosition },
       time_speed: { value: rotationSpeed },
-      dither_size: { value: ditherSize },
       light_border: { value: lightBorder },
       colors: { value: colorPalette },
       size: { value: size },
       OCTAVES: { value: octaves },
       seed: { value: seed },
       time: { value: time },
-      should_dither: { value: shouldDither },
     },
     vertexShader,
     fragmentShader,

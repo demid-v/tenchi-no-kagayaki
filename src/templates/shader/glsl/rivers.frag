@@ -1,3 +1,5 @@
+precision mediump float;
+
 varying vec3 vUv;
 
 uniform float pixels;
@@ -8,7 +10,7 @@ uniform float dither_size;
 uniform float light_border_1;
 uniform float light_border_2;
 uniform float river_cutoff;
-uniform vec4[6] colors;
+uniform vec4 colors[6];
 
 uniform float size;
 uniform int OCTAVES;
@@ -22,7 +24,7 @@ float rand(vec2 coord) {
   // tiling only works for integer values, thus the rounding
   // it would probably be better to only allow integer sizes
   // multiply by vec2(2,1) to simulate planet having another side
-  coord = mod(coord, vec2(2.0, 1.0) * round(size));
+  coord = mod(coord, vec2(2.0, 1.0) * floor(size + 0.5));
   return fract(sin(dot(coord.xy, vec2(12.9898, 78.233))) * 15.5453 * seed);
 }
 

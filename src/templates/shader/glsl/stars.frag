@@ -1,6 +1,7 @@
+precision mediump float;
+
 varying vec2 vUv;
 
-uniform vec3 resolution;
 uniform float time;
 
 float rand21(vec2 uv) {

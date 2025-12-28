@@ -14,7 +14,6 @@ export const StarShader = ({
   rotation = 0.0,
   colors,
   size = 15.0,
-  octaves = 2.0,
   tiles = 5,
   shouldDither = true,
   seed = flip() ? Math.random() * 10 : Math.random() * 100,
@@ -27,7 +26,6 @@ export const StarShader = ({
   rotationSpeed?: number;
   rotation?: number;
   size?: number;
-  octaves?: number;
   tiles?: number;
   shouldDither?: boolean;
   seed?: number;
@@ -50,7 +48,6 @@ export const StarShader = ({
       rotation: { value: rotation },
       colors: { value: colorPalette },
       size: { value: size },
-      OCTAVES: { value: octaves },
       TILES: { value: tiles },
       shoul_dither: { value: shouldDither },
       seed: { value: seed },

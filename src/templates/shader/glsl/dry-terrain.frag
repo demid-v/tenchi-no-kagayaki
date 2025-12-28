@@ -1,3 +1,5 @@
+precision mediump float;
+
 varying vec3 vUv;
 
 uniform float pixels;
@@ -6,7 +8,6 @@ uniform vec2 light_origin;
 uniform float light_distance1;
 uniform float light_distance2;
 uniform float time_speed;
-uniform float dither_size;
 
 uniform vec4 colors[5];
 uniform int n_colors;
