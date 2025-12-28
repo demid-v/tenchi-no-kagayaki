@@ -3,8 +3,7 @@ import { Vector3 } from "three";
 
 const flip = () => Math.random() > 0.5;
 
-const getRandom = (min: number, max: number) =>
-  Math.random() * (max - min) + min;
+const getRandom = (min = 0, max = 1) => Math.random() * (max - min) + min;
 
 const generateColors = (numOfColors = 4, hueDiff = 0.9, saturation = 0.5) => {
   const a = new Vector3(0.5, 0.5, 0.5);
