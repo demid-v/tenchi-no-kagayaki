@@ -1,15 +1,16 @@
 "use client";
 
 import { Plane } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
 import { Suspense, useRef } from "react";
 import * as THREE from "three";
-import { Vector3 } from "three";
 
+import useUpdate from "~/helpers/use-update";
 import fragmentShader from "~/templates/shader/glsl/stars.frag";
 import vertexShader from "~/templates/shader/glsl/stars.vert";
 
 export const Stars = () => {
+  const starsRef = useRef<THREE.Mesh>(null);
+
   const shaderOptions = {
     uniforms: {
       time: { value: 0.0 },
@@ -21,17 +22,11 @@ export const Stars = () => {
 
   const shaderRef = useRef<THREE.ShaderMaterial>(null);
 
-  useFrame(({ clock: { elapsedTime }, gl, scene, camera }) => {
-    if (!shaderRef.current) return;
-
-    shaderRef.current.uniforms.time!.value = elapsedTime;
-
-    gl.render(scene, camera);
-  });
+  useUpdate(starsRef);
 
   return (
     <Suspense fallback={null}>
-      <mesh>
+      <mesh ref={starsRef} position={[0, 0, 1000]}>
         <Plane args={[window.innerWidth, window.innerHeight, 1, 1]}>
           <shaderMaterial {...shaderOptions} ref={shaderRef} />
         </Plane>

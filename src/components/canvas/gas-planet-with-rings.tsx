@@ -8,7 +8,6 @@ import useRandomColors from "~/helpers/use-random-colors";
 import useRotation from "~/helpers/use-rotation";
 import useUpdate from "~/helpers/use-update";
 import { generateColors, getRandom } from "~/helpers/utils";
-import GasPlanetShader from "~/templates/shader/gas-planet";
 import GasPlanetLayersShader from "~/templates/shader/gas-planet-layers";
 import RingsShader from "~/templates/shader/rings";
 

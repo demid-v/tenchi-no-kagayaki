@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 
 import { getRandom } from "~/helpers/utils";
 
@@ -34,11 +34,19 @@ const WetPlanet = dynamic(() => import("~/components/canvas/wet-planet"), {
   ssr: false,
 });
 
+const Trajectory = dynamic(() => import("~/components/canvas/trajectory"), {
+  ssr: false,
+});
+
 export const StarSystem = () => {
   const pixels = 100;
+
+  const [showOrbits, setShowOrbits] = useState(true);
+
   const starScale = getRandom(80, 150);
 
   const planets = [];
+  const orbits = [];
 
   let radius = 0;
 
@@ -49,7 +57,10 @@ export const StarSystem = () => {
 
   for (let i = 0; i < numOfPlanets; i++) {
     const scale = getRandom(30, 40);
-    radius = getRandom(200 + 100 * (i + 1), 300 + 100 * (i + 1));
+    radius = getRandom(200 + 150 * i, 250 + 150 * i);
+
+    const eccentricity = getRandom(0, 10);
+    const orbitAngle = getRandom(0, Math.PI);
 
     planets.push(
       <LavaPlanet
@@ -58,9 +69,18 @@ export const StarSystem = () => {
         radius={radius}
         period={Math.PI * (1 / 3)}
         relativeSpeed={getRandom(Math.PI / 16, Math.PI / 8)}
-        eccentricity={getRandom(0, 10)}
-        orbitAngle={getRandom(0, Math.PI)}
+        eccentricity={eccentricity}
+        orbitAngle={orbitAngle}
         scale={[scale, scale, 0]}
+      />,
+    );
+
+    orbits.push(
+      <Trajectory
+        key={`lava-planet-orbit-${i}`}
+        radius={radius}
+        eccentricity={eccentricity}
+        rotation={orbitAngle}
       />,
     );
   }
@@ -71,6 +91,9 @@ export const StarSystem = () => {
     const scale = getRandom(40, 50);
     radius = getRandom(radius + 150 * (i + 1), radius + 200 * (i + 1));
 
+    const eccentricity = getRandom(0, 30);
+    const orbitAngle = getRandom(0, Math.PI);
+
     planets.push(
       <DryPlanet
         key={`dry-planet-${i}`}
@@ -78,9 +101,18 @@ export const StarSystem = () => {
         radius={radius}
         period={Math.PI * (2 / 3)}
         relativeSpeed={getRandom(Math.PI / 16, Math.PI / 8)}
-        eccentricity={getRandom(0, 30)}
+        eccentricity={eccentricity}
         orbitAngle={getRandom(0, Math.PI)}
         scale={[scale, scale, 0]}
+      />,
+    );
+
+    orbits.push(
+      <Trajectory
+        key={`dry-planet-orbit-${i}`}
+        radius={radius}
+        eccentricity={eccentricity}
+        rotation={orbitAngle}
       />,
     );
   }
@@ -91,6 +123,9 @@ export const StarSystem = () => {
     const scale = getRandom(40, 60);
     radius = getRandom(radius + 150 * (i + 1), radius + 200 * (i + 1));
 
+    const eccentricity = getRandom(0, 50);
+    const orbitAngle = getRandom(0, Math.PI);
+
     planets.push(
       <WetPlanet
         key={`wet-planet-${i}`}
@@ -98,9 +133,18 @@ export const StarSystem = () => {
         radius={radius}
         period={-Math.PI * (2 / 3)}
         relativeSpeed={getRandom(Math.PI / 16, Math.PI / 8)}
-        eccentricity={getRandom(0, 50)}
-        orbitAngle={getRandom(0, Math.PI)}
+        eccentricity={eccentricity}
+        orbitAngle={orbitAngle}
         scale={[scale, scale, 0]}
+      />,
+    );
+
+    orbits.push(
+      <Trajectory
+        key={`wet-planet-orbit-${i}`}
+        radius={radius}
+        eccentricity={eccentricity}
+        rotation={orbitAngle}
       />,
     );
   }
@@ -111,6 +155,9 @@ export const StarSystem = () => {
     const scale = getRandom(50, 70);
     radius = getRandom(radius + 250 * (i + 1), radius + 300 * (i + 1));
 
+    const eccentricity = getRandom(0, 10);
+    const orbitAngle = getRandom(0, Math.PI);
+
     planets.push(
       <GasPlanet
         key={`gas-planet-${i}`}
@@ -118,9 +165,18 @@ export const StarSystem = () => {
         radius={radius}
         period={Math.PI * (1 / 3)}
         relativeSpeed={getRandom(Math.PI / 16, Math.PI / 8)}
-        eccentricity={getRandom(0, 10)}
-        orbitAngle={getRandom(0, Math.PI)}
+        eccentricity={eccentricity}
+        orbitAngle={orbitAngle}
         scale={[scale, scale, 0]}
+      />,
+    );
+
+    orbits.push(
+      <Trajectory
+        key={`gas-planet-orbit-${i}`}
+        radius={radius}
+        eccentricity={eccentricity}
+        rotation={orbitAngle}
       />,
     );
   }
@@ -129,7 +185,10 @@ export const StarSystem = () => {
 
   for (let i = 0; i < numOfPlanets; i++) {
     const scale = getRandom(80, 100);
-    radius = getRandom(radius + 100 * (i + 1), radius + 150 * (i + 1));
+    radius = getRandom(radius + 270 * (i + 1), radius + 350 * (i + 1));
+
+    const eccentricity = getRandom(0, 10);
+    const orbitAngle = getRandom(0, Math.PI);
 
     planets.push(
       <GasPlanetWithRings
@@ -138,9 +197,18 @@ export const StarSystem = () => {
         radius={radius}
         period={Math.PI * (1 / 3)}
         relativeSpeed={getRandom(Math.PI / 16, Math.PI / 8)}
-        eccentricity={getRandom(0, 10)}
-        orbitAngle={getRandom(0, Math.PI)}
+        eccentricity={eccentricity}
+        orbitAngle={orbitAngle}
         scale={[scale, scale, 0]}
+      />,
+    );
+
+    orbits.push(
+      <Trajectory
+        key={`gas-planet-with-rings-orbit-${i}`}
+        radius={radius}
+        eccentricity={eccentricity}
+        rotation={orbitAngle}
       />,
     );
   }
@@ -151,6 +219,9 @@ export const StarSystem = () => {
     const scale = getRandom(10, 30);
     radius = getRandom(radius + 250 * (i + 1), radius + 300 * (i + 1));
 
+    const eccentricity = getRandom(0, 10);
+    const orbitAngle = getRandom(0, Math.PI);
+
     planets.push(
       <DeadPlanet
         key={`dead-planet-${i}`}
@@ -158,9 +229,18 @@ export const StarSystem = () => {
         radius={radius}
         period={Math.PI * (1 / 3)}
         relativeSpeed={getRandom(Math.PI / 16, Math.PI / 8)}
-        eccentricity={getRandom(0, 200)}
-        orbitAngle={getRandom(0, Math.PI)}
+        eccentricity={eccentricity}
+        orbitAngle={orbitAngle}
         scale={[scale, scale, 0]}
+      />,
+    );
+
+    orbits.push(
+      <Trajectory
+        key={`dead-planet-orbit-${i}`}
+        radius={radius}
+        eccentricity={eccentricity}
+        rotation={orbitAngle}
       />,
     );
   }
@@ -172,7 +252,8 @@ export const StarSystem = () => {
         scale={[starScale, starScale, 0]}
         pixels={pixels}
       />
-      {planets},
+      {showOrbits && <group position={[0, 0, 0]}>{orbits}</group>}
+      <group position={[0, 0, -1]}>{planets}</group>
     </Suspense>
   );
 };

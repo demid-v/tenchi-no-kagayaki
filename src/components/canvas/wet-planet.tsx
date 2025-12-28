@@ -1,6 +1,5 @@
 "use client";
 
-import Color from "color";
 import { useImperativeHandle, useRef } from "react";
 import * as THREE from "three";
 import { Vector4 } from "three";

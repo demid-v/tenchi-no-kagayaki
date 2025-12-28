@@ -1,7 +1,9 @@
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
-const useUpdate = (object: React.RefObject<THREE.Group | null>) => {
+const useUpdate = (
+  object: React.RefObject<THREE.Group | THREE.Mesh | null>,
+) => {
   useFrame(({ clock: { elapsedTime }, gl, scene, camera }) => {
     if (!object.current) return;
 

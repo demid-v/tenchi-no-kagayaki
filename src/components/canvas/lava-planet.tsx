@@ -1,6 +1,5 @@
 "use client";
 
-import { useFrame } from "@react-three/fiber";
 import Color from "color";
 import { useImperativeHandle, useRef } from "react";
 import * as THREE from "three";
