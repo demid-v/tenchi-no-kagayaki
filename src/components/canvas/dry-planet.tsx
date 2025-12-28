@@ -11,22 +11,22 @@ import { generateColors, getRandom } from "~/helpers/utils";
 import { DryPlanetShader } from "~/templates/shader/dry-planet";
 
 const randomizeColors = () => {
+  if (getRandom() < 0.6) return { colors: [], randomize: false };
+
   const seedColors = generateColors(
     5 + Math.floor(getRandom(0.5, 1.5)),
     getRandom(0.3, 0.65),
     1.0,
   );
 
-  const cols = seedColors.slice(0, 5).map((color, index) => {
+  const colors = seedColors.slice(0, 5).map((color, index) => {
     const newCol = color.darken(index / 5.0).lighten((1.0 - index / 5.0) * 0.2);
 
     return new Vector4().fromArray(newCol.hsv().array()).setW(1);
   });
 
-  return cols;
+  return { colors };
 };
-
-const randomColors = randomizeColors();
 
 const DryPlanet = ({
   pixels = 100.0,
@@ -50,9 +50,13 @@ const DryPlanet = ({
   const groupRef = useRef<THREE.Group>(null);
   const planetRef = useRef<THREE.ShaderMaterial>(null);
 
+  const randomColors = randomizeColors();
+
   useImperativeHandle(ref, () => groupRef.current!);
 
-  useRandomColors([{ object: planetRef, colors: randomColors }]);
+  useRandomColors(randomColors.randomize, [
+    { object: planetRef, colors: randomColors.colors },
+  ]);
   useUpdate(groupRef);
   useRotation(
     groupRef,

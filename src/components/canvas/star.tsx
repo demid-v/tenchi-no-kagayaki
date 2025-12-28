@@ -13,6 +13,10 @@ import { StarBlobsShader } from "~/templates/shader/star-blobs";
 import { StarFlaresShader } from "~/templates/shader/star-flares";
 
 const randomizeColors = () => {
+  if (getRandom() < 0.6) {
+    return { blobs: [], star: [], flares: [], randomize: false };
+  }
+
   const seedColors = generateColors(4, getRandom(0.2, 0.4), 2.0);
 
   const cols = seedColors.slice(0, 4).map((color, index) => {
@@ -34,8 +38,6 @@ const randomizeColors = () => {
   return { blobs, star, flares };
 };
 
-const randomColors = randomizeColors();
-
 const Star = ({
   pixels = 100.0,
   ...props
@@ -48,7 +50,9 @@ const Star = ({
   const starRef = useRef<THREE.ShaderMaterial>(null);
   const flaresRef = useRef<THREE.ShaderMaterial>(null);
 
-  useRandomColors([
+  const randomColors = randomizeColors();
+
+  useRandomColors(randomColors.randomize, [
     { object: blobsRef, colors: randomColors.blobs },
     { object: starRef, colors: randomColors.star },
     { object: flaresRef, colors: randomColors.flares },

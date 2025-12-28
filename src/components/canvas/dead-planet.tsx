@@ -1,6 +1,5 @@
 "use client";
 
-import { useFrame } from "@react-three/fiber";
 import { useImperativeHandle, useRef } from "react";
 import * as THREE from "three";
 import { Vector4 } from "three";
@@ -13,6 +12,8 @@ import { CraterShader } from "~/templates/shader/crater";
 import { PlanetShader } from "~/templates/shader/planet";
 
 const randomizeColors = () => {
+  if (getRandom() < 0.6) return { ground: [], crater: [], randomize: false };
+
   const seedColors = generateColors(
     3 + Math.floor(getRandom(0.5, 1.5)),
     getRandom(0.3, 0.6),
@@ -31,8 +32,6 @@ const randomizeColors = () => {
 
   return { ground, crater };
 };
-
-const randomColors = randomizeColors();
 
 const DeadPlanet = ({
   pixels = 100.0,
@@ -57,9 +56,11 @@ const DeadPlanet = ({
   const groundRef = useRef<THREE.ShaderMaterial>(null);
   const craterRef = useRef<THREE.ShaderMaterial>(null);
 
+  const randomColors = randomizeColors();
+
   useImperativeHandle(ref, () => groupRef.current!);
 
-  useRandomColors([
+  useRandomColors(randomColors.randomize, [
     { object: groundRef, colors: randomColors.ground },
     { object: craterRef, colors: randomColors.crater },
   ]);

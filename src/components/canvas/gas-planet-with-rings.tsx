@@ -13,6 +13,8 @@ import GasPlanetLayersShader from "~/templates/shader/gas-planet-layers";
 import RingsShader from "~/templates/shader/rings";
 
 const randomizeColors = () => {
+  if (getRandom() < 0.6) return { colors: [], randomize: false };
+
   const seedColors = generateColors(
     6 + (getRandom() > 0.25 ? 1 : 0),
     getRandom(0.3, 0.55),
@@ -25,10 +27,8 @@ const randomizeColors = () => {
     return new Vector4().fromArray(newCol.hsv().array()).setW(1);
   });
 
-  return colors;
+  return { colors };
 };
-
-const randomColors = randomizeColors();
 
 const GasPlanetWithRings = ({
   pixels = 100.0,
@@ -52,11 +52,13 @@ const GasPlanetWithRings = ({
   const layersRef = useRef<THREE.ShaderMaterial>(null);
   const ringsRef = useRef<THREE.ShaderMaterial>(null);
 
+  const randomColors = randomizeColors();
+
   useImperativeHandle(ref, () => groupRef.current!);
 
-  useRandomColors([
-    { object: layersRef, colors: randomColors },
-    { object: ringsRef, colors: randomColors },
+  useRandomColors(randomColors.randomize, [
+    { object: layersRef, colors: randomColors.colors },
+    { object: ringsRef, colors: randomColors.colors },
   ]);
   useUpdate(groupRef);
   useRotation(

@@ -13,18 +13,22 @@ import { CloudsShader } from "~/templates/shader/clouds";
 import { RiversShader } from "~/templates/shader/wet-planet";
 
 const randomizeColors = () => {
+  if (getRandom() < 0.6) {
+    return { riverColors: [], cloudColors: [], randomize: false };
+  }
+
   const seedColors = generateColors(
     Math.floor(getRandom(0.5, 1.5)) + 3,
     getRandom(0.7, 1.0),
     getRandom(0.45, 0.55),
   );
 
-  const rivers = [];
-  const clouds = [];
+  const riverColors = [];
+  const cloudColors = [];
 
   for (let i = 0; i < 4; i++) {
     const newCol = seedColors[0]!.darken(i / 4.0);
-    rivers.push(
+    riverColors.push(
       new Vector4(
         newCol.hue() + 0.2 * (i / 4.0),
         newCol.saturationv(),
@@ -35,7 +39,7 @@ const randomizeColors = () => {
 
   for (let i = 0; i < 2; i++) {
     const newCol = seedColors[1]!.darken(i / 2.0);
-    rivers.push(
+    riverColors.push(
       new Vector4(
         newCol.hue() + 0.2 * (i / 2.0),
         newCol.saturationv(),
@@ -46,7 +50,7 @@ const randomizeColors = () => {
 
   for (let i = 0; i < 4; i++) {
     const newCol = seedColors[2]!.lighten((1.0 - i / 4.0) * 0.8);
-    clouds.push(
+    cloudColors.push(
       new Vector4(
         newCol.hue() + 0.2 * (i / 4.0),
         newCol.saturationv(),
@@ -55,10 +59,8 @@ const randomizeColors = () => {
     );
   }
 
-  return { riverColors: rivers, cloudColors: clouds };
+  return { riverColors, cloudColors };
 };
-
-const randomColors = randomizeColors();
 
 const WetPlanet = ({
   pixels = 100.0,
@@ -83,9 +85,11 @@ const WetPlanet = ({
   const riversRef = useRef<THREE.ShaderMaterial>(null);
   const cloudsRef = useRef<THREE.ShaderMaterial>(null);
 
+  const randomColors = randomizeColors();
+
   useImperativeHandle(ref, () => groupRef.current!);
 
-  useRandomColors([
+  useRandomColors(randomColors.randomize, [
     { object: riversRef, colors: randomColors.riverColors },
     { object: cloudsRef, colors: randomColors.cloudColors },
   ]);
