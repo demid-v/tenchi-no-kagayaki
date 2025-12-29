@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useMemo } from "react";
 import { Vector2, Vector4 } from "three";
 import * as THREE from "three";
 
@@ -50,27 +51,30 @@ export const Landmass = ({
         new Vector4(0.156863, 0.207843, 0.25098, 1),
       ];
 
-  const shaderOptions = {
-    uniforms: {
-      pixels: { value: pixels },
-      lightIntensity: { value: lightIntensity },
-      rotation: { value: rotation },
-      time_speed: { value: rotationSpeed },
-      dither_size: { value: ditherSize },
-      light_origin: { value: lightPosition },
-      land_cutoff: { value: landCutoff },
-      light_border_1: { value: lightBorder1 },
-      light_border_2: { value: lightBorder2 },
-      colors: { value: colorPalette },
-      size: { value: size },
-      OCTAVES: { value: octaves },
-      seed: { value: seed },
-      time: { value: time },
-    },
-    vertexShader,
-    fragmentShader,
-    transparent: true,
-  };
+  const shaderOptions = useMemo(
+    () => ({
+      uniforms: {
+        pixels: { value: pixels },
+        lightIntensity: { value: lightIntensity },
+        rotation: { value: rotation },
+        time_speed: { value: rotationSpeed },
+        dither_size: { value: ditherSize },
+        light_origin: { value: lightPosition },
+        land_cutoff: { value: landCutoff },
+        light_border_1: { value: lightBorder1 },
+        light_border_2: { value: lightBorder2 },
+        colors: { value: colorPalette },
+        size: { value: size },
+        OCTAVES: { value: octaves },
+        seed: { value: seed },
+        time: { value: time },
+      },
+      vertexShader,
+      fragmentShader,
+      transparent: true,
+    }),
+    [],
+  );
 
   return <shaderMaterial ref={ref} {...shaderOptions} />;
 };

@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useMemo } from "react";
 import { Vector4 } from "three";
 import * as THREE from "three";
 
@@ -41,22 +42,25 @@ export const StarShader = ({
         new Vector4(0.486, 0.098, 0.102),
       ];
 
-  const shaderOptions = {
-    uniforms: {
-      pixels: { value: pixels },
-      time_speed: { value: rotationSpeed },
-      rotation: { value: rotation },
-      colors: { value: colorPalette },
-      size: { value: size },
-      TILES: { value: tiles },
-      shoul_dither: { value: shouldDither },
-      seed: { value: seed },
-      time: { value: time },
-    },
-    vertexShader,
-    fragmentShader,
-    transparent: true,
-  };
+  const shaderOptions = useMemo(
+    () => ({
+      uniforms: {
+        pixels: { value: pixels },
+        time_speed: { value: rotationSpeed },
+        rotation: { value: rotation },
+        colors: { value: colorPalette },
+        size: { value: size },
+        TILES: { value: tiles },
+        shoul_dither: { value: shouldDither },
+        seed: { value: seed },
+        time: { value: time },
+      },
+      vertexShader,
+      fragmentShader,
+      transparent: true,
+    }),
+    [],
+  );
 
   return <shaderMaterial ref={ref} {...shaderOptions} />;
 };

@@ -8,7 +8,7 @@ import useUpdate from "~/helpers/use-update";
 import fragmentShader from "~/templates/shader/glsl/stars.frag";
 import vertexShader from "~/templates/shader/glsl/stars.vert";
 
-export const Stars = () => {
+const Stars = () => {
   const starsRef = useRef<THREE.Mesh>(null);
 
   const shaderOptions = {
@@ -34,3 +34,5 @@ export const Stars = () => {
     </Suspense>
   );
 };
+
+export default Stars;

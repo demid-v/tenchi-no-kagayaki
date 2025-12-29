@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useMemo } from "react";
 import { Vector2, Vector4 } from "three";
 import * as THREE from "three";
 
@@ -49,26 +50,29 @@ export const DryPlanetShader = ({
         new Vector4(0.239216, 0.160784, 0.211765, 1),
       ];
 
-  const shaderOptions = {
-    uniforms: {
-      pixels: { value: pixels },
-      rotation: { value: rotation },
-      colors: { value: colorPalette },
-      light_origin: { value: lightPosition },
-      light_distance1: { value: lightDistance1 },
-      light_distance2: { value: lightDistance2 },
-      time_speed: { value: rotationSpeed },
-      n_colors: { value: numOfColors },
-      size: { value: size },
-      OCTAVES: { value: octaves },
-      seed: { value: seed },
-      time: { value: time },
-      should_dither: { value: shouldDither },
-    },
-    vertexShader,
-    fragmentShader,
-    transparent: true,
-  };
+  const shaderOptions = useMemo(
+    () => ({
+      uniforms: {
+        pixels: { value: pixels },
+        rotation: { value: rotation },
+        colors: { value: colorPalette },
+        light_origin: { value: lightPosition },
+        light_distance1: { value: lightDistance1 },
+        light_distance2: { value: lightDistance2 },
+        time_speed: { value: rotationSpeed },
+        n_colors: { value: numOfColors },
+        size: { value: size },
+        OCTAVES: { value: octaves },
+        seed: { value: seed },
+        time: { value: time },
+        should_dither: { value: shouldDither },
+      },
+      vertexShader,
+      fragmentShader,
+      transparent: true,
+    }),
+    [],
+  );
 
   return <shaderMaterial ref={ref} {...shaderOptions} />;
 };

@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useMemo } from "react";
 import { Vector4 } from "three";
 import * as THREE from "three";
 
@@ -41,27 +42,30 @@ export const StarFlaresShader = ({
 }) => {
   const colorPalette = [new Vector4(1, 0.647, 0), new Vector4(1, 1, 0.894118)];
 
-  const shaderOptions = {
-    uniforms: {
-      pixels: { value: pixels },
-      time_speed: { value: rotationSpeed },
-      rotation: { value: rotation },
-      colors: { value: colorPalette },
-      storm_width: { value: stormWidth },
-      storm_dither_width: { value: stormDitherWidth },
-      circle_amount: { value: circleAmount },
-      circle_scale: { value: circleScale },
-      scale: { value: scale },
-      size: { value: size },
-      OCTAVES: { value: octaves },
-      shoul_dither: { value: shouldDither },
-      seed: { value: seed },
-      time: { value: time },
-    },
-    vertexShader,
-    fragmentShader,
-    transparent: true,
-  };
+  const shaderOptions = useMemo(
+    () => ({
+      uniforms: {
+        pixels: { value: pixels },
+        time_speed: { value: rotationSpeed },
+        rotation: { value: rotation },
+        colors: { value: colorPalette },
+        storm_width: { value: stormWidth },
+        storm_dither_width: { value: stormDitherWidth },
+        circle_amount: { value: circleAmount },
+        circle_scale: { value: circleScale },
+        scale: { value: scale },
+        size: { value: size },
+        OCTAVES: { value: octaves },
+        shoul_dither: { value: shouldDither },
+        seed: { value: seed },
+        time: { value: time },
+      },
+      vertexShader,
+      fragmentShader,
+      transparent: true,
+    }),
+    [],
+  );
 
   return <shaderMaterial ref={ref} {...shaderOptions} />;
 };

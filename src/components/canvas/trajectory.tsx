@@ -1,12 +1,13 @@
 "use client";
 
 import { useMemo } from "react";
+import { Color } from "three";
 
 const Trajectory = ({
   radius,
   eccentricity = 0,
   segments = 256,
-  color = 0xffffff,
+  color = new Color(0.15, 0.15, 0.15),
   rotation = 0,
   center = [0, 0],
   lineWidth = 1,
@@ -14,7 +15,7 @@ const Trajectory = ({
   radius: number;
   eccentricity?: number;
   segments?: number;
-  color?: string | number;
+  color?: string | number | Color;
   rotation?: number;
   center?: [number, number];
   lineWidth?: number;

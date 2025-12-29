@@ -9,7 +9,7 @@ import { Suspense, useRef } from "react";
 
 import { Three } from "~/helpers/components/three";
 
-export const Common = ({ color }: { color?: string }) => (
+const Common = ({ color }: { color?: string }) => (
   <Suspense fallback={null}>
     {color && <color attach="background" args={[color]} />}
     <OrthographicCamera makeDefault far={-1000} near={1000} />
@@ -46,4 +46,4 @@ const View = ({
 
 View.displayName = "View";
 
-export { View };
+export { Common, View };

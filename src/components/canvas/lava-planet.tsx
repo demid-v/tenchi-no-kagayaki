@@ -14,13 +14,14 @@ import LavaShader from "~/templates/shader/lava";
 import { PlanetShader } from "~/templates/shader/planet";
 
 const randomizeColors = () => {
-  if (getRandom() < 0.6)
+  if (getRandom() < 0.6) {
     return {
       landColors: [],
       craterColors: [],
       lavaColors: [],
       randomize: false,
     };
+  }
 
   const seedColors = generateColors(
     3 + Math.floor(getRandom(0.5, 1.5)),

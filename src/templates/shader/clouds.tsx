@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useMemo } from "react";
 import { Vector2, Vector4 } from "three";
 import * as THREE from "three";
 
@@ -50,27 +51,30 @@ export const CloudsShader = ({
         new Vector4(0.25098, 0.286275, 0.45098, 1),
       ];
 
-  const shaderOptions = {
-    uniforms: {
-      pixels: { value: pixels },
-      rotation: { value: rotation },
-      cloud_cover: { value: cloudCover },
-      light_origin: { value: lightPosition },
-      time_speed: { value: rotationSpeed },
-      stretch: { value: stretch },
-      cloud_curve: { value: cloudCurve },
-      light_border_1: { value: lightBorder1 },
-      light_border_2: { value: lightBorder2 },
-      colors: { value: colorPalette },
-      size: { value: size },
-      OCTAVES: { value: octaves },
-      seed: { value: seed },
-      time: { value: time },
-    },
-    vertexShader,
-    fragmentShader,
-    transparent: true,
-  };
+  const shaderOptions = useMemo(
+    () => ({
+      uniforms: {
+        pixels: { value: pixels },
+        rotation: { value: rotation },
+        cloud_cover: { value: cloudCover },
+        light_origin: { value: lightPosition },
+        time_speed: { value: rotationSpeed },
+        stretch: { value: stretch },
+        cloud_curve: { value: cloudCurve },
+        light_border_1: { value: lightBorder1 },
+        light_border_2: { value: lightBorder2 },
+        colors: { value: colorPalette },
+        size: { value: size },
+        OCTAVES: { value: octaves },
+        seed: { value: seed },
+        time: { value: time },
+      },
+      vertexShader,
+      fragmentShader,
+      transparent: true,
+    }),
+    [],
+  );
 
   return <shaderMaterial ref={ref} {...shaderOptions} />;
 };

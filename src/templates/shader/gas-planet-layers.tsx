@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useMemo } from "react";
 import { Vector2, Vector4 } from "three";
 import * as THREE from "three";
 
@@ -60,30 +61,33 @@ const GasPlanetLayersShader = ({
         new Vector4(0.133333, 0.12549, 0.203922, 1),
       ];
 
-  const shaderOptions = {
-    uniforms: {
-      pixels: { value: pixels },
-      rotation: { value: rotation },
-      light_origin: { value: lightPosition },
-      time_speed: { value: rotationSpeed },
-      cloud_cover: { value: cloudCover },
-      stretch: { value: stretch },
-      cloud_curve: { value: cloudCurve },
-      light_border_1: { value: lightBorder1 },
-      light_border_2: { value: lightBorder2 },
-      bands: { value: bands },
-      n_colors: { value: numOfColors },
-      colors: { value: colorPalette },
-      size: { value: size },
-      OCTAVES: { value: octaves },
-      should_dither: { value: shouldDither },
-      seed: { value: seed },
-      time: { value: time },
-    },
-    vertexShader,
-    fragmentShader,
-    transparent: true,
-  };
+  const shaderOptions = useMemo(
+    () => ({
+      uniforms: {
+        pixels: { value: pixels },
+        rotation: { value: rotation },
+        light_origin: { value: lightPosition },
+        time_speed: { value: rotationSpeed },
+        cloud_cover: { value: cloudCover },
+        stretch: { value: stretch },
+        cloud_curve: { value: cloudCurve },
+        light_border_1: { value: lightBorder1 },
+        light_border_2: { value: lightBorder2 },
+        bands: { value: bands },
+        n_colors: { value: numOfColors },
+        colors: { value: colorPalette },
+        size: { value: size },
+        OCTAVES: { value: octaves },
+        should_dither: { value: shouldDither },
+        seed: { value: seed },
+        time: { value: time },
+      },
+      vertexShader,
+      fragmentShader,
+      transparent: true,
+    }),
+    [],
+  );
 
   return <shaderMaterial ref={ref} {...shaderOptions} />;
 };

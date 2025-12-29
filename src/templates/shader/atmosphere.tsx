@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useMemo } from "react";
 import { Vector4 } from "three";
 import * as THREE from "three";
 
@@ -24,17 +25,20 @@ export const AtmosphereShader = ({
         new Vector4(0 / 255, 0 / 255, 128 / 255, 0.45),
       ];
 
-  const materialOptions = {
-    uniforms: {
-      pixels: { value: pixels },
-      color: { value: colorPalette[0] },
-      color2: { value: colorPalette[1] },
-      color3: { value: colorPalette[2] },
-    },
-    vertexShader,
-    fragmentShader,
-    transparent: true,
-  };
+  const materialOptions = useMemo(
+    () => ({
+      uniforms: {
+        pixels: { value: pixels },
+        color: { value: colorPalette[0] },
+        color2: { value: colorPalette[1] },
+        color3: { value: colorPalette[2] },
+      },
+      vertexShader,
+      fragmentShader,
+      transparent: true,
+    }),
+    [],
+  );
 
   return <shaderMaterial ref={ref} {...materialOptions} />;
 };

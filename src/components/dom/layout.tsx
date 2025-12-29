@@ -3,6 +3,8 @@
 import dynamic from "next/dynamic";
 import { useRef } from "react";
 
+import Header from "./header";
+
 const Scene = dynamic(() => import("~/components/canvas/scene"), {
   ssr: false,
 });
@@ -21,6 +23,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         touchAction: "auto",
       }}
     >
+      <Header />
       {children}
       <Scene
         style={{

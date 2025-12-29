@@ -11,8 +11,9 @@ import { generateColors, getRandom } from "~/helpers/utils";
 import GasPlanetShader from "~/templates/shader/gas-planet";
 
 const randomizeColors = () => {
-  if (getRandom() < 0.6)
+  if (getRandom() < 0.6) {
     return { cloudsColors1: [], cloudsColors2: [], randomize: false };
+  }
 
   const seedColors = generateColors(
     8 + Math.floor(getRandom(0.5, 1.5)),

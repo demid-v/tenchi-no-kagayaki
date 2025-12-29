@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useMemo } from "react";
 import { Vector4 } from "three";
 import * as THREE from "three";
 
@@ -34,23 +35,26 @@ export const StarBlobsShader = ({
   time?: number;
   ref?: React.Ref<THREE.ShaderMaterial>;
 }) => {
-  const shaderOptions = {
-    uniforms: {
-      pixels: { value: pixels },
-      time_speed: { value: rotationSpeed },
-      rotation: { value: rotation },
-      colors: { value: [color] },
-      circle_amount: { value: circleAmount },
-      circle_size: { value: circleSize },
-      size: { value: size },
-      OCTAVES: { value: octaves },
-      seed: { value: seed },
-      time: { value: time },
-    },
-    vertexShader,
-    fragmentShader,
-    transparent: true,
-  };
+  const shaderOptions = useMemo(
+    () => ({
+      uniforms: {
+        pixels: { value: pixels },
+        time_speed: { value: rotationSpeed },
+        rotation: { value: rotation },
+        colors: { value: [color] },
+        circle_amount: { value: circleAmount },
+        circle_size: { value: circleSize },
+        size: { value: size },
+        OCTAVES: { value: octaves },
+        seed: { value: seed },
+        time: { value: time },
+      },
+      vertexShader,
+      fragmentShader,
+      transparent: true,
+    }),
+    [],
+  );
 
   return <shaderMaterial ref={ref} {...shaderOptions} />;
 };

@@ -38,6 +38,8 @@ const randomizeColors = () => {
   return { blobs, star, flares };
 };
 
+const randomColors = randomizeColors();
+
 const Star = ({
   pixels = 100.0,
   ...props
@@ -49,8 +51,6 @@ const Star = ({
   const blobsRef = useRef<THREE.ShaderMaterial>(null);
   const starRef = useRef<THREE.ShaderMaterial>(null);
   const flaresRef = useRef<THREE.ShaderMaterial>(null);
-
-  const randomColors = randomizeColors();
 
   useRandomColors(randomColors.randomize, [
     { object: blobsRef, colors: randomColors.blobs },

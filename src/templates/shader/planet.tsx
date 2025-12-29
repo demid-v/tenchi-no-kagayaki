@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useMemo } from "react";
 import { Vector2, Vector4 } from "three";
 import * as THREE from "three";
 
@@ -49,27 +50,30 @@ export const PlanetShader = ({
         new Vector4(53 / 255, 57 / 255, 85 / 255, 1),
       ];
 
-  const shaderOptions = {
-    uniforms: {
-      pixels: { value: pixels },
-      lightIntensity: { value: lightIntensity },
-      rotation: { value: rotation },
-      light_origin: { value: lightPos },
-      colors: { value: colorPalette },
-      time_speed: { value: rotationSpeed },
-      dither_size: { value: ditherSize },
-      light_border_1: { value: lightBorder1 },
-      light_border_2: { value: lightBorder2 },
-      size: { value: size },
-      OCTAVES: { value: octaves },
-      seed: { value: seed },
-      time: { value: time },
-      should_dither: { value: shouldDither },
-    },
-    vertexShader,
-    fragmentShader,
-    transparent: true,
-  };
+  const shaderOptions = useMemo(
+    () => ({
+      uniforms: {
+        pixels: { value: pixels },
+        lightIntensity: { value: lightIntensity },
+        rotation: { value: rotation },
+        light_origin: { value: lightPos },
+        colors: { value: colorPalette },
+        time_speed: { value: rotationSpeed },
+        dither_size: { value: ditherSize },
+        light_border_1: { value: lightBorder1 },
+        light_border_2: { value: lightBorder2 },
+        size: { value: size },
+        OCTAVES: { value: octaves },
+        seed: { value: seed },
+        time: { value: time },
+        should_dither: { value: shouldDither },
+      },
+      vertexShader,
+      fragmentShader,
+      transparent: true,
+    }),
+    [],
+  );
 
   return <shaderMaterial ref={ref} {...shaderOptions} />;
 };

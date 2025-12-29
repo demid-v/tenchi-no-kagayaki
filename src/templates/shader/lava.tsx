@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useMemo } from "react";
 import { Vector2, Vector4 } from "three";
 import * as THREE from "three";
 
@@ -45,25 +46,28 @@ const LavaShader = ({
         new Vector4(0.678431, 0.184314, 0.270588, 1),
       ];
 
-  const shaderOptions = {
-    uniforms: {
-      pixels: { value: pixels },
-      rotation: { value: rotation },
-      light_origin: { value: lightPosition },
-      time_speed: { value: rotationSpeed },
-      light_border_1: { value: lightBorder1 },
-      light_border_2: { value: lightBorder2 },
-      river_cutoff: { value: riverCutoff },
-      colors: { value: colorPalette },
-      size: { value: size },
-      OCTAVES: { value: octaves },
-      seed: { value: seed },
-      time: { value: time },
-    },
-    vertexShader,
-    fragmentShader,
-    transparent: true,
-  };
+  const shaderOptions = useMemo(
+    () => ({
+      uniforms: {
+        pixels: { value: pixels },
+        rotation: { value: rotation },
+        light_origin: { value: lightPosition },
+        time_speed: { value: rotationSpeed },
+        light_border_1: { value: lightBorder1 },
+        light_border_2: { value: lightBorder2 },
+        river_cutoff: { value: riverCutoff },
+        colors: { value: colorPalette },
+        size: { value: size },
+        OCTAVES: { value: octaves },
+        seed: { value: seed },
+        time: { value: time },
+      },
+      vertexShader,
+      fragmentShader,
+      transparent: true,
+    }),
+    [],
+  );
 
   return <shaderMaterial ref={ref} {...shaderOptions} />;
 };

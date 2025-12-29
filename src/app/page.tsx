@@ -3,15 +3,13 @@
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
 
-const Stars = dynamic(
-  () => import("~/components/canvas/stars").then((mod) => mod.Stars),
-  { ssr: false },
-);
+const Stars = dynamic(() => import("~/components/canvas/stars"), {
+  ssr: false,
+});
 
-const StarSystem = dynamic(
-  () => import("~/components/canvas/star-system").then((mod) => mod.StarSystem),
-  { ssr: false },
-);
+const StarSystem = dynamic(() => import("~/components/canvas/star-system"), {
+  ssr: false,
+});
 
 const View = dynamic(
   () => import("~/components/canvas/view").then((mod) => mod.View),

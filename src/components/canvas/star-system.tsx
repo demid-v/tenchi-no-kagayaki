@@ -1,8 +1,10 @@
 "use client";
 
+import { useAtom } from "jotai";
 import dynamic from "next/dynamic";
-import { Suspense, useState } from "react";
+import { Suspense } from "react";
 
+import { showOrbitsAtom } from "~/helpers/store";
 import { getRandom } from "~/helpers/utils";
 
 const GasPlanetWithRings = dynamic(
@@ -38,13 +40,7 @@ const Trajectory = dynamic(() => import("~/components/canvas/trajectory"), {
   ssr: false,
 });
 
-export const StarSystem = () => {
-  const pixels = 100;
-
-  const [showOrbits, setShowOrbits] = useState(true);
-
-  const starScale = getRandom(80, 150);
-
+const getPlanets = (pixels = 100) => {
   const planets = [];
   const orbits = [];
 
@@ -59,7 +55,7 @@ export const StarSystem = () => {
     const scale = getRandom(30, 40);
     radius = getRandom(200 + 150 * i, 250 + 150 * i);
 
-    const eccentricity = getRandom(0, 10);
+    const eccentricity = getRandom(10, 40);
     const orbitAngle = getRandom(0, Math.PI);
 
     planets.push(
@@ -91,7 +87,7 @@ export const StarSystem = () => {
     const scale = getRandom(40, 50);
     radius = getRandom(radius + 150 * (i + 1), radius + 200 * (i + 1));
 
-    const eccentricity = getRandom(0, 30);
+    const eccentricity = getRandom(radius / 10, radius / 3);
     const orbitAngle = getRandom(0, Math.PI);
 
     planets.push(
@@ -102,7 +98,7 @@ export const StarSystem = () => {
         period={Math.PI * (2 / 3)}
         relativeSpeed={getRandom(Math.PI / 16, Math.PI / 8)}
         eccentricity={eccentricity}
-        orbitAngle={getRandom(0, Math.PI)}
+        orbitAngle={orbitAngle}
         scale={[scale, scale, 0]}
       />,
     );
@@ -123,7 +119,7 @@ export const StarSystem = () => {
     const scale = getRandom(40, 60);
     radius = getRandom(radius + 150 * (i + 1), radius + 200 * (i + 1));
 
-    const eccentricity = getRandom(0, 50);
+    const eccentricity = getRandom(radius / 10, radius / 2);
     const orbitAngle = getRandom(0, Math.PI);
 
     planets.push(
@@ -155,7 +151,7 @@ export const StarSystem = () => {
     const scale = getRandom(50, 70);
     radius = getRandom(radius + 250 * (i + 1), radius + 300 * (i + 1));
 
-    const eccentricity = getRandom(0, 10);
+    const eccentricity = getRandom(radius / 7, radius / 2);
     const orbitAngle = getRandom(0, Math.PI);
 
     planets.push(
@@ -187,7 +183,7 @@ export const StarSystem = () => {
     const scale = getRandom(80, 100);
     radius = getRandom(radius + 270 * (i + 1), radius + 350 * (i + 1));
 
-    const eccentricity = getRandom(0, 10);
+    const eccentricity = getRandom(radius / 7, radius / 2);
     const orbitAngle = getRandom(0, Math.PI);
 
     planets.push(
@@ -219,7 +215,7 @@ export const StarSystem = () => {
     const scale = getRandom(10, 30);
     radius = getRandom(radius + 250 * (i + 1), radius + 300 * (i + 1));
 
-    const eccentricity = getRandom(0, 10);
+    const eccentricity = getRandom(radius / 5, radius / 1.2);
     const orbitAngle = getRandom(0, Math.PI);
 
     planets.push(
@@ -245,6 +241,17 @@ export const StarSystem = () => {
     );
   }
 
+  return { planets, orbits };
+};
+
+const starScale = getRandom(80, 150);
+const { planets, orbits } = getPlanets();
+
+const StarSystem = () => {
+  const pixels = 100;
+
+  const [showOrbits] = useAtom(showOrbitsAtom);
+
   return (
     <Suspense fallback={null}>
       <Star
@@ -257,3 +264,5 @@ export const StarSystem = () => {
     </Suspense>
   );
 };
+
+export default StarSystem;

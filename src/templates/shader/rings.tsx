@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useMemo } from "react";
 import { Vector2, Vector4 } from "three";
 import * as THREE from "three";
 
@@ -52,26 +53,29 @@ const RingsShader = ({
         new Vector4(0.133333, 0.12549, 0.203922, 1),
       ];
 
-  const shaderOptions = {
-    uniforms: {
-      pixels: { value: pixels },
-      rotation: { value: rotation },
-      light_origin: { value: lightPosition },
-      time_speed: { value: rotationSpeed },
-      ring_width: { value: ringWidth },
-      ring_perspective: { value: ringPerspective },
-      scale_rel_to_planet: { value: scaleRelToPlanet },
-      n_colors: { value: numOfColors },
-      colors: { value: colorPalette },
-      size: { value: size },
-      OCTAVES: { value: octaves },
-      seed: { value: seed },
-      time: { value: time },
-    },
-    vertexShader,
-    fragmentShader,
-    transparent: true,
-  };
+  const shaderOptions = useMemo(
+    () => ({
+      uniforms: {
+        pixels: { value: pixels },
+        rotation: { value: rotation },
+        light_origin: { value: lightPosition },
+        time_speed: { value: rotationSpeed },
+        ring_width: { value: ringWidth },
+        ring_perspective: { value: ringPerspective },
+        scale_rel_to_planet: { value: scaleRelToPlanet },
+        n_colors: { value: numOfColors },
+        colors: { value: colorPalette },
+        size: { value: size },
+        OCTAVES: { value: octaves },
+        seed: { value: seed },
+        time: { value: time },
+      },
+      vertexShader,
+      fragmentShader,
+      transparent: true,
+    }),
+    [],
+  );
 
   return <shaderMaterial ref={ref} {...shaderOptions} />;
 };
