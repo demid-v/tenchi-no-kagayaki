@@ -20,12 +20,14 @@ const generateColors = (numOfColors = 4, hueDiff = 0.9, saturation = 0.5) => {
   ).multiplyScalar(getRandom(1.0, 3.0));
 
   const cols = [];
+  const n = Math.max(1, numOfColors - 1);
+
   for (let i = 0; i < numOfColors; i++) {
     cols.push(
       Color.hsv(
-        a.x + b.x * Math.cos(6.28318 * (c.x * (i / numOfColors) + d.x)),
-        a.y + b.y * Math.cos(6.28318 * (c.y * (i / numOfColors) + d.y)),
-        a.z + b.z * Math.cos(6.28318 * (c.z * (i / numOfColors) + d.z)),
+        a.x + b.x * Math.cos(6.28318 * (c.x * (i / n) + d.x)),
+        a.y + b.y * Math.cos(6.28318 * (c.y * (i / n) + d.y)),
+        a.z + b.z * Math.cos(6.28318 * (c.z * (i / n) + d.z)),
       ),
     );
   }

@@ -11,7 +11,7 @@ import { generateColors, getRandom } from "~/helpers/utils";
 import { DryPlanetShader } from "~/templates/shader/dry-planet";
 
 const randomizeColors = () => {
-  if (getRandom() < 0.6) return { colors: [], randomize: false };
+  // if (getRandom() < 0.6) return { colors: [], randomize: false };
 
   const seedColors = generateColors(
     5 + Math.floor(getRandom(0.5, 1.5)),
@@ -54,9 +54,7 @@ const DryPlanet = ({
 
   useImperativeHandle(ref, () => groupRef.current!);
 
-  useRandomColors(randomColors.randomize, [
-    { object: planetRef, colors: randomColors.colors },
-  ]);
+  useRandomColors([{ object: planetRef, colors: randomColors.colors }]);
   useUpdate(groupRef);
   useRotation(
     groupRef,

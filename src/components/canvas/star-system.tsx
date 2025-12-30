@@ -44,7 +44,7 @@ const getPlanets = (pixels = 100) => {
   const planets = [];
   const orbits = [];
 
-  let radius = 0;
+  let radius = 200;
 
   let numOfPlanets =
     (getRandom() > 0.1 ? 1 : 0) +
@@ -53,7 +53,7 @@ const getPlanets = (pixels = 100) => {
 
   for (let i = 0; i < numOfPlanets; i++) {
     const scale = getRandom(30, 40);
-    radius = getRandom(200 + 150 * i, 250 + 150 * i);
+    radius = getRandom(radius + 50 * i, radius + 150 * i);
 
     const eccentricity = getRandom(10, 40);
     const orbitAngle = getRandom(0, Math.PI);
@@ -117,6 +117,8 @@ const getPlanets = (pixels = 100) => {
 
   for (let i = 0; i < numOfPlanets; i++) {
     const scale = getRandom(40, 60);
+
+    radius = Math.max(400, radius);
     radius = getRandom(radius + 150 * (i + 1), radius + 200 * (i + 1));
 
     const eccentricity = getRandom(radius / 10, radius / 2);

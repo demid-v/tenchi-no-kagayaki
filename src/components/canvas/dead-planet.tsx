@@ -12,7 +12,7 @@ import { CraterShader } from "~/templates/shader/crater";
 import { PlanetShader } from "~/templates/shader/planet";
 
 const randomizeColors = () => {
-  if (getRandom() < 0.6) return { ground: [], crater: [], randomize: false };
+  // if (getRandom() < 0.6) return { ground: [], crater: [], randomize: false };
 
   const seedColors = generateColors(
     3 + Math.floor(getRandom(0.5, 1.5)),
@@ -60,7 +60,7 @@ const DeadPlanet = ({
 
   useImperativeHandle(ref, () => groupRef.current!);
 
-  useRandomColors(randomColors.randomize, [
+  useRandomColors([
     { object: groundRef, colors: randomColors.ground },
     { object: craterRef, colors: randomColors.crater },
   ]);
