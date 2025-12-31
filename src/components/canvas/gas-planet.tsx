@@ -10,10 +10,97 @@ import useUpdate from "~/helpers/use-update";
 import { generateColors, getRandom } from "~/helpers/utils";
 import GasPlanetShader from "~/templates/shader/gas-planet";
 
+const standardColors = [
+  {
+    cloudsColors1: [
+      new Vector4(0.23, 0.13, 0.15),
+      new Vector4(0.23, 0.13, 0.15),
+      new Vector4(0, 0, 0),
+      new Vector4(0.13, 0.09, 0.11),
+    ],
+    cloudsColors2: [
+      new Vector4(0.94, 0.71, 0.25),
+      new Vector4(0.81, 0.46, 0.17),
+      new Vector4(0.67, 0.32, 0.19),
+      new Vector4(0.49, 0.22, 0.2),
+    ],
+  },
+  {
+    cloudsColors1: [
+      new Vector4(0.14, 0.01, 0.14),
+      new Vector4(0.15, 0.06, 0.19),
+      new Vector4(0.15, 0.11, 0.19),
+      new Vector4(0.13, 0.12, 0.15),
+    ],
+    cloudsColors2: [
+      new Vector4(0.98, 0.99, 0.92),
+      new Vector4(0.84, 0.83, 0.65),
+      new Vector4(0.62, 0.55, 0.36),
+      new Vector4(0.33, 0.24, 0.14),
+    ],
+  },
+  {
+    cloudsColors1: [
+      new Vector4(0.08, 0.22, 0.3),
+      new Vector4(0.11, 0.2, 0.25),
+      new Vector4(0.13, 0.18, 0.19),
+      new Vector4(0.12, 0.14, 0.13),
+    ],
+    cloudsColors2: [
+      new Vector4(0.96, 0.99, 0.87),
+      new Vector4(0.84, 0.84, 0.65),
+      new Vector4(0.62, 0.62, 0.4),
+      new Vector4(0.33, 0.33, 0.18),
+    ],
+  },
+  {
+    cloudsColors1: [
+      new Vector4(0.04, 0.07, 0.24),
+      new Vector4(0, 0, 0.22),
+      new Vector4(0.01, 0.01, 0.19),
+      new Vector4(0.03, 0.05, 0.15),
+    ],
+    cloudsColors2: [
+      new Vector4(0.7, 0.83, 0.99),
+      new Vector4(0.69, 0.82, 0.8),
+      new Vector4(0.58, 0.62, 0.55),
+      new Vector4(0.34, 0.3, 0.27),
+    ],
+  },
+  {
+    cloudsColors1: [
+      new Vector4(0.02, 0.09, 0.22),
+      new Vector4(0, 0.05, 0.14),
+      new Vector4(0.03, 0.02, 0.07),
+      new Vector4(0.07, 0, 0.03),
+    ],
+    cloudsColors2: [
+      new Vector4(0.88, 0.5, 0.53),
+      new Vector4(0.83, 0.38, 0.38),
+      new Vector4(0.61, 0.27, 0.26),
+      new Vector4(0.29, 0.16, 0.15),
+    ],
+  },
+  {
+    cloudsColors1: [
+      new Vector4(0.3, 0.05, 0.18),
+      new Vector4(0.24, 0.02, 0.18),
+      new Vector4(0.18, 0.01, 0.17),
+      new Vector4(0.12, 0, 0.14),
+    ],
+    cloudsColors2: [
+      new Vector4(0.86, 0.5, 0.99),
+      new Vector4(0.65, 0.38, 0.84),
+      new Vector4(0.43, 0.27, 0.62),
+      new Vector4(0.2, 0.15, 0.33),
+    ],
+  },
+];
+
 const randomizeColors = () => {
-  // if (getRandom() < 0.6) {
-  //   return { cloudsColors1: [], cloudsColors2: [], randomize: false };
-  // }
+  if (getRandom() > 0.3) {
+    return standardColors[Math.floor(getRandom(0, standardColors.length))]!;
+  }
 
   const seedColors = generateColors(
     8 + Math.floor(getRandom(0.5, 1.5)),
@@ -93,12 +180,6 @@ const GasPlanet = ({
           rotationSpeed={0.1}
           lightBorder1={0.439}
           lightBorder2={0.746}
-          colors={[
-            new Vector4(0.941176, 0.709804, 0.254902, 1),
-            new Vector4(0.811765, 0.458824, 0.168627, 1),
-            new Vector4(0.670588, 0.317647, 0.188235, 1),
-            new Vector4(0.490196, 0.219608, 0.2, 1),
-          ]}
           ref={planetRef2}
         />
       </mesh>
