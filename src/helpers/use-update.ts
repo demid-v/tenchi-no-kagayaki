@@ -4,7 +4,7 @@ import * as THREE from "three";
 const useUpdate = (
   object: React.RefObject<THREE.Group | THREE.Mesh | null>,
 ) => {
-  useFrame(({ clock: { elapsedTime }, gl, scene, camera }) => {
+  useFrame(({ clock: { elapsedTime } }) => {
     if (!object.current) return;
 
     object.current.children.forEach((planet) => {
@@ -13,8 +13,6 @@ const useUpdate = (
 
       planet.material.uniforms.time.value = elapsedTime;
     });
-
-    gl.render(scene, camera);
   });
 };
 

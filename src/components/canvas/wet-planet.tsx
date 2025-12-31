@@ -1,12 +1,15 @@
 "use client";
 
-import { useImperativeHandle, useRef } from "react";
+import { useAtom } from "jotai";
+import { useImperativeHandle, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { Vector4 } from "three";
 
+import { shuffleAtom } from "~/helpers/store";
 import useRandomColors from "~/helpers/use-random-colors";
 import useRotation from "~/helpers/use-rotation";
 import useUpdate from "~/helpers/use-update";
+import useUpdatePixels from "~/helpers/use-update-pixels";
 import { generateColors, getRandom } from "~/helpers/utils";
 import { CloudsShader } from "~/templates/shader/clouds";
 import { RiversShader } from "~/templates/shader/wet-planet";
@@ -193,7 +196,7 @@ const randomizeColors = () => {
 };
 
 const WetPlanet = ({
-  pixels = 100.0,
+  pixels = 100,
   radius,
   period,
   relativeSpeed,
@@ -215,7 +218,9 @@ const WetPlanet = ({
   const riversRef = useRef<THREE.ShaderMaterial>(null);
   const cloudsRef = useRef<THREE.ShaderMaterial>(null);
 
-  const randomColors = randomizeColors();
+  const [shuffle] = useAtom(shuffleAtom);
+
+  const randomColors = useMemo(randomizeColors, [shuffle]);
 
   useImperativeHandle(ref, () => groupRef.current!);
 
@@ -234,6 +239,8 @@ const WetPlanet = ({
     eccentricity,
     orbitAngle,
   );
+
+  useUpdatePixels(groupRef);
 
   return (
     <group ref={groupRef} {...props} position={position}>

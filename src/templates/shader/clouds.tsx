@@ -10,7 +10,7 @@ import fragmentShader from "~/templates/shader/glsl/clouds.frag";
 import vertexShader from "~/templates/shader/glsl/planet.vert";
 
 export const CloudsShader = ({
-  pixels = 100.0,
+  pixels = 100,
   lightPosition = new Vector2(0.41, 0.67),
   rotation = 0.0,
   rotationSpeed = 0.1,

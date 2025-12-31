@@ -10,7 +10,7 @@ import fragmentShader from "~/templates/shader/glsl/gas-planet-layers.frag";
 import vertexShader from "~/templates/shader/glsl/planet.vert";
 
 const GasPlanetLayersShader = ({
-  pixels = 100.0,
+  pixels = 100,
   lightPosition = new Vector2(-0.1, 0.3),
   rotation = 0.0,
   rotationSpeed = 0.05,

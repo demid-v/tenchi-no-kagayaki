@@ -2,9 +2,9 @@
 
 import { useAtom } from "jotai";
 import dynamic from "next/dynamic";
-import { Suspense } from "react";
+import { Suspense, useMemo } from "react";
 
-import { showOrbitsAtom } from "~/helpers/store";
+import { showOrbitsAtom, shuffleAtom } from "~/helpers/store";
 import { getRandom } from "~/helpers/utils";
 
 const GasPlanetWithRings = dynamic(
@@ -36,15 +36,19 @@ const WetPlanet = dynamic(() => import("~/components/canvas/wet-planet"), {
   ssr: false,
 });
 
-const Trajectory = dynamic(() => import("~/components/canvas/trajectory"), {
+const Orbit = dynamic(() => import("~/components/canvas/orbit"), {
   ssr: false,
 });
 
 const getPlanets = (pixels = 100) => {
+  const starScale = getRandom(80, 150);
+
+  const star = <Star position={[0, 0, 0]} scale={[starScale, starScale, 0]} />;
+
   const planets = [];
   const orbits = [];
 
-  let radius = 200;
+  let radius = starScale + 200;
 
   let numOfPlanets = Math.floor(getRandom(1, 4));
 
@@ -58,7 +62,6 @@ const getPlanets = (pixels = 100) => {
     planets.push(
       <LavaPlanet
         key={`lava-planet-${i}`}
-        pixels={pixels}
         radius={radius}
         period={Math.PI * (1 / 3)}
         relativeSpeed={getRandom(Math.PI / 16, Math.PI / 8)}
@@ -69,7 +72,7 @@ const getPlanets = (pixels = 100) => {
     );
 
     orbits.push(
-      <Trajectory
+      <Orbit
         key={`lava-planet-orbit-${i}`}
         radius={radius}
         eccentricity={eccentricity}
@@ -90,7 +93,6 @@ const getPlanets = (pixels = 100) => {
     planets.push(
       <DryPlanet
         key={`dry-planet-${i}`}
-        pixels={pixels}
         radius={radius}
         period={Math.PI * (2 / 3)}
         relativeSpeed={getRandom(Math.PI / 16, Math.PI / 8)}
@@ -101,7 +103,7 @@ const getPlanets = (pixels = 100) => {
     );
 
     orbits.push(
-      <Trajectory
+      <Orbit
         key={`dry-planet-orbit-${i}`}
         radius={radius}
         eccentricity={eccentricity}
@@ -124,7 +126,6 @@ const getPlanets = (pixels = 100) => {
     planets.push(
       <WetPlanet
         key={`wet-planet-${i}`}
-        pixels={pixels}
         radius={radius}
         period={-Math.PI * (2 / 3)}
         relativeSpeed={getRandom(Math.PI / 16, Math.PI / 8)}
@@ -135,7 +136,7 @@ const getPlanets = (pixels = 100) => {
     );
 
     orbits.push(
-      <Trajectory
+      <Orbit
         key={`wet-planet-orbit-${i}`}
         radius={radius}
         eccentricity={eccentricity}
@@ -158,7 +159,6 @@ const getPlanets = (pixels = 100) => {
     planets.push(
       <GasPlanet
         key={`gas-planet-${i}`}
-        pixels={pixels}
         radius={radius}
         period={Math.PI * (1 / 3)}
         relativeSpeed={getRandom(Math.PI / 16, Math.PI / 8)}
@@ -169,7 +169,7 @@ const getPlanets = (pixels = 100) => {
     );
 
     orbits.push(
-      <Trajectory
+      <Orbit
         key={`gas-planet-orbit-${i}`}
         radius={radius}
         eccentricity={eccentricity}
@@ -192,7 +192,6 @@ const getPlanets = (pixels = 100) => {
     planets.push(
       <GasPlanetWithRings
         key={`gas-planet-with-rings-${i}`}
-        pixels={pixels}
         radius={radius}
         period={Math.PI * (1 / 3)}
         relativeSpeed={getRandom(Math.PI / 16, Math.PI / 8)}
@@ -203,7 +202,7 @@ const getPlanets = (pixels = 100) => {
     );
 
     orbits.push(
-      <Trajectory
+      <Orbit
         key={`gas-planet-with-rings-orbit-${i}`}
         radius={radius}
         eccentricity={eccentricity}
@@ -224,7 +223,6 @@ const getPlanets = (pixels = 100) => {
     planets.push(
       <DeadPlanet
         key={`dead-planet-${i}`}
-        pixels={pixels}
         radius={radius}
         period={Math.PI * (1 / 3)}
         relativeSpeed={getRandom(Math.PI / 16, Math.PI / 8)}
@@ -235,7 +233,7 @@ const getPlanets = (pixels = 100) => {
     );
 
     orbits.push(
-      <Trajectory
+      <Orbit
         key={`dead-planet-orbit-${i}`}
         radius={radius}
         eccentricity={eccentricity}
@@ -244,25 +242,22 @@ const getPlanets = (pixels = 100) => {
     );
   }
 
-  return { planets, orbits };
+  return { star, planets, orbits };
 };
 
-const starScale = getRandom(80, 150);
-const { planets, orbits } = getPlanets();
-
 const StarSystem = () => {
-  const pixels = 100;
+  const [shuffle] = useAtom(shuffleAtom);
+
+  const { star, planets, orbits } = useMemo(getPlanets, [shuffle]);
 
   const [showOrbits] = useAtom(showOrbitsAtom);
 
   return (
     <Suspense fallback={null}>
-      <Star
-        position={[0, 0, 0]}
-        scale={[starScale, starScale, 0]}
-        pixels={pixels}
-      />
-      {showOrbits && <group position={[0, 0, 0]}>{orbits}</group>}
+      {star}
+      <group position={[0, 0, 0]} visible={showOrbits}>
+        {orbits}
+      </group>
       <group position={[0, 0, -1]}>{planets}</group>
     </Suspense>
   );

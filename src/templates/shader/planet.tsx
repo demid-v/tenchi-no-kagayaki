@@ -10,7 +10,7 @@ import fragmentShader from "~/templates/shader/glsl/planet.frag";
 import vertexShader from "~/templates/shader/glsl/planet.vert";
 
 export const PlanetShader = ({
-  pixels = 100.0,
+  pixels = 100,
   lightIntensity = 0.1,
   lightPos = new Vector2(0.39, 0.7),
   rotation = 0.0,

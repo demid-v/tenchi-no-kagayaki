@@ -10,7 +10,7 @@ import fragmentShader from "~/templates/shader/glsl/dry-terrain.frag";
 import vertexShader from "~/templates/shader/glsl/planet.vert";
 
 export const DryPlanetShader = ({
-  pixels = 100.0,
+  pixels = 100,
   lightPosition = new Vector2(0.39, 0.7),
   rotation = 0.0,
   rotationSpeed = 0.1,

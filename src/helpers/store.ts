@@ -1,5 +1,7 @@
 import { atom } from "jotai";
 
-const showOrbitsAtom = atom<boolean>(false);
+const pixelsAtom = atom(100);
+const showOrbitsAtom = atom(false);
+const shuffleAtom = atom(false);
 
-export { showOrbitsAtom };
+export { pixelsAtom, showOrbitsAtom, shuffleAtom };

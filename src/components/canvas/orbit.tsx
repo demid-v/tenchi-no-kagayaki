@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 import { Color } from "three";
 
-const Trajectory = ({
+const Orbit = ({
   radius,
   eccentricity = 0,
   segments = 256,
@@ -61,4 +61,4 @@ const Trajectory = ({
   );
 };
 
-export default Trajectory;
+export default Orbit;

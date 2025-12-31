@@ -10,7 +10,7 @@ import fragmentShader from "~/templates/shader/glsl/star-flares.frag";
 import vertexShader from "~/templates/shader/glsl/star.vert";
 
 export const StarFlaresShader = ({
-  pixels = 100.0,
+  pixels = 100,
   rotationSpeed = 0.1,
   rotation = 0.0,
   stormWidth = 0.2,

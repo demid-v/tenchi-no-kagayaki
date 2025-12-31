@@ -10,7 +10,7 @@ import vertexShader from "~/templates/shader/glsl/planet.vert";
 import fragmentShader from "~/templates/shader/glsl/rivers.frag";
 
 export const RiversShader = ({
-  pixels = 100.0,
+  pixels = 100,
   lightPosition = new Vector2(0.41, 0.67),
   rotation = -0.2,
   rotationSpeed = 0.1,

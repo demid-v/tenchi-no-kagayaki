@@ -1,12 +1,15 @@
 "use client";
 
-import { useRef } from "react";
+import { useAtom } from "jotai";
+import { useMemo, useRef } from "react";
 import * as React from "react";
 import * as THREE from "three";
 import { Vector4 } from "three";
 
+import { shuffleAtom } from "~/helpers/store";
 import useRandomColors from "~/helpers/use-random-colors";
 import useUpdate from "~/helpers/use-update";
+import useUpdatePixels from "~/helpers/use-update-pixels";
 import { generateColors, getRandom } from "~/helpers/utils";
 import { StarShader } from "~/templates/shader/star";
 import { StarBlobsShader } from "~/templates/shader/star-blobs";
@@ -105,10 +108,8 @@ const randomizeColors = () => {
   return { blobs, star, flares };
 };
 
-const randomColors = randomizeColors();
-
 const Star = ({
-  pixels = 100.0,
+  pixels = 100,
   ...props
 }: {
   pixels?: number;
@@ -119,6 +120,10 @@ const Star = ({
   const starRef = useRef<THREE.ShaderMaterial>(null);
   const flaresRef = useRef<THREE.ShaderMaterial>(null);
 
+  const [shuffle] = useAtom(shuffleAtom);
+
+  const randomColors = useMemo(randomizeColors, [shuffle]);
+
   useRandomColors([
     { object: blobsRef, colors: randomColors.blobs },
     { object: starRef, colors: randomColors.star },
@@ -126,6 +131,7 @@ const Star = ({
   ]);
 
   useUpdate(groupRef);
+  useUpdatePixels(groupRef);
 
   return (
     <group ref={groupRef} {...props}>

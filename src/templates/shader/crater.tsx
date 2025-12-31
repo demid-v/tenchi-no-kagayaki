@@ -10,7 +10,7 @@ import fragmentShader from "~/templates/shader/glsl/crater.frag";
 import vertexShader from "~/templates/shader/glsl/crater.vert";
 
 export const CraterShader = ({
-  pixels = 100.0,
+  pixels = 100,
   lightPosition = new Vector2(0.39, 0.7),
   rotationSpeed = 0.1,
   rotation = 0.0,
