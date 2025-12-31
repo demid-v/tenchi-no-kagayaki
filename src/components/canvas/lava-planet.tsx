@@ -94,7 +94,7 @@ const standardColors = [
 ];
 
 const randomizeColors = () => {
-  if (getRandom() > 0.3) {
+  if (getRandom() > 0.5) {
     return standardColors[Math.floor(getRandom(0, standardColors.length))]!;
   }
 
@@ -166,7 +166,8 @@ const LavaPlanet = ({
   ]);
 
   useUpdate(groupRef);
-  useRotation(
+
+  const position = useRotation(
     groupRef,
     radius,
     period,
@@ -176,7 +177,7 @@ const LavaPlanet = ({
   );
 
   return (
-    <group ref={groupRef} {...props}>
+    <group ref={groupRef} {...props} position={position}>
       <mesh>
         <planeGeometry args={[1, 1]} />
         <PlanetShader pixels={pixels} ref={landRef} />

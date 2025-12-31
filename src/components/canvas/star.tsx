@@ -82,7 +82,7 @@ const standardColors = [
 ];
 
 const randomizeColors = () => {
-  if (getRandom() > 0.3) {
+  if (getRandom() > 0.5) {
     return standardColors[Math.floor(getRandom(0, standardColors.length))]!;
   }
 

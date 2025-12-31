@@ -59,7 +59,7 @@ const standardColors = [
 ];
 
 const randomizeColors = () => {
-  if (getRandom() > 0.3) {
+  if (getRandom() > 0.5) {
     return standardColors[Math.floor(getRandom(0, standardColors.length))]!;
   }
 
@@ -105,8 +105,10 @@ const DryPlanet = ({
   useImperativeHandle(ref, () => groupRef.current!);
 
   useRandomColors([{ object: planetRef, colors: randomColors.colors }]);
+
   useUpdate(groupRef);
-  useRotation(
+
+  const position = useRotation(
     groupRef,
     radius,
     period,
@@ -116,7 +118,7 @@ const DryPlanet = ({
   );
 
   return (
-    <group ref={groupRef} {...props}>
+    <group ref={groupRef} {...props} position={position}>
       <mesh>
         <planeGeometry args={[1, 1]} />
         <DryPlanetShader pixels={pixels} ref={planetRef} />

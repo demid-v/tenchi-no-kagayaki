@@ -75,7 +75,7 @@ const standardColors = [
 ];
 
 const randomizeColors = () => {
-  if (getRandom() > 0.3) {
+  if (getRandom() > 0.5) {
     return standardColors[Math.floor(getRandom(0, standardColors.length))]!;
   }
 
@@ -124,8 +124,10 @@ const GasPlanetWithRings = ({
     { object: layersRef, colors: randomColors.colors },
     { object: ringsRef, colors: randomColors.colors },
   ]);
+
   useUpdate(groupRef);
-  useRotation(
+
+  const position = useRotation(
     groupRef,
     radius,
     period,
@@ -135,14 +137,14 @@ const GasPlanetWithRings = ({
   );
 
   return (
-    <group ref={groupRef} {...props}>
+    <group ref={groupRef} {...props} position={position}>
       <mesh>
         <planeGeometry args={[1, 1]} />
         <GasPlanetLayersShader pixels={pixels} ref={layersRef} />
       </mesh>
       <mesh scale={[3, 3, 1]}>
         <planeGeometry args={[1, 1]} />
-        <RingsShader ref={ringsRef} />
+        <RingsShader pixels={pixels} ref={ringsRef} />
       </mesh>
     </group>
   );

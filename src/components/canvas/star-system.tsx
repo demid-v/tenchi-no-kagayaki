@@ -46,10 +46,7 @@ const getPlanets = (pixels = 100) => {
 
   let radius = 200;
 
-  let numOfPlanets =
-    (getRandom() > 0.1 ? 1 : 0) +
-    (getRandom() > 0.5 ? 1 : 0) +
-    (getRandom() > 0.8 ? 1 : 0);
+  let numOfPlanets = Math.floor(getRandom(1, 4));
 
   for (let i = 0; i < numOfPlanets; i++) {
     const scale = getRandom(30, 40);
@@ -81,7 +78,7 @@ const getPlanets = (pixels = 100) => {
     );
   }
 
-  numOfPlanets = getRandom() > 0.6 ? 1 : 0;
+  numOfPlanets = Math.floor(getRandom(0, 3));
 
   for (let i = 0; i < numOfPlanets; i++) {
     const scale = getRandom(40, 50);
@@ -113,7 +110,7 @@ const getPlanets = (pixels = 100) => {
     );
   }
 
-  numOfPlanets = getRandom() > 0.7 ? 1 : 0;
+  numOfPlanets = Math.floor(getRandom(0, 4));
 
   for (let i = 0; i < numOfPlanets; i++) {
     const scale = getRandom(40, 60);
@@ -147,10 +144,10 @@ const getPlanets = (pixels = 100) => {
     );
   }
 
-  numOfPlanets = getRandom() > 0.3 ? 1 : 0;
+  numOfPlanets = Math.floor(getRandom(1, 4));
 
   for (let i = 0; i < numOfPlanets; i++) {
-    const scale = getRandom(50, 70);
+    const scale = getRandom(90, 100);
 
     radius = Math.max(400, radius);
     radius = getRandom(radius + 250 * (i + 1), radius + 300 * (i + 1));
@@ -181,7 +178,7 @@ const getPlanets = (pixels = 100) => {
     );
   }
 
-  numOfPlanets = getRandom() > 0.3 ? 1 : 0;
+  numOfPlanets = Math.floor(getRandom(0, 4));
 
   for (let i = 0; i < numOfPlanets; i++) {
     const scale = getRandom(80, 100);
@@ -215,7 +212,7 @@ const getPlanets = (pixels = 100) => {
     );
   }
 
-  numOfPlanets = (getRandom() > 0.1 ? 1 : 0) + (getRandom() > 0.9 ? 1 : 0);
+  numOfPlanets = Math.floor(getRandom(1, 4));
 
   for (let i = 0; i < numOfPlanets; i++) {
     const scale = getRandom(10, 30);
