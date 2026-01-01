@@ -11,6 +11,13 @@ const StarSystem = dynamic(() => import("~/components/canvas/star-system"), {
   ssr: false,
 });
 
+const InsideGalaxyStars = dynamic(
+  () => import("~/components/canvas/inside-galaxy/stars"),
+  {
+    ssr: false,
+  },
+);
+
 const View = dynamic(
   () => import("~/components/canvas/view").then((mod) => mod.View),
   {
@@ -53,9 +60,10 @@ export default function Page() {
       orbit
     >
       <Suspense fallback={null}>
-        <Stars />
-        <StarSystem />
-        <Common />
+        {/* <Stars /> */}
+        {/* <StarSystem /> */}
+        <InsideGalaxyStars />
+        <Common color="black" />
       </Suspense>
     </View>
   );

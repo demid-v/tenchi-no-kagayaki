@@ -152,3 +152,4 @@ const Star = ({
 };
 
 export default Star;
+export { randomizeColors };
