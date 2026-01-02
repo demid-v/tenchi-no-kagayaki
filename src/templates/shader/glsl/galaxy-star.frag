@@ -44,8 +44,8 @@ void main() {
   float d = length(uv);
 
   // core + soft halo profiles (gaussian-like)
-  float core = exp(-(d * d) / (size * size));
-  float halo = exp(-(d * d) / (size * size * 8.0)) * 0.25;
+  float core = exp(-(d * d) / 0.01);
+  float halo = exp(-(d * d) / (0.01 * 8.0));
 
   // organic twinkle: combine a slow perlin component and a faster sine
   float n = perlin(vec2(time * 0.2), 4.0);
@@ -56,5 +56,10 @@ void main() {
   float intensity = (core + halo) * brightness * twinkle;
   vec3 col = color * intensity;
 
-  gl_FragColor = vec4(col, 1.0);
+  // use intensity as alpha so fragments outside the star become transparent
+  // float a = clamp(intensity, 0.0, 1.0);
+  // if (a < 0.003) discard;
+  // gl_FragColor = vec4(col, a);
+
+  gl_FragColor = vec4(col.xyz, 1.0);
 }

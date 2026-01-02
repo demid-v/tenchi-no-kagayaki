@@ -100,5 +100,5 @@ void main() {
   }
 
   a *= step(river_cutoff, river_fbm);
-  gl_FragColor = vec4(col.rgb, a * col.a);
+  gl_FragColor = vec4(col.xyz, a * col.a);
 }

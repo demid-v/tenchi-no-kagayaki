@@ -124,5 +124,5 @@ void main() {
     col = colors[0];
   }
 
-  gl_FragColor = vec4(col.rgb, step(land_cutoff, fbm1) * a * col.a);
+  gl_FragColor = vec4(col.xyz, step(land_cutoff, fbm1) * a * col.a);
 }

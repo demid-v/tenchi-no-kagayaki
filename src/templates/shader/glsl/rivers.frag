@@ -145,5 +145,5 @@ void main() {
     }
   }
 
-  gl_FragColor = vec4(col.rgb, a * col.a);
+  gl_FragColor = vec4(col.xyz, a * col.a);
 }

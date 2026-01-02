@@ -7,19 +7,27 @@ import * as THREE from "three";
 import useUpdate from "~/helpers/use-update";
 import { getRandom } from "~/helpers/utils";
 import fragmentShader from "~/templates/shader/glsl/galaxy-star.frag";
-import vertexShader from "~/templates/shader/glsl/stars.vert";
+import vertexShader from "~/templates/shader/glsl/galaxy-star.vert";
 
 import { randomizeColors } from "../star";
 
 const InsideGalaxy = (props: React.ComponentProps<"group">) => {
   const groupRef = useRef<THREE.Group>(null);
-  const size = useMemo(() => getRandom(10, 40), []);
+  const scale = useMemo(() => getRandom(10, 40), []);
+  const position = useMemo<[number, number, number]>(
+    () => [getRandom(-5000, 5000), getRandom(-5000, 5000), -1],
+    [],
+  );
 
-  const color = useMemo(() => randomizeColors().star.at(2), []);
+  const color = useMemo(
+    // () => [getRandom(0.1), getRandom(0.1), getRandom(0.1)],
+    () => randomizeColors().star.at(2),
+    [],
+  );
 
   const [showTarget, setShowTarget] = useState(false);
 
-  const curve = new EllipseCurve(0, 0, size, size, 0, 2 * Math.PI, false, 0);
+  const curve = new EllipseCurve(0, 0, 1, 1, 0, 2 * Math.PI, false, 0);
 
   const points = curve.getPoints(50);
 
@@ -36,54 +44,57 @@ const InsideGalaxy = (props: React.ComponentProps<"group">) => {
   }, new Float32Array(positionsLength));
 
   const shaderOptions = useMemo(
-    () => ({
-      uniforms: {
-        time: { value: 0.0 },
-        size: { value: 0.06 },
-        color: { value: color },
-        brightness: { value: 1.5 },
-      },
-      vertexShader,
-      fragmentShader,
-      transparent: true,
-    }),
+    () =>
+      ({
+        uniforms: {
+          time: { value: 0.0 },
+          color: { value: color },
+          brightness: { value: 1.5 },
+        },
+        vertexShader,
+        fragmentShader,
+        transparent: true,
+        blending: THREE.AdditiveBlending,
+      }) satisfies THREE.ShaderMaterialParameters,
     [],
   );
 
   useUpdate(groupRef);
+  // console.log(color);
 
   return (
     <group
       {...props}
+      ref={groupRef}
+      position={position}
+      scale={[scale, scale, 0]}
       onPointerEnter={() => setShowTarget(true)}
       onPointerLeave={() => setShowTarget(false)}
     >
-      <mesh visible={showTarget}>
-        <line>
-          <bufferGeometry>
-            <bufferAttribute
-              attach="attributes-position"
-              args={[positions, 3]}
-            />
-          </bufferGeometry>
-          <lineBasicMaterial
-            attach="material"
-            color="white"
-            linewidth={1}
-            toneMapped={false}
-          />
-        </line>
-      </mesh>
-      <group ref={groupRef} scale={[size, size, 0]}>
-        <mesh>
-          <planeGeometry args={[1, 1]} />
-          <shaderMaterial {...shaderOptions} />
-        </mesh>
-      </group>
+      {/* <group ref={groupRef}> */}
       <mesh>
         <planeGeometry args={[1, 1]} />
-        <meshStandardMaterial transparent opacity={0} />
+        <shaderMaterial {...shaderOptions} />
       </mesh>
+      {/* </group> */}
+      <group visible={showTarget}>
+        <mesh>
+          <line>
+            <bufferGeometry>
+              <bufferAttribute
+                attach="attributes-position"
+                args={[positions, 3]}
+              />
+            </bufferGeometry>
+            <lineBasicMaterial
+              attach="material"
+              color="white"
+              linewidth={1}
+              toneMapped={false}
+            />
+          </line>
+        </mesh>
+      </group>
     </group>
   );
 };

@@ -128,5 +128,5 @@ void main() {
   // final step to not have everything appear from the center
   a *= step(n2 * 0.25, d);
 
-  gl_FragColor = vec4(col.rgb, a * col.a);
+  gl_FragColor = vec4(col.xyz, a * col.a);
 }

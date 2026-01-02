@@ -87,5 +87,5 @@ void main() {
   float interpolate = floor(n * 3.0) / 3.0;
   vec4 col = colors[int(interpolate * float(4 - 1))];
 
-  gl_FragColor = vec4(col.rgb, a * col.a);
+  gl_FragColor = vec4(col.xyz, a * col.a);
 }

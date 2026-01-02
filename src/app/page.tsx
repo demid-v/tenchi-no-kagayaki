@@ -60,8 +60,8 @@ export default function Page() {
       orbit
     >
       <Suspense fallback={null}>
-        {/* <Stars /> */}
-        {/* <StarSystem /> */}
+        {/* <Stars />
+        <StarSystem /> */}
         <InsideGalaxyStars />
         <Common color="black" />
       </Suspense>

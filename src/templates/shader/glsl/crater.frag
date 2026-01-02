@@ -79,5 +79,5 @@ void main() {
   // cut out a circle
   a *= step(d_circle, 0.5);
 
-  gl_FragColor = vec4(col.rgb, a * col.a);
+  gl_FragColor = vec4(col.xyz, a * col.a);
 }
