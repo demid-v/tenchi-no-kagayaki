@@ -1,15 +1,17 @@
 "use client";
 
+import { useAtomValue } from "jotai";
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
 
-const Stars = dynamic(() => import("~/components/canvas/stars"), {
-  ssr: false,
-});
+import { sceneAtom } from "~/helpers/store";
 
-const StarSystem = dynamic(() => import("~/components/canvas/star-system"), {
-  ssr: false,
-});
+const StarSystemScene = dynamic(
+  () => import("~/components/dom/star-system-scene"),
+  {
+    ssr: false,
+  },
+);
 
 const InsideGalaxyStars = dynamic(
   () => import("~/components/canvas/inside-galaxy/stars"),
@@ -54,15 +56,15 @@ const Common = dynamic(
 );
 
 export default function Page() {
+  const scene = useAtomValue(sceneAtom);
   return (
     <View
       className="flex h-full w-full flex-col items-center justify-center"
       orbit
     >
       <Suspense fallback={null}>
-        {/* <Stars />
-        <StarSystem /> */}
-        <InsideGalaxyStars />
+        {scene === "starSystem" && <StarSystemScene />}
+        {scene === "galaxy" && <InsideGalaxyStars />}
         <Common color="black" />
       </Suspense>
     </View>

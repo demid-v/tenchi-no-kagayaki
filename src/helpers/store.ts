@@ -4,4 +4,6 @@ const pixelsAtom = atom(100);
 const showOrbitsAtom = atom(false);
 const shuffleAtom = atom(false);
 
-export { pixelsAtom, showOrbitsAtom, shuffleAtom };
+const sceneAtom = atom<"starSystem" | "galaxy">("galaxy");
+
+export { pixelsAtom, showOrbitsAtom, shuffleAtom, sceneAtom };

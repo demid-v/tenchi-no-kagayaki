@@ -1,13 +1,11 @@
 "use client";
 
-import {
-  OrbitControls,
-  OrthographicCamera,
-  View as ViewImpl,
-} from "@react-three/drei";
+import { OrthographicCamera, View as ViewImpl } from "@react-three/drei";
 import { Suspense, useRef } from "react";
 
 import { Three } from "~/helpers/components/three";
+
+import Orbit from "./orbit-controls";
 
 const Common = ({ color }: { color?: string }) => (
   <Suspense fallback={null}>
@@ -37,7 +35,7 @@ const View = ({
         {/* @ts-ignore */}
         <ViewImpl track={localRef}>
           {children}
-          {orbit && <OrbitControls />}
+          {orbit && <Orbit />}
         </ViewImpl>
       </Three>
     </>

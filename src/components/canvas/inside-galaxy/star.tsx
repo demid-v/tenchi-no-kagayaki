@@ -1,9 +1,11 @@
 "use client";
 
+import { useSetAtom } from "jotai";
 import React, { useMemo, useRef, useState } from "react";
 import { EllipseCurve } from "three";
 import * as THREE from "three";
 
+import { sceneAtom } from "~/helpers/store";
 import useUpdate from "~/helpers/use-update";
 import { getRandom } from "~/helpers/utils";
 import fragmentShader from "~/templates/shader/glsl/galaxy-star.frag";
@@ -22,6 +24,8 @@ const InsideGalaxy = (props: React.ComponentProps<"group">) => {
   const color = useMemo(() => randomizeColors().star.at(2), []);
 
   const [showTarget, setShowTarget] = useState(false);
+
+  const setScene = useSetAtom(sceneAtom);
 
   const curve = new EllipseCurve(0, 0, 1, 1, 0, 2 * Math.PI, false, 0);
 
@@ -66,6 +70,7 @@ const InsideGalaxy = (props: React.ComponentProps<"group">) => {
       scale={[scale, scale, 0]}
       onPointerEnter={() => setShowTarget(true)}
       onPointerLeave={() => setShowTarget(false)}
+      onClick={() => setScene("starSystem")}
     >
       <mesh>
         <planeGeometry args={[1, 1]} />
