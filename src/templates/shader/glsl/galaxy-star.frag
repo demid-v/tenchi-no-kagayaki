@@ -3,10 +3,9 @@ precision mediump float;
 varying vec2 vUv;
 
 uniform float time;
-uniform float size; // apparent size in UV units (e.g. 0.01)
-uniform vec3 color; // star color
-uniform float brightness; // overall brightness multiplier
-uniform vec2 resolution; // viewport resolution in pixels
+uniform vec3 color;
+uniform float brightness;
+uniform float seed;
 
 // simple 2D hash / PRNG
 float rand21(vec2 uv) {
@@ -48,18 +47,23 @@ void main() {
   float halo = exp(-(d * d) / (0.01 * 8.0));
 
   // organic twinkle: combine a slow perlin component and a faster sine
-  float n = perlin(vec2(time * 0.2), 4.0);
-  float sine = sin(time * 6.28318 * (0.6 + 0.8 * n));
-  float twinkle = 0.75 + 0.5 * (0.5 + 0.5 * sine) * (0.5 + 0.5 * n);
+  // float n = perlin(vec2(time * 0.2), 4.0);
+  // float sine = sin(time * seed * (0.6 + 0.8)) * 0.5;
+  // float twinkle = 0.75 + 0.5 * (0.5 + 0.5 * sine) * (0.5 + 0.5 * n);
+
+  float n = perlin(vec2(time * 0.15 + seed * 10.0, seed * 7.0) * 0.05, 4.0);
+  float freq = 0.6 + 0.8 * n;
+  float sine = sin(time * 6.28318 * freq + seed * 12.9898);
+  float twinkle = 0.7 + 0.6 * (0.5 + 0.5 * sine) * (0.5 + 0.5 * n);
 
   // combine and apply brightness/color
   float intensity = (core + halo) * brightness * twinkle;
   vec3 col = color * intensity;
 
   // use intensity as alpha so fragments outside the star become transparent
-  // float a = clamp(intensity, 0.0, 1.0);
-  // if (a < 0.003) discard;
-  // gl_FragColor = vec4(col, a);
+  float a = clamp(intensity, 0.0, 1.0);
+  if (a < 0.003) discard;
 
-  gl_FragColor = vec4(col.xyz, 1.0);
+  gl_FragColor = vec4(col.xyz, a);
+
 }

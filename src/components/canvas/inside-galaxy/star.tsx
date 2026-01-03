@@ -19,11 +19,7 @@ const InsideGalaxy = (props: React.ComponentProps<"group">) => {
     [],
   );
 
-  const color = useMemo(
-    // () => [getRandom(0.1), getRandom(0.1), getRandom(0.1)],
-    () => randomizeColors().star.at(2),
-    [],
-  );
+  const color = useMemo(() => randomizeColors().star.at(2), []);
 
   const [showTarget, setShowTarget] = useState(false);
 
@@ -50,6 +46,7 @@ const InsideGalaxy = (props: React.ComponentProps<"group">) => {
           time: { value: 0.0 },
           color: { value: color },
           brightness: { value: 1.5 },
+          seed: { value: getRandom(6, 10) },
         },
         vertexShader,
         fragmentShader,
@@ -60,7 +57,6 @@ const InsideGalaxy = (props: React.ComponentProps<"group">) => {
   );
 
   useUpdate(groupRef);
-  // console.log(color);
 
   return (
     <group
@@ -71,12 +67,10 @@ const InsideGalaxy = (props: React.ComponentProps<"group">) => {
       onPointerEnter={() => setShowTarget(true)}
       onPointerLeave={() => setShowTarget(false)}
     >
-      {/* <group ref={groupRef}> */}
       <mesh>
         <planeGeometry args={[1, 1]} />
         <shaderMaterial {...shaderOptions} />
       </mesh>
-      {/* </group> */}
       <group visible={showTarget}>
         <mesh>
           <line>
