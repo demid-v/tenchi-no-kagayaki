@@ -6,7 +6,7 @@ import * as React from "react";
 import * as THREE from "three";
 import { Vector4 } from "three";
 
-import { shuffleAtom, starSystemAtom } from "~/helpers/store";
+import { currentStarSystemAtom, shuffleAtom } from "~/helpers/store";
 import useRandomColors from "~/helpers/use-random-colors";
 import useUpdate from "~/helpers/use-update";
 import useUpdatePixels from "~/helpers/use-update-pixels";
@@ -45,7 +45,9 @@ const Star = ({
 
   const [shuffle] = useAtom(shuffleAtom);
 
-  const colors = useAtomValue(starSystemAtom)!.star.colors;
+  const colors =
+    useAtomValue(currentStarSystemAtom)?.star.colors ??
+    new Array(7).fill(new Vector4(0, 0, 0));
 
   const blobs = colors.slice(0, 1);
   const star = colors.slice(1, 5);

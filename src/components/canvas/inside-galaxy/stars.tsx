@@ -1,7 +1,7 @@
 "use client";
 
 import { useSetAtom } from "jotai";
-import { Suspense } from "react";
+import { Suspense, useEffect, useMemo, useRef } from "react";
 import { Vector3 } from "three";
 
 import { randomizeColors } from "~/components/canvas/star";
@@ -12,28 +12,45 @@ import Star from "./star";
 
 const InsideGalaxy = () => {
   const setStar = useSetAtom(initStarAtom);
+  const initialized = useRef(false);
 
-  const stars = new Array(5000).fill(0).map((_el, i) => {
-    const position = new Vector3(
-      getRandom(-5000, 5000),
-      getRandom(-5000, 5000),
-      -1,
-    );
+  const stars = useMemo(() => {
+    return new Array(5000).fill(0).map((_el, i) => {
+      const position = new Vector3(
+        getRandom(-5000, 5000),
+        getRandom(-5000, 5000),
+        -1,
+      );
 
-    const colors = randomizeColors();
+      const colors = randomizeColors();
 
-    setStar({
-      key: i,
-      position,
-      colors,
+      return {
+        key: i,
+        position,
+        colors,
+        element: (
+          <Star key={i} starId={i} position={position} color={colors.at(2)!} />
+        ),
+      };
     });
+  }, []);
 
-    return (
-      <Star key={i} starId={i} position={position} color={colors.at(3)!} />
-    );
-  });
+  useEffect(() => {
+    if (initialized.current) return;
+    initialized.current = true;
 
-  return <Suspense fallback={null}>{stars}</Suspense>;
+    stars.forEach((star) => {
+      setStar({
+        key: star.key,
+        position: star.position,
+        colors: star.colors,
+      });
+    });
+  }, [stars]);
+
+  return (
+    <Suspense fallback={null}>{stars.map((star) => star.element)}</Suspense>
+  );
 };
 
 export default InsideGalaxy;

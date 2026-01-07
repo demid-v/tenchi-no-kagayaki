@@ -1,10 +1,10 @@
 "use client";
 
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import dynamic from "next/dynamic";
 import { Suspense, useMemo } from "react";
 
-import { showOrbitsAtom, shuffleAtom } from "~/helpers/store";
+import { currentStarSystemIdAtom, showOrbitsAtom } from "~/helpers/store";
 import { getRandom } from "~/helpers/utils";
 
 const GasPlanetWithRings = dynamic(
@@ -246,9 +246,8 @@ const getPlanets = (pixels = 100) => {
 };
 
 const StarSystem = () => {
-  const [shuffle] = useAtom(shuffleAtom);
-
-  const { star, planets, orbits } = useMemo(getPlanets, [shuffle]);
+  const currentStarSystem = useAtomValue(currentStarSystemIdAtom);
+  const { star, planets, orbits } = useMemo(getPlanets, [currentStarSystem]);
 
   const [showOrbits] = useAtom(showOrbitsAtom);
 

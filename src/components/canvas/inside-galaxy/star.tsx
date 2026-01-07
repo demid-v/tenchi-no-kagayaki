@@ -5,7 +5,7 @@ import React, { useMemo, useRef, useState } from "react";
 import { EllipseCurve } from "three";
 import * as THREE from "three";
 
-import { currentStarSystemAtom, sceneAtom } from "~/helpers/store";
+import { currentStarSystemIdAtom, sceneAtom } from "~/helpers/store";
 import useUpdate from "~/helpers/use-update";
 import { getRandom } from "~/helpers/utils";
 import fragmentShader from "~/templates/shader/glsl/galaxy-star.frag";
@@ -61,7 +61,7 @@ const InsideGalaxy = ({
 
   useUpdate(groupRef);
 
-  const setCurrentStar = useSetAtom(currentStarSystemAtom);
+  const setCurrentStar = useSetAtom(currentStarSystemIdAtom);
 
   return (
     <group

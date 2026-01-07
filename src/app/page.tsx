@@ -65,19 +65,14 @@ export default function Page() {
       className="flex h-full w-full flex-col items-center justify-center"
       orbit
     >
+      <Common color="black" />
       <Suspense fallback={null}>
-        {scene === "starSystem" && (
-          <>
-            <Common color="black" />
-            <StarSystemScene />
-          </>
-        )}
-        {scene === "galaxy" && (
-          <>
-            <Common color="black" />
-            <InsideGalaxyStars />
-          </>
-        )}
+        <group visible={scene === "starSystem"}>
+          <StarSystemScene />
+        </group>
+        <group visible={scene === "galaxy"}>
+          <InsideGalaxyStars />
+        </group>
       </Suspense>
     </View>
   );

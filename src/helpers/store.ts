@@ -20,7 +20,7 @@ type StarSystemsType = Map<
 
 const starSystemsBaseAtom = atom<StarSystemsType>();
 
-const currentStarSystemAtom = atom<number | null>(null);
+const currentStarSystemIdAtom = atom<number | null>(null);
 
 const initStarAtom = atom(
   null,
@@ -29,15 +29,15 @@ const initStarAtom = atom(
       get(starSystemsBaseAtom) ?? (new Map() as StarSystemsType);
 
     const newStarSystem = starSystems.set(params.key, {
-      star: { position: params.position, colors: params.colors },
+      star: { position: params.position.clone(), colors: params.colors },
     });
 
     set(starSystemsBaseAtom, newStarSystem);
   },
 );
 
-const starSystemAtom = atom((get) =>
-  get(starSystemsBaseAtom)?.get(get(currentStarSystemAtom)!),
+const currentStarSystemAtom = atom((get) =>
+  get(starSystemsBaseAtom)?.get(get(currentStarSystemIdAtom)!),
 );
 
 export {
@@ -45,8 +45,7 @@ export {
   showOrbitsAtom,
   shuffleAtom,
   sceneAtom,
-  currentStarSystemAtom,
+  currentStarSystemIdAtom,
   initStarAtom,
-  starSystemAtom,
-  starSystemsBaseAtom,
+  currentStarSystemAtom,
 };
