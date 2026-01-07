@@ -26,7 +26,7 @@ const Stars = () => {
 
   return (
     <Suspense fallback={null}>
-      <mesh ref={starsRef} position={[0, 0, 1000]}>
+      <mesh ref={starsRef} position={[0, 0, 0]}>
         <Plane args={[100000, 100000, 1, 1]}>
           <shaderMaterial {...shaderOptions} ref={shaderRef} />
         </Plane>

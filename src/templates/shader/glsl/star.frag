@@ -1,6 +1,6 @@
 precision mediump float;
 
-varying vec3 vUv;
+varying vec2 vUv;
 
 uniform float pixels;
 uniform float time_speed;

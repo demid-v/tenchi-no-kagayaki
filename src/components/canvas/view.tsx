@@ -7,12 +7,24 @@ import { Three } from "~/helpers/components/three";
 
 import Orbit from "./orbit-controls";
 
-const Common = ({ color }: { color?: string }) => (
-  <Suspense fallback={null}>
-    {color && <color attach="background" args={[color]} />}
-    <OrthographicCamera makeDefault far={-1000} near={1000} />
-  </Suspense>
-);
+const Common = ({ color }: { color?: string }) => {
+  return (
+    <Suspense fallback={null}>
+      {color && <color attach="background" args={[color]} />}
+      <OrthographicCamera
+        makeDefault
+        left={-1}
+        right={1}
+        top={1}
+        bottom={-1}
+        near={0.1}
+        far={2000}
+        zoom={1}
+        position={[0, 0, 1000]}
+      />
+    </Suspense>
+  );
+};
 
 const View = ({
   children,

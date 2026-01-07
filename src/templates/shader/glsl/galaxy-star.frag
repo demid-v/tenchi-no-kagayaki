@@ -65,5 +65,4 @@ void main() {
   if (a < 0.003) discard;
 
   gl_FragColor = vec4(col.xyz, a);
-
 }

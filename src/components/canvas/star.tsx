@@ -1,12 +1,12 @@
 "use client";
 
-import { useAtom } from "jotai";
-import { useMemo, useRef } from "react";
+import { useAtom, useAtomValue } from "jotai";
+import { useRef } from "react";
 import * as React from "react";
 import * as THREE from "three";
 import { Vector4 } from "three";
 
-import { shuffleAtom } from "~/helpers/store";
+import { shuffleAtom, starSystemAtom } from "~/helpers/store";
 import useRandomColors from "~/helpers/use-random-colors";
 import useUpdate from "~/helpers/use-update";
 import useUpdatePixels from "~/helpers/use-update-pixels";
@@ -28,11 +28,7 @@ const randomizeColors = () => {
 
   const newCols = [cols[0]!, ...cols, cols[1]!, cols[0]!];
 
-  const blobs = newCols.slice(0, 1);
-  const star = newCols.slice(1, 5);
-  const flares = newCols.slice(5, 8);
-
-  return { blobs, star, flares };
+  return newCols;
 };
 
 const Star = ({
@@ -49,12 +45,16 @@ const Star = ({
 
   const [shuffle] = useAtom(shuffleAtom);
 
-  const randomColors = useMemo(randomizeColors, [shuffle]);
+  const colors = useAtomValue(starSystemAtom)!.star.colors;
+
+  const blobs = colors.slice(0, 1);
+  const star = colors.slice(1, 5);
+  const flares = colors.slice(5, 8);
 
   useRandomColors([
-    { object: blobsRef, colors: randomColors.blobs },
-    { object: starRef, colors: randomColors.star },
-    { object: flaresRef, colors: randomColors.flares },
+    { object: blobsRef, colors: blobs },
+    { object: starRef, colors: star },
+    { object: flaresRef, colors: flares },
   ]);
 
   useUpdate(groupRef);

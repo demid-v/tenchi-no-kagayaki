@@ -43,7 +43,7 @@ const Orbit = dynamic(() => import("~/components/canvas/orbit"), {
 const getPlanets = (pixels = 100) => {
   const starScale = getRandom(80, 150);
 
-  const star = <Star position={[0, 0, 0]} scale={[starScale, starScale, 0]} />;
+  const star = <Star position={[0, 0, 2]} scale={[starScale, starScale, 0]} />;
 
   const planets = [];
   const orbits = [];
@@ -255,10 +255,10 @@ const StarSystem = () => {
   return (
     <Suspense fallback={null}>
       {star}
-      <group position={[0, 0, 0]} visible={showOrbits}>
+      <group position={[0, 0, 1]} visible={showOrbits}>
         {orbits}
       </group>
-      <group position={[0, 0, -1]}>{planets}</group>
+      <group position={[0, 0, 2]}>{planets}</group>
     </Suspense>
   );
 };

@@ -6,20 +6,6 @@ import { Suspense } from "react";
 
 import { sceneAtom } from "~/helpers/store";
 
-const StarSystemScene = dynamic(
-  () => import("~/components/dom/star-system-scene"),
-  {
-    ssr: false,
-  },
-);
-
-const InsideGalaxyStars = dynamic(
-  () => import("~/components/canvas/inside-galaxy/stars"),
-  {
-    ssr: false,
-  },
-);
-
 const View = dynamic(
   () => import("~/components/canvas/view").then((mod) => mod.View),
   {
@@ -52,20 +38,46 @@ const View = dynamic(
 
 const Common = dynamic(
   () => import("~/components/canvas/view").then((mod) => mod.Common),
-  { ssr: false },
+  {
+    ssr: false,
+  },
+);
+
+const StarSystemScene = dynamic(
+  () => import("~/components/dom/star-system-scene"),
+  {
+    ssr: false,
+  },
+);
+
+const InsideGalaxyStars = dynamic(
+  () => import("~/components/canvas/inside-galaxy/stars"),
+  {
+    ssr: false,
+  },
 );
 
 export default function Page() {
   const scene = useAtomValue(sceneAtom);
+
   return (
     <View
       className="flex h-full w-full flex-col items-center justify-center"
       orbit
     >
       <Suspense fallback={null}>
-        {scene === "starSystem" && <StarSystemScene />}
-        {scene === "galaxy" && <InsideGalaxyStars />}
-        <Common color="black" />
+        {scene === "starSystem" && (
+          <>
+            <Common color="black" />
+            <StarSystemScene />
+          </>
+        )}
+        {scene === "galaxy" && (
+          <>
+            <Common color="black" />
+            <InsideGalaxyStars />
+          </>
+        )}
       </Suspense>
     </View>
   );

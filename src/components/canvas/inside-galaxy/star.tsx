@@ -5,23 +5,22 @@ import React, { useMemo, useRef, useState } from "react";
 import { EllipseCurve } from "three";
 import * as THREE from "three";
 
-import { sceneAtom } from "~/helpers/store";
+import { currentStarSystemAtom, sceneAtom } from "~/helpers/store";
 import useUpdate from "~/helpers/use-update";
 import { getRandom } from "~/helpers/utils";
 import fragmentShader from "~/templates/shader/glsl/galaxy-star.frag";
 import vertexShader from "~/templates/shader/glsl/galaxy-star.vert";
 
-import { randomizeColors } from "../star";
-
-const InsideGalaxy = (props: React.ComponentProps<"group">) => {
+const InsideGalaxy = ({
+  color,
+  starId,
+  ...props
+}: {
+  color: THREE.Vector4;
+  starId: number;
+} & React.ComponentProps<"group">) => {
   const groupRef = useRef<THREE.Group>(null);
   const scale = useMemo(() => getRandom(10, 40), []);
-  const position = useMemo<[number, number, number]>(
-    () => [getRandom(-5000, 5000), getRandom(-5000, 5000), -1],
-    [],
-  );
-
-  const color = useMemo(() => randomizeColors().star.at(2), []);
 
   const [showTarget, setShowTarget] = useState(false);
 
@@ -62,15 +61,19 @@ const InsideGalaxy = (props: React.ComponentProps<"group">) => {
 
   useUpdate(groupRef);
 
+  const setCurrentStar = useSetAtom(currentStarSystemAtom);
+
   return (
     <group
       {...props}
       ref={groupRef}
-      position={position}
       scale={[scale, scale, 0]}
       onPointerEnter={() => setShowTarget(true)}
       onPointerLeave={() => setShowTarget(false)}
-      onClick={() => setScene("starSystem")}
+      onClick={() => {
+        setCurrentStar(starId);
+        setScene("starSystem");
+      }}
     >
       <mesh>
         <planeGeometry args={[1, 1]} />

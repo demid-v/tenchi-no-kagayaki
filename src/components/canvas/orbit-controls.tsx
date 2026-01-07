@@ -10,6 +10,8 @@ const Controls = () => {
 
   return (
     <OrbitControls
+      target={[0, 0, 0]}
+      enableRotate={false}
       onChange={() => {
         if (camera.zoom > 0.1) return;
         setScene("galaxy");
