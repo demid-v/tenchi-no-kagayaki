@@ -1,12 +1,10 @@
 "use client";
 
 import Color from "color";
-import { useAtom } from "jotai";
-import { useImperativeHandle, useMemo, useRef } from "react";
+import { useImperativeHandle, useRef } from "react";
 import * as THREE from "three";
 import { Vector4 } from "three";
 
-import { shuffleAtom } from "~/helpers/store";
 import useRandomColors from "~/helpers/use-random-colors";
 import useRotation from "~/helpers/use-rotation";
 import useUpdate from "~/helpers/use-update";
@@ -39,11 +37,12 @@ const randomizeColors = () => {
 
   const craterColors = [landColors[1]!, landColors[2]!];
 
-  return { landColors, craterColors, lavaColors };
+  return [...landColors, ...craterColors, ...lavaColors];
 };
 
 const LavaPlanet = ({
   pixels = 100,
+  colors,
   radius,
   period,
   relativeSpeed,
@@ -53,6 +52,7 @@ const LavaPlanet = ({
   ...props
 }: {
   pixels?: number;
+  colors: Vector4[];
   radius: number;
   period: number;
   relativeSpeed: number;
@@ -66,16 +66,16 @@ const LavaPlanet = ({
   const craterRef = useRef<THREE.ShaderMaterial>(null);
   const lavaRef = useRef<THREE.ShaderMaterial>(null);
 
-  const [shuffle] = useAtom(shuffleAtom);
-
-  const randomColors = useMemo(randomizeColors, [shuffle]);
-
   useImperativeHandle(ref, () => groupRef.current!);
 
+  const landColors = colors.slice(0, 3);
+  const craterColors = colors.slice(3, 5);
+  const lavaColors = colors.slice(5, 8);
+
   useRandomColors([
-    { object: landRef, colors: randomColors.landColors },
-    { object: craterRef, colors: randomColors.craterColors },
-    { object: lavaRef, colors: randomColors.lavaColors },
+    { object: landRef, colors: landColors },
+    { object: craterRef, colors: craterColors },
+    { object: lavaRef, colors: lavaColors },
   ]);
 
   useUpdate(groupRef);
@@ -110,3 +110,4 @@ const LavaPlanet = ({
 };
 
 export default LavaPlanet;
+export { randomizeColors };

@@ -27,11 +27,12 @@ const randomizeColors = () => {
     return new Vector4().fromArray(newCol.xyz().array()).setW(1);
   });
 
-  return { colors };
+  return colors;
 };
 
 const GasPlanetWithRings = ({
   pixels = 100,
+  colors,
   radius,
   period,
   relativeSpeed,
@@ -41,6 +42,7 @@ const GasPlanetWithRings = ({
   ...props
 }: {
   pixels?: number;
+  colors: Vector4[];
   radius: number;
   period: number;
   relativeSpeed: number;
@@ -52,15 +54,11 @@ const GasPlanetWithRings = ({
   const layersRef = useRef<THREE.ShaderMaterial>(null);
   const ringsRef = useRef<THREE.ShaderMaterial>(null);
 
-  const [shuffle] = useAtom(shuffleAtom);
-
-  const randomColors = useMemo(randomizeColors, [shuffle]);
-
   useImperativeHandle(ref, () => groupRef.current!);
 
   useRandomColors([
-    { object: layersRef, colors: randomColors.colors },
-    { object: ringsRef, colors: randomColors.colors },
+    { object: layersRef, colors },
+    { object: ringsRef, colors },
   ]);
 
   useUpdate(groupRef);
@@ -91,3 +89,4 @@ const GasPlanetWithRings = ({
 };
 
 export default GasPlanetWithRings;
+export { randomizeColors };

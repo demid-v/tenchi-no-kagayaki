@@ -1,11 +1,9 @@
 "use client";
 
-import { useAtom } from "jotai";
-import { useImperativeHandle, useMemo, useRef } from "react";
+import { useImperativeHandle, useRef } from "react";
 import * as THREE from "three";
 import { Vector4 } from "three";
 
-import { shuffleAtom } from "~/helpers/store";
 import useRandomColors from "~/helpers/use-random-colors";
 import useRotation from "~/helpers/use-rotation";
 import useUpdate from "~/helpers/use-update";
@@ -28,14 +26,12 @@ const randomizeColors = () => {
 
   const newCols = [...cols, cols[1]!, cols[2]!];
 
-  const ground = newCols.slice(0, 3);
-  const craters = newCols.slice(3, 5);
-
-  return { ground, craters };
+  return newCols;
 };
 
 const DeadPlanet = ({
   pixels = 100,
+  colors,
   radius,
   period,
   relativeSpeed,
@@ -45,6 +41,7 @@ const DeadPlanet = ({
   ...props
 }: {
   pixels?: number;
+  colors: Vector4[];
   radius: number;
   period: number;
   relativeSpeed: number;
@@ -57,15 +54,14 @@ const DeadPlanet = ({
   const groundRef = useRef<THREE.ShaderMaterial>(null);
   const cratersRef = useRef<THREE.ShaderMaterial>(null);
 
-  const [shuffle] = useAtom(shuffleAtom);
-
-  const randomColors = useMemo(randomizeColors, [shuffle]);
-
   useImperativeHandle(ref, () => groupRef.current!);
 
+  const ground = colors.slice(0, 3);
+  const craters = colors.slice(3, 5);
+
   useRandomColors([
-    { object: groundRef, colors: randomColors.ground },
-    { object: cratersRef, colors: randomColors.craters },
+    { object: groundRef, colors: ground },
+    { object: cratersRef, colors: craters },
   ]);
 
   useUpdate(groupRef);
@@ -96,3 +92,4 @@ const DeadPlanet = ({
 };
 
 export default DeadPlanet;
+export { randomizeColors };

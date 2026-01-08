@@ -1,11 +1,9 @@
 "use client";
 
-import { useAtom } from "jotai";
-import { useImperativeHandle, useMemo, useRef } from "react";
+import { useImperativeHandle, useRef } from "react";
 import * as THREE from "three";
 import { Vector4 } from "three";
 
-import { shuffleAtom } from "~/helpers/store";
 import useRandomColors from "~/helpers/use-random-colors";
 import useRotation from "~/helpers/use-rotation";
 import useUpdate from "~/helpers/use-update";
@@ -26,21 +24,22 @@ const randomizeColors = () => {
     return new Vector4().fromArray(newCol.xyz().array()).setW(1);
   });
 
-  return { colors };
+  return colors;
 };
 
 const DryPlanet = ({
   pixels = 100,
+  colors,
   radius,
   period,
   relativeSpeed,
-
   eccentricity,
   orbitAngle,
   ref,
   ...props
 }: {
   pixels?: number;
+  colors: Vector4[];
   radius: number;
   period: number;
   relativeSpeed: number;
@@ -51,13 +50,9 @@ const DryPlanet = ({
   const groupRef = useRef<THREE.Group>(null);
   const planetRef = useRef<THREE.ShaderMaterial>(null);
 
-  const [shuffle] = useAtom(shuffleAtom);
-
-  const randomColors = useMemo(randomizeColors, [shuffle]);
-
   useImperativeHandle(ref, () => groupRef.current!);
 
-  useRandomColors([{ object: planetRef, colors: randomColors.colors }]);
+  useRandomColors([{ object: planetRef, colors }]);
 
   useUpdate(groupRef);
 
@@ -83,3 +78,4 @@ const DryPlanet = ({
 };
 
 export default DryPlanet;
+export { randomizeColors };

@@ -4,6 +4,12 @@ import { useAtom, useAtomValue } from "jotai";
 import dynamic from "next/dynamic";
 import { Suspense, useMemo } from "react";
 
+import { randomizeColors as randomizeColorsDeadPlanet } from "~/components/canvas/dead-planet";
+import { randomizeColors as randomizeColorsDryPlanet } from "~/components/canvas/dry-planet";
+import { randomizeColors as randomizeColorsGasPlanet } from "~/components/canvas/gas-planet";
+import { randomizeColors as randomizeColorsGasPlanetWithRings } from "~/components/canvas/gas-planet-with-rings";
+import { randomizeColors as randomizeColorsLavaPlanet } from "~/components/canvas/lava-planet";
+import { randomizeColors as randomizeColorsWetPlanet } from "~/components/canvas/wet-planet";
 import { currentStarSystemIdAtom, showOrbitsAtom } from "~/helpers/store";
 import { getRandom } from "~/helpers/utils";
 
@@ -62,6 +68,7 @@ const getPlanets = (pixels = 100) => {
     planets.push(
       <LavaPlanet
         key={`lava-planet-${i}`}
+        colors={randomizeColorsLavaPlanet()}
         radius={radius}
         period={Math.PI * (1 / 3)}
         relativeSpeed={getRandom(Math.PI / 16, Math.PI / 8)}
@@ -93,6 +100,7 @@ const getPlanets = (pixels = 100) => {
     planets.push(
       <DryPlanet
         key={`dry-planet-${i}`}
+        colors={randomizeColorsDryPlanet()}
         radius={radius}
         period={Math.PI * (2 / 3)}
         relativeSpeed={getRandom(Math.PI / 16, Math.PI / 8)}
@@ -126,6 +134,7 @@ const getPlanets = (pixels = 100) => {
     planets.push(
       <WetPlanet
         key={`wet-planet-${i}`}
+        colors={randomizeColorsWetPlanet()}
         radius={radius}
         period={-Math.PI * (2 / 3)}
         relativeSpeed={getRandom(Math.PI / 16, Math.PI / 8)}
@@ -159,6 +168,7 @@ const getPlanets = (pixels = 100) => {
     planets.push(
       <GasPlanet
         key={`gas-planet-${i}`}
+        colors={randomizeColorsGasPlanet()}
         radius={radius}
         period={Math.PI * (1 / 3)}
         relativeSpeed={getRandom(Math.PI / 16, Math.PI / 8)}
@@ -192,6 +202,7 @@ const getPlanets = (pixels = 100) => {
     planets.push(
       <GasPlanetWithRings
         key={`gas-planet-with-rings-${i}`}
+        colors={randomizeColorsGasPlanetWithRings()}
         radius={radius}
         period={Math.PI * (1 / 3)}
         relativeSpeed={getRandom(Math.PI / 16, Math.PI / 8)}
@@ -223,6 +234,7 @@ const getPlanets = (pixels = 100) => {
     planets.push(
       <DeadPlanet
         key={`dead-planet-${i}`}
+        colors={randomizeColorsDeadPlanet()}
         radius={radius}
         period={Math.PI * (1 / 3)}
         relativeSpeed={getRandom(Math.PI / 16, Math.PI / 8)}

@@ -45,11 +45,12 @@ const randomizeColors = () => {
     );
   }
 
-  return { rivers, clouds };
+  return [...rivers, ...clouds];
 };
 
 const WetPlanet = ({
   pixels = 100,
+  colors,
   radius,
   period,
   relativeSpeed,
@@ -59,6 +60,7 @@ const WetPlanet = ({
   ...props
 }: {
   pixels?: number;
+  colors: Vector4[];
   radius: number;
   period: number;
   relativeSpeed: number;
@@ -71,15 +73,14 @@ const WetPlanet = ({
   const riversRef = useRef<THREE.ShaderMaterial>(null);
   const cloudsRef = useRef<THREE.ShaderMaterial>(null);
 
-  const [shuffle] = useAtom(shuffleAtom);
-
-  const randomColors = useMemo(randomizeColors, [shuffle]);
-
   useImperativeHandle(ref, () => groupRef.current!);
 
+  const rivers = colors.slice(0, 6);
+  const clouds = colors.slice(6, 10);
+
   useRandomColors([
-    { object: riversRef, colors: randomColors.rivers },
-    { object: cloudsRef, colors: randomColors.clouds },
+    { object: riversRef, colors: rivers },
+    { object: cloudsRef, colors: clouds },
   ]);
 
   useUpdate(groupRef);
@@ -110,3 +111,4 @@ const WetPlanet = ({
 };
 
 export default WetPlanet;
+export { randomizeColors };
