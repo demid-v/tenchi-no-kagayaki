@@ -23,14 +23,24 @@ const randomizeColors = () => {
 
   const landColors = new Array(3).fill(0).map((_, i) => {
     let newCol = seedColors[0]!.darken(i / 3.0);
-    newCol = Color.xyz(newCol.x() + 0.2 * (i / 4.0), newCol.y(), newCol.z());
+
+    newCol = Color.hsv(
+      newCol.hue() + 0.2 * (i / 4.0),
+      newCol.saturationv(),
+      newCol.value(),
+    );
 
     return new Vector4().fromArray(newCol.xyz().array()).setW(1);
   });
 
   const lavaColors = new Array(3).fill(0).map((_, i) => {
     let newCol = seedColors[1]!.darken(i / 3.0);
-    newCol = Color.xyz(newCol.x() + 0.2 * (i / 3.0), newCol.y(), newCol.z());
+
+    newCol = Color.hsv(
+      newCol.hue() + 0.2 * (i / 3.0),
+      newCol.saturationv(),
+      newCol.value(),
+    );
 
     return new Vector4().fromArray(newCol.xyz().array()).setW(1);
   });

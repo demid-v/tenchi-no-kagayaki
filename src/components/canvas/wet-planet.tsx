@@ -1,11 +1,10 @@
 "use client";
 
-import { useAtom } from "jotai";
-import { useImperativeHandle, useMemo, useRef } from "react";
+import Color from "color";
+import { useImperativeHandle, useRef } from "react";
 import * as THREE from "three";
 import { Vector4 } from "three";
 
-import { shuffleAtom } from "~/helpers/store";
 import useRandomColors from "~/helpers/use-random-colors";
 import useRotation from "~/helpers/use-rotation";
 import useUpdate from "~/helpers/use-update";
@@ -25,24 +24,39 @@ const randomizeColors = () => {
   const clouds = [];
 
   for (let i = 0; i < 4; i++) {
-    const newCol = seedColors[0]!.darken(i / 4.0);
-    rivers.push(
-      new Vector4(newCol.x() + 0.2 * (i / 4), newCol.y(), newCol.x()).setW(1),
+    let newCol = seedColors[0]!.darken(i / 4.0);
+
+    newCol = Color.hsv(
+      newCol.hue() + 0.2 * (i / 4),
+      newCol.saturationv(),
+      newCol.value(),
     );
+
+    rivers.push(new Vector4().fromArray(newCol.xyz().array()).setW(1));
   }
 
   for (let i = 0; i < 2; i++) {
-    const newCol = seedColors[1]!.darken(i / 2.0);
-    rivers.push(
-      new Vector4(newCol.x() + 0.2 * (i / 2), newCol.y(), newCol.x()).setW(1),
+    let newCol = seedColors[1]!.darken(i / 2.0);
+
+    newCol = Color.hsv(
+      newCol.hue() + 0.2 * (i / 2),
+      newCol.saturationv(),
+      newCol.value(),
     );
+
+    rivers.push(new Vector4().fromArray(newCol.xyz().array()).setW(1));
   }
 
   for (let i = 0; i < 4; i++) {
-    const newCol = seedColors[2]!.lighten((1.0 - i / 4.0) * 0.8);
-    clouds.push(
-      new Vector4(newCol.x() + 0.2 * (i / 4), newCol.y(), newCol.x()).setW(1),
+    let newCol = seedColors[2]!.lighten((1.0 - i / 4.0) * 0.8);
+
+    newCol = Color.hsv(
+      newCol.hue() + 0.2 * (i / 4),
+      newCol.saturationv(),
+      newCol.value(),
     );
+
+    clouds.push(new Vector4().fromArray(newCol.xyz().array()).setW(1));
   }
 
   return [...rivers, ...clouds];
