@@ -6,7 +6,6 @@ import { Vector3 } from "three";
 
 import { randomizeColors } from "~/components/canvas/star";
 import { initStarAtom } from "~/helpers/store";
-import { getRandom } from "~/helpers/utils";
 
 import Star from "./star";
 
@@ -15,11 +14,22 @@ const InsideGalaxy = () => {
   const initialized = useRef(false);
 
   const stars = useMemo(() => {
+    const galaxyRadius = 10000;
+
     return new Array(5000).fill(0).map((_el, i) => {
+      const radius = Math.random() * galaxyRadius;
+      const branch = ((i % 5) / 5) * Math.PI * 2;
+      const spin = ((radius * 1.5) / galaxyRadius) * 2;
+
+      const branchWidth =
+        Math.cos(((Math.PI / galaxyRadius) * radius) / 2.2) * galaxyRadius;
+
       const position = new Vector3(
-        getRandom(-5000, 5000),
-        getRandom(-5000, 5000),
-        -1,
+        Math.cos(branch + spin) * radius +
+          ((Math.random() - 0.5) * branchWidth) / 4,
+        Math.sin(branch + spin) * radius +
+          ((Math.random() - 0.5) * branchWidth) / 4,
+        0,
       );
 
       const colors = randomizeColors();

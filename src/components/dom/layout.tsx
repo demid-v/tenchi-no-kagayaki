@@ -1,7 +1,10 @@
 "use client";
 
+import { useAtomValue } from "jotai";
 import dynamic from "next/dynamic";
 import { useRef } from "react";
+
+import { sceneAtom } from "~/helpers/store";
 
 import Header from "./header";
 
@@ -11,6 +14,8 @@ const Scene = dynamic(() => import("~/components/canvas/scene"), {
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const ref = useRef(null);
+
+  const scene = useAtomValue(sceneAtom);
 
   return (
     <div
@@ -23,7 +28,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         touchAction: "auto",
       }}
     >
-      <Header />
+      {scene === "starSystem" && <Header />}
       {children}
       <Scene
         style={{

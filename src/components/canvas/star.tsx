@@ -1,12 +1,12 @@
 "use client";
 
-import { useAtom, useAtomValue } from "jotai";
+import { useAtomValue } from "jotai";
 import { useRef } from "react";
 import * as React from "react";
 import * as THREE from "three";
 import { Vector4 } from "three";
 
-import { currentStarSystemAtom, shuffleAtom } from "~/helpers/store";
+import { currentStarSystemAtom } from "~/helpers/store";
 import useRandomColors from "~/helpers/use-random-colors";
 import useUpdate from "~/helpers/use-update";
 import useUpdatePixels from "~/helpers/use-update-pixels";
@@ -42,8 +42,6 @@ const Star = ({
   const blobsRef = useRef<THREE.ShaderMaterial>(null);
   const starRef = useRef<THREE.ShaderMaterial>(null);
   const flaresRef = useRef<THREE.ShaderMaterial>(null);
-
-  const [shuffle] = useAtom(shuffleAtom);
 
   const colors =
     useAtomValue(currentStarSystemAtom)?.star.colors ??

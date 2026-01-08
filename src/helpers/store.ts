@@ -3,7 +3,6 @@ import { Vector3, Vector4 } from "three";
 
 const pixelsAtom = atom(100);
 const showOrbitsAtom = atom(false);
-const shuffleAtom = atom(false);
 
 const sceneAtom = atom<"starSystem" | "galaxy">("galaxy");
 
@@ -43,7 +42,6 @@ const currentStarSystemAtom = atom((get) =>
 export {
   pixelsAtom,
   showOrbitsAtom,
-  shuffleAtom,
   sceneAtom,
   currentStarSystemIdAtom,
   initStarAtom,
