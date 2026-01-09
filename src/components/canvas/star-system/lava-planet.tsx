@@ -5,7 +5,7 @@ import { useImperativeHandle, useRef } from "react";
 import * as THREE from "three";
 import { Vector4 } from "three";
 
-import useRandomColors from "~/helpers/use-random-colors";
+import useColors from "~/helpers/use-random-colors";
 import useRotation from "~/helpers/use-rotation";
 import useUpdate from "~/helpers/use-update";
 import useUpdatePixels from "~/helpers/use-update-pixels";
@@ -82,7 +82,7 @@ const LavaPlanet = ({
   const craterColors = colors.slice(3, 5);
   const lavaColors = colors.slice(5, 8);
 
-  useRandomColors([
+  useColors([
     { object: landRef, colors: landColors },
     { object: craterRef, colors: craterColors },
     { object: lavaRef, colors: lavaColors },

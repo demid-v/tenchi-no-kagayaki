@@ -50,6 +50,13 @@ const StarSystemScene = dynamic(
   },
 );
 
+const Cluster = dynamic(
+  () => import("~/components/canvas/galaxy-cluster/cluster"),
+  {
+    ssr: false,
+  },
+);
+
 const InsideGalaxyStars = dynamic(
   () => import("~/components/canvas/galaxy/galaxy"),
   {
@@ -72,6 +79,9 @@ export default function Page() {
         </group>
         <group visible={scene === "galaxy"}>
           <InsideGalaxyStars />
+        </group>
+        <group visible={scene === "galaxyCluster"}>
+          <Cluster />
         </group>
       </Suspense>
     </View>

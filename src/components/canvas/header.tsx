@@ -1,11 +1,13 @@
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 
 import { Checkbox } from "~/components/ui/checkbox";
 import { Label } from "~/components/ui/label";
 import { Slider } from "~/components/ui/slider";
-import { pixelsAtom, showOrbitsAtom } from "~/helpers/store";
+import { pixelsAtom, sceneAtom, showOrbitsAtom } from "~/helpers/store";
 
 const Header = () => {
+  const scene = useAtomValue(sceneAtom);
+
   const [pixels, setPixels] = useAtom(pixelsAtom);
   const [showOrbits, setShowOrbits] = useAtom(showOrbitsAtom);
 
@@ -22,19 +24,21 @@ const Header = () => {
           onValueChange={(pixels) => setPixels(pixels.at(0)!)}
         />
       </div>
-      <div className="flex gap-x-2">
-        <Checkbox
-          id="orbits"
-          checked={showOrbits}
-          className="border-secondary"
-          onCheckedChange={(newState) =>
-            setShowOrbits(newState === "indeterminate" ? false : newState)
-          }
-        />
-        <Label htmlFor="orbits" className="text-secondary">
-          Orbits
-        </Label>
-      </div>
+      {scene === "starSystem" && (
+        <div className="flex gap-x-2">
+          <Checkbox
+            id="orbits"
+            checked={showOrbits}
+            className="border-secondary"
+            onCheckedChange={(newState) =>
+              setShowOrbits(newState === "indeterminate" ? false : newState)
+            }
+          />
+          <Label htmlFor="orbits" className="text-secondary">
+            Orbits
+          </Label>
+        </div>
+      )}
     </header>
   );
 };

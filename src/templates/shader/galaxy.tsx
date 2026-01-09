@@ -16,7 +16,7 @@ const GalaxyShader = ({
   rotationSpeed = 1.0,
   numOfColors = 6,
   colors,
-  tilt = 1.0,
+  tilt = 3.0,
   numOfLayers = 4.0,
   layerHeight = 0.4,
   zoom = 1.375,

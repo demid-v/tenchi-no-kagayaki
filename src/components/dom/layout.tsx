@@ -4,9 +4,8 @@ import { useAtomValue } from "jotai";
 import dynamic from "next/dynamic";
 import { useRef } from "react";
 
+import Header from "~/components/canvas/header";
 import { sceneAtom } from "~/helpers/store";
-
-import Header from "../canvas/header";
 
 const Scene = dynamic(() => import("~/components/canvas/scene"), {
   ssr: false,
@@ -14,7 +13,6 @@ const Scene = dynamic(() => import("~/components/canvas/scene"), {
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const ref = useRef(null);
-
   const scene = useAtomValue(sceneAtom);
 
   return (
@@ -28,7 +26,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         touchAction: "auto",
       }}
     >
-      {scene === "starSystem" && <Header />}
+      {(scene === "starSystem" || scene === "galaxyCluster") && <Header />}
       {children}
       <Scene
         style={{

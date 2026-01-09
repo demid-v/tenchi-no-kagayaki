@@ -26,21 +26,31 @@ const Common = ({ color }: { color?: string }) => {
     ref.current.updateProjectionMatrix();
   }, [scene]);
 
-  const position = useAtomValue(currentStarSystemAtom);
-  const id = useAtomValue(currentStarSystemAtom);
+  const currentStarSystem = useAtomValue(currentStarSystemAtom);
 
   useLayoutEffect(() => {
-    if (scene !== "galaxy" || ref.current === null || position === undefined)
-      return;
+    if (scene !== "galaxy" || ref.current === null) return;
 
-    ref.current.zoom = 1;
+    ref.current.zoom = currentStarSystem ? 5 : 1;
 
-    const { x, y } = position.star.position.clone();
+    const { x, y } = currentStarSystem?.star.position.clone() ?? { x: 0, y: 0 };
+
     ref.current.position.set(x, y, 1000);
     ref.current.rotation.set(0, 0, 0);
 
     ref.current.updateProjectionMatrix();
-  }, [scene, position]);
+  }, [scene, currentStarSystem]);
+
+  useLayoutEffect(() => {
+    if (scene !== "galaxyCluster" || ref.current === null) return;
+
+    ref.current.zoom = 1;
+
+    ref.current.position.set(0, 0, 1000);
+    ref.current.rotation.set(0, 0, 0);
+
+    ref.current.updateProjectionMatrix();
+  }, [scene]);
 
   return (
     <Suspense fallback={null}>

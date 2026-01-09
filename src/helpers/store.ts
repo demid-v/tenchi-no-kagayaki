@@ -4,7 +4,7 @@ import { Vector3, Vector4 } from "three";
 const pixelsAtom = atom(100);
 const showOrbitsAtom = atom(false);
 
-const sceneAtom = atom<"starSystem" | "galaxy">("galaxy");
+const sceneAtom = atom<"starSystem" | "galaxy" | "galaxyCluster">("galaxy");
 
 type StarSystemsType = Map<
   number,

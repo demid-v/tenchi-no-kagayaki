@@ -4,7 +4,7 @@ import { useImperativeHandle, useRef } from "react";
 import * as THREE from "three";
 import { Vector4 } from "three";
 
-import useRandomColors from "~/helpers/use-random-colors";
+import useColors from "~/helpers/use-random-colors";
 import useRotation from "~/helpers/use-rotation";
 import useUpdate from "~/helpers/use-update";
 import useUpdatePixels from "~/helpers/use-update-pixels";
@@ -59,7 +59,7 @@ const DeadPlanet = ({
   const ground = colors.slice(0, 3);
   const craters = colors.slice(3, 5);
 
-  useRandomColors([
+  useColors([
     { object: groundRef, colors: ground },
     { object: cratersRef, colors: craters },
   ]);

@@ -1,6 +1,6 @@
 "use client";
 
-import { useSetAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 import React, { useMemo, useRef, useState } from "react";
 import { EllipseCurve } from "three";
 import * as THREE from "three";
@@ -20,11 +20,11 @@ const Star = ({
   starId: number;
 } & React.ComponentProps<"group">) => {
   const groupRef = useRef<THREE.Group>(null);
-  const scale = useMemo(() => getRandom(10, 40), []);
+  const scale = useMemo(() => getRandom(1, 4), []);
 
   const [showTarget, setShowTarget] = useState(false);
 
-  const setScene = useSetAtom(sceneAtom);
+  const [scene, setScene] = useAtom(sceneAtom);
 
   const curve = new EllipseCurve(0, 0, 1, 1, 0, 2 * Math.PI, false, 0);
 
@@ -71,6 +71,8 @@ const Star = ({
       onPointerEnter={() => setShowTarget(true)}
       onPointerLeave={() => setShowTarget(false)}
       onClick={() => {
+        if (scene !== "galaxy") return;
+
         setCurrentStar(starId);
         setScene("starSystem");
       }}

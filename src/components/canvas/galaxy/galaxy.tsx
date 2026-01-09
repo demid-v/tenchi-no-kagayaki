@@ -5,6 +5,7 @@ import { useEffect, useMemo } from "react";
 import { Vector3 } from "three";
 
 import { randomizeColors } from "~/components/canvas/star-system/star";
+import Stars from "~/components/canvas/star-system/stars";
 import { initStarAtom } from "~/helpers/store";
 import { getRandom } from "~/helpers/utils";
 
@@ -12,7 +13,7 @@ import Star from "./star";
 
 const Galaxy = () => {
   const setStar = useSetAtom(initStarAtom);
-  const galaxyRadius = 10000;
+  const galaxyRadius = 500;
 
   const stars = useMemo(() => {
     return new Array(5000).fill(0).map((_el, i) => {
@@ -53,7 +54,12 @@ const Galaxy = () => {
     });
   }, [stars]);
 
-  return <group>{stars.map((star) => star.element)}</group>;
+  return (
+    <group>
+      <Stars />
+      {stars.map((star) => star.element)}
+    </group>
+  );
 };
 
 export default Galaxy;

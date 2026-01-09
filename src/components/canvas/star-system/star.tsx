@@ -7,7 +7,7 @@ import * as THREE from "three";
 import { Vector4 } from "three";
 
 import { currentStarSystemAtom } from "~/helpers/store";
-import useRandomColors from "~/helpers/use-random-colors";
+import useColors from "~/helpers/use-random-colors";
 import useUpdate from "~/helpers/use-update";
 import useUpdatePixels from "~/helpers/use-update-pixels";
 import { generateColors, getRandom } from "~/helpers/utils";
@@ -44,14 +44,13 @@ const Star = ({
   const flaresRef = useRef<THREE.ShaderMaterial>(null);
 
   const colors =
-    useAtomValue(currentStarSystemAtom)?.star.colors ??
-    new Array(7).fill(new Vector4(0, 0, 0));
+    useAtomValue(currentStarSystemAtom)?.star.colors ?? randomizeColors();
 
   const blobs = colors.slice(0, 1);
   const star = colors.slice(1, 5);
   const flares = colors.slice(5, 8);
 
-  useRandomColors([
+  useColors([
     { object: blobsRef, colors: blobs },
     { object: starRef, colors: star },
     { object: flaresRef, colors: flares },

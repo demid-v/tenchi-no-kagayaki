@@ -1,7 +1,7 @@
 import { useLayoutEffect } from "react";
 import * as THREE from "three";
 
-const useRandomColors = (
+const useColors = (
   objects: {
     object: React.RefObject<THREE.ShaderMaterial | null>;
     colors: THREE.Vector4[];
@@ -14,4 +14,4 @@ const useRandomColors = (
   });
 };
 
-export default useRandomColors;
+export default useColors;
