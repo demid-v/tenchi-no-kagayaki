@@ -1,4 +1,4 @@
-import { useAtom, useSetAtom } from "jotai";
+import { useAtom } from "jotai";
 
 import { Checkbox } from "~/components/ui/checkbox";
 import { Label } from "~/components/ui/label";
@@ -7,7 +7,7 @@ import { pixelsAtom, showOrbitsAtom } from "~/helpers/store";
 
 const Header = () => {
   const [pixels, setPixels] = useAtom(pixelsAtom);
-  const setShowOrbits = useSetAtom(showOrbitsAtom);
+  const [showOrbits, setShowOrbits] = useAtom(showOrbitsAtom);
 
   return (
     <header className="absolute top-0 z-10 flex min-h-10 w-full items-center justify-end gap-x-5 px-3 py-2">
@@ -25,6 +25,7 @@ const Header = () => {
       <div className="flex gap-x-2">
         <Checkbox
           id="orbits"
+          checked={showOrbits}
           className="border-secondary"
           onCheckedChange={(newState) =>
             setShowOrbits(newState === "indeterminate" ? false : newState)

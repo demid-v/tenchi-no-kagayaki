@@ -1,17 +1,17 @@
 "use client";
 
 import { useSetAtom } from "jotai";
-import { Suspense, useEffect, useMemo, useRef } from "react";
+import { Suspense, useEffect, useMemo } from "react";
 import { Vector3 } from "three";
 
 import { randomizeColors } from "~/components/canvas/star";
 import { initStarAtom } from "~/helpers/store";
+import { getRandom } from "~/helpers/utils";
 
 import Star from "./star";
 
 const InsideGalaxy = () => {
   const setStar = useSetAtom(initStarAtom);
-  const initialized = useRef(false);
 
   const stars = useMemo(() => {
     const galaxyRadius = 10000;
@@ -22,13 +22,12 @@ const InsideGalaxy = () => {
       const spin = ((radius * 1.5) / galaxyRadius) * 2;
 
       const branchWidth =
-        Math.cos(((Math.PI / galaxyRadius) * radius) / 2.2) * galaxyRadius;
+        Math.cos((Math.PI / galaxyRadius) * (radius / 2.2)) *
+        getRandom(galaxyRadius / 30, galaxyRadius / 1.8);
 
       const position = new Vector3(
-        Math.cos(branch + spin) * radius +
-          ((Math.random() - 0.5) * branchWidth) / 4,
-        Math.sin(branch + spin) * radius +
-          ((Math.random() - 0.5) * branchWidth) / 4,
+        Math.cos(branch + spin) * radius + getRandom(-0.5, 0.5) * branchWidth,
+        Math.sin(branch + spin) * radius + getRandom(-0.5, 0.5) * branchWidth,
         0,
       );
 
@@ -46,9 +45,6 @@ const InsideGalaxy = () => {
   }, []);
 
   useEffect(() => {
-    if (initialized.current) return;
-    initialized.current = true;
-
     stars.forEach((star) => {
       setStar({
         key: star.key,
