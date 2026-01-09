@@ -44,14 +44,14 @@ const Common = dynamic(
 );
 
 const StarSystemScene = dynamic(
-  () => import("~/components/dom/star-system-scene"),
+  () => import("~/components/canvas/star-system/scene"),
   {
     ssr: false,
   },
 );
 
 const InsideGalaxyStars = dynamic(
-  () => import("~/components/canvas/inside-galaxy/stars"),
+  () => import("~/components/canvas/galaxy/galaxy"),
   {
     ssr: false,
   },

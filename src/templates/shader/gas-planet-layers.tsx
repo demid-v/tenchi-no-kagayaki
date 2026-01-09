@@ -22,7 +22,6 @@ const GasPlanetLayersShader = ({
   bands = 0.892,
   numOfColors = 3,
   colors,
-  darkColors,
   size = 10.107,
   octaves = 3,
   shouldDither = true,
@@ -42,7 +41,6 @@ const GasPlanetLayersShader = ({
   bands?: number;
   numOfColors?: number;
   colors?: Vector4[];
-  darkColors?: Vector4[];
   size?: number;
   octaves?: number;
   shouldDither?: boolean;

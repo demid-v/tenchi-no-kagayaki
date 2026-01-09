@@ -6,7 +6,7 @@ import { useRef } from "react";
 
 import { sceneAtom } from "~/helpers/store";
 
-import Header from "./header";
+import Header from "../canvas/header";
 
 const Scene = dynamic(() => import("~/components/canvas/scene"), {
   ssr: false,

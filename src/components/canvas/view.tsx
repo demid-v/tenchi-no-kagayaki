@@ -1,7 +1,7 @@
 "use client";
 
 import { OrthographicCamera, View as ViewImpl } from "@react-three/drei";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtomValue } from "jotai";
 import { Suspense, useLayoutEffect, useRef } from "react";
 import { OrthographicCamera as OrthographicCameraImpl } from "three";
 
@@ -11,7 +11,7 @@ import { currentStarSystemAtom, sceneAtom } from "~/helpers/store";
 import Orbit from "./orbit-controls";
 
 const Common = ({ color }: { color?: string }) => {
-  const [scene, setScene] = useAtom(sceneAtom);
+  const scene = useAtomValue(sceneAtom);
 
   const ref = useRef<OrthographicCameraImpl>(null);
 

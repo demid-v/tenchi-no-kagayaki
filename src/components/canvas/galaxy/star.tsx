@@ -11,7 +11,7 @@ import { getRandom } from "~/helpers/utils";
 import fragmentShader from "~/templates/shader/glsl/galaxy-star.frag";
 import vertexShader from "~/templates/shader/glsl/galaxy-star.vert";
 
-const InsideGalaxy = ({
+const Star = ({
   color,
   starId,
   ...props
@@ -101,4 +101,4 @@ const InsideGalaxy = ({
   );
 };
 
-export default InsideGalaxy;
+export default Star;

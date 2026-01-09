@@ -4,45 +4,62 @@ import { useAtom, useAtomValue } from "jotai";
 import dynamic from "next/dynamic";
 import { Suspense, useMemo } from "react";
 
-import { randomizeColors as randomizeColorsDeadPlanet } from "~/components/canvas/dead-planet";
-import { randomizeColors as randomizeColorsDryPlanet } from "~/components/canvas/dry-planet";
-import { randomizeColors as randomizeColorsGasPlanet } from "~/components/canvas/gas-planet";
-import { randomizeColors as randomizeColorsGasPlanetWithRings } from "~/components/canvas/gas-planet-with-rings";
-import { randomizeColors as randomizeColorsLavaPlanet } from "~/components/canvas/lava-planet";
-import { randomizeColors as randomizeColorsWetPlanet } from "~/components/canvas/wet-planet";
+import { randomizeColors as randomizeColorsDeadPlanet } from "~/components/canvas/star-system/dead-planet";
+import { randomizeColors as randomizeColorsDryPlanet } from "~/components/canvas/star-system/dry-planet";
+import { randomizeColors as randomizeColorsGasPlanet } from "~/components/canvas/star-system/gas-planet";
+import { randomizeColors as randomizeColorsGasPlanetWithRings } from "~/components/canvas/star-system/gas-planet-with-rings";
+import { randomizeColors as randomizeColorsLavaPlanet } from "~/components/canvas/star-system/lava-planet";
+import { randomizeColors as randomizeColorsWetPlanet } from "~/components/canvas/star-system/wet-planet";
 import { currentStarSystemIdAtom, showOrbitsAtom } from "~/helpers/store";
 import { getRandom } from "~/helpers/utils";
 
 const GasPlanetWithRings = dynamic(
-  () => import("~/components/canvas/gas-planet-with-rings"),
+  () => import("~/components/canvas/star-system/gas-planet-with-rings"),
   {
     ssr: false,
   },
 );
 
-const GasPlanet = dynamic(() => import("~/components/canvas/gas-planet"), {
+const GasPlanet = dynamic(
+  () => import("~/components/canvas/star-system/gas-planet"),
+  {
+    ssr: false,
+  },
+);
+
+const LavaPlanet = dynamic(
+  () => import("~/components/canvas/star-system/lava-planet"),
+  {
+    ssr: false,
+  },
+);
+
+const DeadPlanet = dynamic(
+  () => import("~/components/canvas/star-system/dead-planet"),
+  {
+    ssr: false,
+  },
+);
+
+const DryPlanet = dynamic(
+  () => import("~/components/canvas/star-system/dry-planet"),
+  {
+    ssr: false,
+  },
+);
+
+const Star = dynamic(() => import("~/components/canvas/star-system/star"), {
   ssr: false,
 });
 
-const LavaPlanet = dynamic(() => import("~/components/canvas/lava-planet"), {
-  ssr: false,
-});
+const WetPlanet = dynamic(
+  () => import("~/components/canvas/star-system/wet-planet"),
+  {
+    ssr: false,
+  },
+);
 
-const DeadPlanet = dynamic(() => import("~/components/canvas/dead-planet"), {
-  ssr: false,
-});
-
-const DryPlanet = dynamic(() => import("~/components/canvas/dry-planet"), {
-  ssr: false,
-});
-
-const Star = dynamic(() => import("~/components/canvas/star"), { ssr: false });
-
-const WetPlanet = dynamic(() => import("~/components/canvas/wet-planet"), {
-  ssr: false,
-});
-
-const Orbit = dynamic(() => import("~/components/canvas/orbit"), {
+const Orbit = dynamic(() => import("~/components/canvas/star-system/orbit"), {
   ssr: false,
 });
 
