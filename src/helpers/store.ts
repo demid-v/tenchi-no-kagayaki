@@ -1,10 +1,18 @@
-import { atom } from "jotai";
+import { Provider, atom, createStore } from "jotai";
 import { Vector3, Vector4 } from "three";
+import { OrthographicCamera } from "three";
+import { OrbitControls } from "three-stdlib";
+
+const store = createStore();
+const JotaiProvider = ({ children }: { children: React.ReactNode }) =>
+  Provider({ children, store });
+
+const cameraAtom = atom<OrthographicCamera | null>(null);
+const orbitAtom = atom<OrbitControls | null>(null);
+const sceneAtom = atom<"starSystem" | "galaxy" | "galaxyCluster">("galaxy");
 
 const pixelsAtom = atom(100);
 const showOrbitsAtom = atom(false);
-
-const sceneAtom = atom<"starSystem" | "galaxy" | "galaxyCluster">("galaxy");
 
 type StarSystemsType = Map<
   number,
@@ -40,9 +48,12 @@ const currentStarSystemAtom = atom((get) =>
 );
 
 export {
+  JotaiProvider,
+  cameraAtom,
+  orbitAtom,
+  sceneAtom,
   pixelsAtom,
   showOrbitsAtom,
-  sceneAtom,
   currentStarSystemIdAtom,
   initStarAtom,
   currentStarSystemAtom,

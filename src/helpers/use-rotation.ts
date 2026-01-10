@@ -25,7 +25,7 @@ const useRotation = (
   useFrame(({ clock: { elapsedTime } }) => {
     if (!object.current) return;
 
-    const speed = relativeSpeed / Math.pow(radius / 100, 2);
+    const speed = relativeSpeed / Math.pow(radius / 50, 2);
 
     const c = Math.cos(orbitAngle);
     const s = Math.sin(orbitAngle);

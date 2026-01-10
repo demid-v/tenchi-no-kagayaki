@@ -4,7 +4,7 @@ import { useAtomValue } from "jotai";
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
 
-import { sceneAtom } from "~/helpers/store";
+import { JotaiProvider, sceneAtom } from "~/helpers/store";
 
 const View = dynamic(
   () => import("~/components/canvas/view").then((mod) => mod.View),
@@ -65,25 +65,33 @@ const InsideGalaxyStars = dynamic(
 );
 
 export default function Page() {
+  return (
+    <JotaiProvider>
+      <View
+        className="flex h-full w-full flex-col items-center justify-center"
+        orbit
+      >
+        <Common color="black" />
+        <Scene />
+      </View>
+    </JotaiProvider>
+  );
+}
+
+const Scene = () => {
   const scene = useAtomValue(sceneAtom);
 
   return (
-    <View
-      className="flex h-full w-full flex-col items-center justify-center"
-      orbit
-    >
-      <Common color="black" />
-      <Suspense fallback={null}>
-        <group visible={scene === "starSystem"}>
-          <StarSystemScene />
-        </group>
-        <group visible={scene === "galaxy"}>
-          <InsideGalaxyStars />
-        </group>
-        <group visible={scene === "galaxyCluster"}>
-          <Cluster />
-        </group>
-      </Suspense>
-    </View>
+    <Suspense fallback={null}>
+      <group visible={scene === "starSystem"}>
+        <StarSystemScene />
+      </group>
+      <group visible={scene === "galaxy"}>
+        <InsideGalaxyStars />
+      </group>
+      <group visible={scene === "galaxyCluster"}>
+        <Cluster />
+      </group>
+    </Suspense>
   );
-}
+};

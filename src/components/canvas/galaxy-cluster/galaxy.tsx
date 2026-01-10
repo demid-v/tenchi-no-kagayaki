@@ -1,11 +1,11 @@
 "use client";
 
-import { useSetAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { useRef } from "react";
 import * as THREE from "three";
 import { Vector4 } from "three";
 
-import { sceneAtom } from "~/helpers/store";
+import { orbitAtom, sceneAtom } from "~/helpers/store";
 import useColors from "~/helpers/use-random-colors";
 import useUpdate from "~/helpers/use-update";
 import useUpdatePixels from "~/helpers/use-update-pixels";
@@ -40,7 +40,8 @@ const Galaxy = ({
   const groupRef = useRef<THREE.Group>(null);
   const groundRef = useRef<THREE.ShaderMaterial>(null);
 
-  const setScene = useSetAtom(sceneAtom);
+  const [scene, setScene] = useAtom(sceneAtom);
+  const orbit = useAtomValue(orbitAtom);
 
   useColors([{ object: groundRef, colors }]);
   useUpdate(groupRef);
@@ -50,6 +51,10 @@ const Galaxy = ({
     <group
       ref={groupRef}
       onClick={() => {
+        if (scene !== "galaxyCluster") return;
+
+        orbit!.enableDamping = false;
+
         setScene("galaxy");
       }}
       {...props}

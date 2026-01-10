@@ -1,11 +1,11 @@
 "use client";
 
-import { useAtom, useSetAtom } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import React, { useMemo, useRef, useState } from "react";
 import { EllipseCurve } from "three";
 import * as THREE from "three";
 
-import { currentStarSystemIdAtom, sceneAtom } from "~/helpers/store";
+import { currentStarSystemIdAtom, orbitAtom, sceneAtom } from "~/helpers/store";
 import useUpdate from "~/helpers/use-update";
 import { getRandom } from "~/helpers/utils";
 import fragmentShader from "~/templates/shader/glsl/galaxy-star.frag";
@@ -37,7 +37,7 @@ const Star = ({
 
     acc[idx] = p.x;
     acc[idx + 1] = p.y;
-    acc[idx + 2] = -1;
+    acc[idx + 2] = 0;
 
     return acc;
   }, new Float32Array(positionsLength));
@@ -63,6 +63,8 @@ const Star = ({
 
   const setCurrentStar = useSetAtom(currentStarSystemIdAtom);
 
+  const orbit = useAtomValue(orbitAtom);
+
   return (
     <group
       {...props}
@@ -72,6 +74,8 @@ const Star = ({
       onPointerLeave={() => setShowTarget(false)}
       onClick={() => {
         if (scene !== "galaxy") return;
+
+        orbit!.enableDamping = false;
 
         setCurrentStar(starId);
         setScene("starSystem");

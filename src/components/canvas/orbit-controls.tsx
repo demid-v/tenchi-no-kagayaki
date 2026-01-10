@@ -1,12 +1,13 @@
 import { OrbitControls } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import { useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 
 import {
   currentStarSystemAtom,
   currentStarSystemIdAtom,
+  orbitAtom,
   sceneAtom,
 } from "~/helpers/store";
 
@@ -15,18 +16,33 @@ const Controls = () => {
   const [scene, setScene] = useAtom(sceneAtom);
   const setCurrentStarSystem = useSetAtom(currentStarSystemIdAtom);
 
-  const ref = useRef<OrbitControlsImpl>(null);
+  const orbitRef = useRef<OrbitControlsImpl>(null);
+
+  const setOrbit = useSetAtom(orbitAtom);
+
+  useEffect(() => {
+    if (orbitRef.current === null) return;
+
+    setOrbit(orbitRef.current);
+  }, [camera]);
+
+  useEffect(() => {
+    if (orbitRef.current === null) return;
+
+    orbitRef.current.enableDamping = true;
+  }, [scene]);
 
   useLayoutEffect(() => {
-    if (scene !== "starSystem") return;
+    if (scene !== "starSystem" || orbitRef.current === null) return;
 
-    ref.current?.target.set(0, 0, 0);
+    orbitRef.current.target.set(0, 0, 0);
+    orbitRef.current.update();
   }, [scene]);
 
   const currentStarSystem = useAtomValue(currentStarSystemAtom);
 
   useLayoutEffect(() => {
-    if (scene !== "galaxy" || ref.current === null) return;
+    if (scene !== "galaxy" || orbitRef.current === null) return;
 
     camera.zoom = currentStarSystem ? 5 : 1;
 
@@ -36,20 +52,20 @@ const Controls = () => {
       z: 0,
     };
 
-    ref.current.target.set(x, y, z);
-    ref.current.update();
+    orbitRef.current.target.set(x, y, z);
+    orbitRef.current.update();
 
     camera.position.set(x, y, 1000);
     camera.updateProjectionMatrix();
   }, [scene, currentStarSystem, camera]);
 
   useLayoutEffect(() => {
-    if (scene !== "galaxyCluster" || ref.current === null) return;
+    if (scene !== "galaxyCluster" || orbitRef.current === null) return;
 
     camera.zoom = 1;
 
-    ref.current.target.set(0, 0, 0);
-    ref.current.update();
+    orbitRef.current.target.set(0, 0, 0);
+    orbitRef.current.update();
 
     camera.position.set(0, 0, 1000);
     camera.updateProjectionMatrix();
@@ -57,13 +73,17 @@ const Controls = () => {
 
   return (
     <OrbitControls
-      ref={ref}
+      ref={orbitRef}
       target={[0, 0, 0]}
       enableRotate={false}
       onChange={() => {
         if (scene === "starSystem" && camera.zoom < 0.2) {
+          orbitRef.current!.enableDamping = false;
+
           setScene("galaxy");
         } else if (scene === "galaxy" && camera.zoom < 0.6) {
+          orbitRef.current!.enableDamping = false;
+
           setCurrentStarSystem(null);
           setScene("galaxyCluster");
         }
