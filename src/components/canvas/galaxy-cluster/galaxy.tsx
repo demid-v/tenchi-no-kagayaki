@@ -7,7 +7,6 @@ import { Vector4 } from "three";
 
 import { orbitAtom, sceneAtom } from "~/helpers/store";
 import useColors from "~/helpers/use-random-colors";
-import useUpdate from "~/helpers/use-update";
 import useUpdatePixels from "~/helpers/use-update-pixels";
 import { generateColors, getRandom } from "~/helpers/utils";
 import GalaxyShader from "~/templates/shader/galaxy";
@@ -29,6 +28,7 @@ const Galaxy = ({
   tilt,
   swirl,
   rotation,
+  seed,
   ...props
 }: {
   pixels?: number;
@@ -36,6 +36,7 @@ const Galaxy = ({
   tilt?: number;
   swirl?: number;
   rotation?: number;
+  seed?: number;
 } & React.ComponentProps<"group">) => {
   const groupRef = useRef<THREE.Group>(null);
   const groundRef = useRef<THREE.ShaderMaterial>(null);
@@ -44,7 +45,7 @@ const Galaxy = ({
   const orbit = useAtomValue(orbitAtom);
 
   useColors([{ object: groundRef, colors }]);
-  useUpdate(groupRef);
+  // useUpdate(groupRef);
   useUpdatePixels(groupRef);
 
   return (
@@ -66,7 +67,8 @@ const Galaxy = ({
           pixels={pixels}
           tilt={tilt}
           swirl={swirl}
-          rotation={rotation}
+          rotation={0}
+          seed={seed}
         />
       </mesh>
     </group>
