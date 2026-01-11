@@ -9,7 +9,9 @@ const JotaiProvider = ({ children }: { children: React.ReactNode }) =>
 
 const cameraAtom = atom<OrthographicCamera | null>(null);
 const orbitAtom = atom<OrbitControls | null>(null);
-const sceneAtom = atom<"starSystem" | "galaxy" | "galaxyCluster">("galaxy");
+const sceneAtom = atom<"starSystem" | "galaxy" | "galaxyCluster">(
+  "galaxyCluster",
+);
 
 const pixelsAtom = atom(100);
 const showOrbitsAtom = atom(false);
@@ -21,7 +23,6 @@ type StarSystemsType = Map<
       position: Vector3;
       colors: Vector4[];
     };
-    planets?: { position: [number, number, number]; colors: Vector4[] }[];
   }
 >;
 
@@ -47,6 +48,56 @@ const currentStarSystemAtom = atom((get) =>
   get(starSystemsBaseAtom)?.get(get(currentStarSystemIdAtom)!),
 );
 
+type GalaxyType = Map<
+  number,
+  {
+    position: Vector3;
+    colors: Vector4[];
+    swirl: number;
+    seed: number;
+  }
+>;
+
+const galaxyBaseAtom = atom<GalaxyType>();
+
+const currentGalaxyIdAtom = atom<number | null>(null);
+
+const initGalaxyAtom = atom(
+  null,
+  (
+    get,
+    set,
+    {
+      key,
+      position,
+      colors,
+      swirl,
+      seed,
+    }: {
+      key: number;
+      position: Vector3;
+      colors: Vector4[];
+      swirl: number;
+      seed: number;
+    },
+  ) => {
+    const galaxies = get(galaxyBaseAtom) ?? (new Map() as GalaxyType);
+
+    const newGalaxy = galaxies.set(key, {
+      position: position.clone(),
+      colors,
+      swirl,
+      seed,
+    });
+
+    set(galaxyBaseAtom, newGalaxy);
+  },
+);
+
+const currentGalaxyAtom = atom((get) =>
+  get(galaxyBaseAtom)?.get(get(currentGalaxyIdAtom)!),
+);
+
 export {
   JotaiProvider,
   cameraAtom,
@@ -57,4 +108,7 @@ export {
   currentStarSystemIdAtom,
   initStarAtom,
   currentStarSystemAtom,
+  currentGalaxyIdAtom,
+  initGalaxyAtom,
+  currentGalaxyAtom,
 };

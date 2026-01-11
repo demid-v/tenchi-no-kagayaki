@@ -1,12 +1,13 @@
 "use client";
 
-import { useAtom, useAtomValue } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { useRef } from "react";
 import * as THREE from "three";
 import { Vector4 } from "three";
 
-import { orbitAtom, sceneAtom } from "~/helpers/store";
+import { currentGalaxyIdAtom, orbitAtom, sceneAtom } from "~/helpers/store";
 import useColors from "~/helpers/use-random-colors";
+import useUpdate from "~/helpers/use-update";
 import useUpdatePixels from "~/helpers/use-update-pixels";
 import { generateColors, getRandom } from "~/helpers/utils";
 import GalaxyShader from "~/templates/shader/galaxy";
@@ -24,6 +25,7 @@ const randomizeColors = () => {
 
 const Galaxy = ({
   pixels = 100,
+  galaxyId,
   colors,
   tilt,
   swirl,
@@ -32,6 +34,7 @@ const Galaxy = ({
   ...props
 }: {
   pixels?: number;
+  galaxyId: number;
   colors: Vector4[];
   tilt?: number;
   swirl?: number;
@@ -45,8 +48,10 @@ const Galaxy = ({
   const orbit = useAtomValue(orbitAtom);
 
   useColors([{ object: groundRef, colors }]);
-  // useUpdate(groupRef);
+  useUpdate(groupRef);
   useUpdatePixels(groupRef);
+
+  const setCurrentGalaxyId = useSetAtom(currentGalaxyIdAtom);
 
   return (
     <group
@@ -56,6 +61,7 @@ const Galaxy = ({
 
         orbit!.enableDamping = false;
 
+        setCurrentGalaxyId(galaxyId);
         setScene("galaxy");
       }}
       {...props}
@@ -67,7 +73,7 @@ const Galaxy = ({
           pixels={pixels}
           tilt={tilt}
           swirl={swirl}
-          rotation={0}
+          rotation={rotation}
           seed={seed}
         />
       </mesh>

@@ -1,17 +1,32 @@
 "use client";
 
-import { useSetAtom } from "jotai";
-import { useEffect, useMemo } from "react";
+import { useFrame } from "@react-three/fiber";
+import { useAtomValue, useSetAtom } from "jotai";
+import { useEffect, useMemo, useRef } from "react";
 import { Vector2, Vector3, Vector4 } from "three";
+import * as Three from "three";
 
 import Stars from "~/components/canvas/star-system/stars";
-import { initStarAtom } from "~/helpers/store";
+import {
+  currentGalaxyAtom,
+  // currentGalaxyIdAtom,
+  initStarAtom,
+} from "~/helpers/store";
 import { getRandom } from "~/helpers/utils";
 
-import { colors, seed } from "../galaxy-cluster/cluster";
+// import GalaxyGlow from "./galaxy-glow";
 import Star from "./star";
 
 const galaxyRadius = 500;
+const rotation = 0;
+const timeSpeed = 0;
+const numOfcolors = 6;
+const size = 7;
+const octaves = 1;
+const time = 0;
+const layerHeight = 0.4;
+const zoom = 1.375;
+const numOfLayers = 4;
 
 const fract = <T extends number | Vector2>(x: T): T => {
   if (x instanceof Vector2) {
@@ -28,51 +43,7 @@ const step = (edge: number, x: number) => {
   return x < edge ? 0 : 1;
 };
 
-function rand(coord: Vector2) {
-  coord = coord.clone();
-
-  return fract(
-    Math.sin(coord.dot(new Vector2(12.9898, 78.233))) * 15.5453 * seed,
-  );
-}
-
-function noise(coord: Vector2) {
-  coord = coord.clone();
-
-  const i = coord.clone().floor();
-  const f = fract(coord);
-
-  const a = rand(i);
-  const b = rand(new Vector2(i.x + 1, i.y));
-  const c = rand(new Vector2(i.x, i.y + 1));
-  const d = rand(new Vector2(i.x + 1, i.y + 1));
-
-  const cubic = new Vector2(
-    f.x * f.x * (3.0 - 2.0 * f.x),
-    f.y * f.y * (3.0 - 2.0 * f.y),
-  );
-
-  return (
-    mix(a, b, cubic.x) +
-    (c - a) * cubic.y * (1.0 - cubic.x) +
-    (d - b) * cubic.x * cubic.y
-  );
-}
-
-function fbm(coord: Vector2) {
-  coord = coord.clone();
-
-  let value = 0;
-
-  for (let i = 0, scale = 0.5; i < OCTAVES; i++, scale *= 0.5) {
-    value += noise(coord) * scale;
-    coord = coord.multiplyScalar(2);
-  }
-
-  return value;
-}
-
-function rotate(coord: Vector2, angle: number) {
+const rotate = (coord: Vector2, angle: number) => {
   coord = coord.clone();
 
   coord = coord.subScalar(0.5);
@@ -83,23 +54,70 @@ function rotate(coord: Vector2, angle: number) {
   );
 
   return coord.addScalar(0.5);
-}
-
-const rotation = 0;
-const time_speed = 0;
-const n_colors = 6;
-const size = 7;
-const OCTAVES = 1;
-const time = 0;
-const layer_height = 0.4;
-const zoom = 1.375;
-const n_layers = 4;
-const swirl = -9;
+};
 
 const Galaxy = () => {
   const setStar = useSetAtom(initStarAtom);
+  // const currentGalaxyId = useAtomValue(currentGalaxyIdAtom);
+  const currentGalaxy = useAtomValue(currentGalaxyAtom);
+
+  const galaxyRef = useRef<Three.Group>(null);
+
+  useFrame(() => {
+    if (!galaxyRef.current) return;
+
+    galaxyRef.current.rotateZ(-0.0001);
+  });
+
+  function rand(coord: Vector2) {
+    coord = coord.clone();
+
+    return fract(
+      Math.sin(coord.dot(new Vector2(12.9898, 78.233))) *
+        15.5453 *
+        (currentGalaxy?.seed ?? 0),
+    );
+  }
+
+  function noise(coord: Vector2) {
+    coord = coord.clone();
+
+    const i = coord.clone().floor();
+    const f = fract(coord);
+
+    const a = rand(i);
+    const b = rand(new Vector2(i.x + 1, i.y));
+    const c = rand(new Vector2(i.x, i.y + 1));
+    const d = rand(new Vector2(i.x + 1, i.y + 1));
+
+    const cubic = new Vector2(
+      f.x * f.x * (3.0 - 2.0 * f.x),
+      f.y * f.y * (3.0 - 2.0 * f.y),
+    );
+
+    return (
+      mix(a, b, cubic.x) +
+      (c - a) * cubic.y * (1.0 - cubic.x) +
+      (d - b) * cubic.x * cubic.y
+    );
+  }
+
+  const fbm = (coord: Vector2) => {
+    coord = coord.clone();
+
+    let value = 0;
+
+    for (let i = 0, scale = 0.5; i < octaves; i++, scale *= 0.5) {
+      value += noise(coord) * scale;
+      coord = coord.multiplyScalar(2);
+    }
+
+    return value;
+  };
 
   const stars = useMemo(() => {
+    if (!currentGalaxy) return [];
+
     return new Array(20000)
       .fill(0)
       .map((_el, i) => {
@@ -112,60 +130,65 @@ const Galaxy = () => {
         const uv2 = uv.clone();
 
         const d_to_center = uv.distanceTo(new Vector2(0.5, 0.5));
-        const rot = swirl * Math.pow(d_to_center, 0.4);
-        const rotated_uv = rotate(uv, rot + time * time_speed);
+        const rot = currentGalaxy.swirl * Math.pow(d_to_center, 0.4);
+        const rotated_uv = rotate(uv, rot + time * timeSpeed);
 
-        let f1 = fbm(rotated_uv.multiplyScalar(size));
-        f1 = Math.floor(f1 * n_layers) / n_layers;
+        let f1 = fbm(rotated_uv.clone().multiplyScalar(size));
+        f1 = Math.floor(f1 * numOfLayers) / numOfLayers;
 
-        uv2.x -= f1 * layer_height;
+        uv2.y -= f1 * layerHeight;
 
         const d_to_center2 = uv2.distanceTo(new Vector2(0.5, 0.5));
-        const rot2 = swirl * Math.pow(d_to_center2, 0.4);
-        const rotated_uv2 = rotate(uv2, rot2 + time * time_speed);
-        let f2 = fbm(rotated_uv2.multiplyScalar(size).addScalar(f1 * 5.0));
+        const rot2 = currentGalaxy.swirl * Math.pow(d_to_center2, 0.4);
+        const rotated_uv2 = rotate(uv2, rot2 + time * timeSpeed);
 
-        const position1 = new Vector3(
-          ...uv.subScalar(0.5).multiplyScalar(galaxyRadius),
-          0,
+        let f2 = fbm(
+          rotated_uv2
+            .clone()
+            .multiplyScalar(size)
+            .addScalar(f1 * 5.0),
         );
 
-        const position2 = new Vector3(
-          ...uv2.subScalar(0.5).multiplyScalar(galaxyRadius),
-          0,
-        );
+        const p1 = uv.clone().subScalar(0.5).multiplyScalar(galaxyRadius);
+        const p2 = uv.clone().subScalar(0.5).multiplyScalar(galaxyRadius);
+
+        const position1 = new Vector3(p1.x, p1.y, 0);
+        const position2 = new Vector3(p2.x, p2.y, 0);
 
         const position = Math.random() < 0.5 ? position1 : position2;
 
         const a = step(f2 + d_to_center2, 0.7);
 
-        if (a === 0) return null;
+        if (a === 0 && getRandom() < 1 - Math.pow(1 - d_to_center2, 2) / 50) {
+          return null;
+        }
 
         f2 *= 2.3;
-        f2 = Math.floor(f2 * n_colors);
-        f2 = Math.min(f2, n_colors);
-        const col = colors[f2];
+        f2 = Math.floor(f2 * numOfcolors);
+        f2 = Math.min(f2, numOfcolors);
 
+        const col = currentGalaxy.colors[f2];
         const color = new Vector4(col?.x, col?.y, col?.z, a * f2);
 
         return {
           key: i,
           position,
-          colors,
           element: (
             <Star key={i} starId={i} position={position} color={color} />
           ),
         };
       })
       .filter((el) => el != null);
-  }, []);
+  }, [currentGalaxy]);
 
   useEffect(() => {
+    if (!currentGalaxy) return;
+
     stars.forEach((star) => {
       setStar({
         key: star.key,
         position: star.position,
-        colors: star.colors,
+        colors: currentGalaxy.colors,
       });
     });
   }, [stars]);
@@ -173,7 +196,21 @@ const Galaxy = () => {
   return (
     <group>
       <Stars />
-      {stars.map((star) => star.element)}
+      {/* {currentGalaxy && (
+        <GalaxyGlow
+          key={currentGalaxyId ?? 0}
+          colors={currentGalaxy.colors}
+          swirl={currentGalaxy.swirl}
+          seed={currentGalaxy.seed}
+          pixels={5000}
+          tilt={1}
+          rotation={0}
+          position={[0, 0, 0]}
+        />
+      )} */}
+      <group ref={galaxyRef} position={[0, 0, 1]}>
+        {stars.map((star) => star.element)}
+      </group>
     </group>
   );
 };
