@@ -7,14 +7,9 @@ import { Vector2, Vector3, Vector4 } from "three";
 import * as Three from "three";
 
 import Stars from "~/components/canvas/star-system/stars";
-import {
-  currentGalaxyAtom,
-  // currentGalaxyIdAtom,
-  initStarAtom,
-} from "~/helpers/store";
+import { currentGalaxyAtom, initStarAtom } from "~/helpers/store";
 import { getRandom } from "~/helpers/utils";
 
-// import GalaxyGlow from "./galaxy-glow";
 import Star from "./star";
 
 const galaxyRadius = 500;
@@ -58,7 +53,6 @@ const rotate = (coord: Vector2, angle: number) => {
 
 const Galaxy = () => {
   const setStar = useSetAtom(initStarAtom);
-  // const currentGalaxyId = useAtomValue(currentGalaxyIdAtom);
   const currentGalaxy = useAtomValue(currentGalaxyAtom);
 
   const galaxyRef = useRef<Three.Group>(null);
@@ -69,7 +63,7 @@ const Galaxy = () => {
     galaxyRef.current.rotateZ(-0.0001);
   });
 
-  function rand(coord: Vector2) {
+  const rand = (coord: Vector2) => {
     coord = coord.clone();
 
     return fract(
@@ -77,9 +71,9 @@ const Galaxy = () => {
         15.5453 *
         (currentGalaxy?.seed ?? 0),
     );
-  }
+  };
 
-  function noise(coord: Vector2) {
+  const noise = (coord: Vector2) => {
     coord = coord.clone();
 
     const i = coord.clone().floor();
@@ -100,7 +94,7 @@ const Galaxy = () => {
       (c - a) * cubic.y * (1.0 - cubic.x) +
       (d - b) * cubic.x * cubic.y
     );
-  }
+  };
 
   const fbm = (coord: Vector2) => {
     coord = coord.clone();
@@ -157,10 +151,13 @@ const Galaxy = () => {
 
         const position = Math.random() < 0.5 ? position1 : position2;
 
-        const a = step(f2 + d_to_center2, 0.7);
+        let a = step(f2 + d_to_center2, 0.7);
 
-        if (a === 0 && getRandom() < 1 - Math.pow(1 - d_to_center2, 2) / 50) {
-          return null;
+        if (a === 0) {
+          if (getRandom() < 1 - Math.pow(1 - d_to_center2, 2) / 50) return null;
+          else {
+            a = 1;
+          }
         }
 
         f2 *= 2.3;
@@ -173,6 +170,7 @@ const Galaxy = () => {
         return {
           key: i,
           position,
+          color,
           element: (
             <Star key={i} starId={i} position={position} color={color} />
           ),
@@ -188,7 +186,7 @@ const Galaxy = () => {
       setStar({
         key: star.key,
         position: star.position,
-        colors: currentGalaxy.colors,
+        color: star.color,
       });
     });
   }, [stars]);
@@ -196,18 +194,6 @@ const Galaxy = () => {
   return (
     <group>
       <Stars />
-      {/* {currentGalaxy && (
-        <GalaxyGlow
-          key={currentGalaxyId ?? 0}
-          colors={currentGalaxy.colors}
-          swirl={currentGalaxy.swirl}
-          seed={currentGalaxy.seed}
-          pixels={5000}
-          tilt={1}
-          rotation={0}
-          position={[0, 0, 0]}
-        />
-      )} */}
       <group ref={galaxyRef} position={[0, 0, 1]}>
         {stars.map((star) => star.element)}
       </group>

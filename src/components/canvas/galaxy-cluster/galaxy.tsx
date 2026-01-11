@@ -1,7 +1,7 @@
 "use client";
 
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import * as THREE from "three";
 import { Vector4 } from "three";
 
@@ -30,7 +30,9 @@ const Galaxy = ({
   tilt,
   swirl,
   rotation,
+  rotationSpeed,
   seed,
+  scale,
   ...props
 }: {
   pixels?: number;
@@ -39,23 +41,43 @@ const Galaxy = ({
   tilt?: number;
   swirl?: number;
   rotation?: number;
+  rotationSpeed?: number;
   seed?: number;
 } & React.ComponentProps<"group">) => {
   const groupRef = useRef<THREE.Group>(null);
-  const groundRef = useRef<THREE.ShaderMaterial>(null);
+  const galaxyRef = useRef<THREE.ShaderMaterial>(null);
 
   const [scene, setScene] = useAtom(sceneAtom);
   const orbit = useAtomValue(orbitAtom);
 
-  useColors([{ object: groundRef, colors }]);
+  useColors([{ object: galaxyRef, colors }]);
   useUpdate(groupRef);
   useUpdatePixels(groupRef);
+
+  const [sceneScale, setSceneScale] = useState(scale);
 
   const setCurrentGalaxyId = useSetAtom(currentGalaxyIdAtom);
 
   return (
     <group
+      {...props}
       ref={groupRef}
+      onPointerOver={() => {
+        if (!galaxyRef.current) return;
+
+        galaxyRef.current.uniforms.brightness!.value = 1.5;
+        setSceneScale((scale) => {
+          return Array.isArray(scale)
+            ? [scale[1] * 1.2, scale[1] * 1.2, scale[2]]
+            : scale;
+        });
+      }}
+      onPointerLeave={() => {
+        if (!galaxyRef.current) return;
+
+        galaxyRef.current.uniforms.brightness!.value = 1;
+        setSceneScale(scale);
+      }}
       onClick={() => {
         if (scene !== "galaxyCluster") return;
 
@@ -64,16 +86,17 @@ const Galaxy = ({
         setCurrentGalaxyId(galaxyId);
         setScene("galaxy");
       }}
-      {...props}
+      scale={sceneScale}
     >
       <mesh>
         <planeGeometry args={[1, 1]} />
         <GalaxyShader
-          ref={groundRef}
+          ref={galaxyRef}
           pixels={pixels}
           tilt={tilt}
           swirl={swirl}
           rotation={rotation}
+          rotationSpeed={rotationSpeed}
           seed={seed}
         />
       </mesh>

@@ -27,12 +27,13 @@ const Cluster = () => {
         const position = new Vector3(
           radius * Math.cos(angle),
           radius * Math.sin(angle),
-          0,
+          1,
         );
 
         const scale = getRandom(60, 120);
         const colors = randomizeColors();
         const rotation = getRandom(0, Math.PI / 2);
+        const rotationSpeed = getRandom(0.01, 1);
         const tilt = getRandom(1, 3);
         const swirl = getRandom(-12, -6);
         const seed = flip() ? Math.random() * 10 : Math.random() * 100;
@@ -53,6 +54,7 @@ const Cluster = () => {
               tilt={tilt}
               swirl={swirl}
               rotation={rotation}
+              rotationSpeed={rotationSpeed}
               seed={seed}
             />
           ),

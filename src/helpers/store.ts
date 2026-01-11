@@ -21,7 +21,7 @@ type StarSystemsType = Map<
   {
     star: {
       position: Vector3;
-      colors: Vector4[];
+      color: Vector4;
     };
   }
 >;
@@ -32,12 +32,12 @@ const currentStarSystemIdAtom = atom<number | null>(null);
 
 const initStarAtom = atom(
   null,
-  (get, set, params: { key: number; position: Vector3; colors: Vector4[] }) => {
+  (get, set, params: { key: number; position: Vector3; color: Vector4 }) => {
     const starSystems =
       get(starSystemsBaseAtom) ?? (new Map() as StarSystemsType);
 
     const newStarSystem = starSystems.set(params.key, {
-      star: { position: params.position.clone(), colors: params.colors },
+      star: { position: params.position.clone(), color: params.color },
     });
 
     set(starSystemsBaseAtom, newStarSystem);

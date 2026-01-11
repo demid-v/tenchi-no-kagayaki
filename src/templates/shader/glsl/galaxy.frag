@@ -19,6 +19,7 @@ uniform float n_layers;
 uniform float layer_height;
 uniform float zoom;
 uniform float swirl;
+uniform float brightness;
 
 float rand(vec2 coord) {
   return fract(sin(dot(coord.xy, vec2(12.9898, 78.233))) * 15.5453 * seed);
@@ -112,7 +113,7 @@ void main() {
 
   f2 = floor(f2 * float(n_colors));
   f2 = min(f2, float(n_colors));
-  vec4 col = colors[int(f2)];
+  vec4 col = colors[int(f2)] * brightness;
 
   gl_FragColor = vec4(col.xyz, a * col.a);
 }

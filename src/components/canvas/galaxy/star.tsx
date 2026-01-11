@@ -2,7 +2,6 @@
 
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import React, { useMemo, useRef, useState } from "react";
-import { EllipseCurve } from "three";
 import * as THREE from "three";
 
 import { currentStarSystemIdAtom, orbitAtom, sceneAtom } from "~/helpers/store";
@@ -20,27 +19,11 @@ const Star = ({
   starId: number;
 } & React.ComponentProps<"group">) => {
   const groupRef = useRef<THREE.Group>(null);
+  const starRef = useRef<THREE.ShaderMaterial>(null);
+
   const scale = useMemo(() => getRandom(1, 4), []);
 
-  const [showTarget, setShowTarget] = useState(false);
-
   const [scene, setScene] = useAtom(sceneAtom);
-
-  const curve = new EllipseCurve(0, 0, 1, 1, 0, 2 * Math.PI, false, 0);
-
-  const points = curve.getPoints(50);
-
-  const positionsLength = points.length * 3;
-
-  const positions = points.reduce((acc, p, i) => {
-    const idx = i * 3;
-
-    acc[idx] = p.x;
-    acc[idx + 1] = p.y;
-    acc[idx + 2] = 0;
-
-    return acc;
-  }, new Float32Array(positionsLength));
 
   const shaderOptions = useMemo(
     () =>
@@ -65,13 +48,25 @@ const Star = ({
 
   const orbit = useAtomValue(orbitAtom);
 
+  const [sceneScale, setSceneScale] = useState(scale);
+
   return (
     <group
       {...props}
       ref={groupRef}
-      scale={[scale, scale, 0]}
-      onPointerEnter={() => setShowTarget(true)}
-      onPointerLeave={() => setShowTarget(false)}
+      scale={[sceneScale, sceneScale, 1]}
+      onPointerEnter={() => {
+        if (!starRef.current) return;
+
+        starRef.current.uniforms.brightness!.value = 2;
+        setSceneScale((scale) => scale * 1.5);
+      }}
+      onPointerLeave={() => {
+        if (!starRef.current) return;
+
+        starRef.current.uniforms.brightness!.value = 1;
+        setSceneScale(scale);
+      }}
       onClick={() => {
         if (scene !== "galaxy") return;
 
@@ -83,26 +78,8 @@ const Star = ({
     >
       <mesh>
         <planeGeometry args={[1, 1]} />
-        <shaderMaterial {...shaderOptions} />
+        <shaderMaterial ref={starRef} {...shaderOptions} />
       </mesh>
-      <group visible={showTarget}>
-        <mesh>
-          <line>
-            <bufferGeometry>
-              <bufferAttribute
-                attach="attributes-position"
-                args={[positions, 3]}
-              />
-            </bufferGeometry>
-            <lineBasicMaterial
-              attach="material"
-              color="white"
-              linewidth={1}
-              toneMapped={false}
-            />
-          </line>
-        </mesh>
-      </group>
     </group>
   );
 };

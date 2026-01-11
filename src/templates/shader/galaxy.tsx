@@ -25,6 +25,7 @@ const GalaxyShader = ({
   octaves = 1,
   seed = flip() ? Math.random() * 10 : Math.random() * 100,
   time = 0.0,
+  brightness = 1,
   ref,
 }: {
   pixels?: number;
@@ -42,6 +43,7 @@ const GalaxyShader = ({
   octaves?: number;
   seed?: number;
   time?: number;
+  brightness?: number;
   ref?: React.Ref<THREE.ShaderMaterial>;
 }) => {
   const colorPalette = colors
@@ -74,6 +76,7 @@ const GalaxyShader = ({
         OCTAVES: { value: octaves },
         seed: { value: seed },
         time: { value: time },
+        brightness: { value: brightness },
       },
       vertexShader,
       fragmentShader,

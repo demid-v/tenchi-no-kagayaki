@@ -66,7 +66,7 @@ const Orbit = dynamic(() => import("~/components/canvas/star-system/orbit"), {
 const getPlanets = () => {
   const starScale = getRandom(40, 80);
 
-  const star = <Star position={[0, 0, 2]} scale={[starScale, starScale, 0]} />;
+  const star = <Star position={[0, 0, 2]} scale={[starScale, starScale, 1]} />;
 
   const planets = [];
   const orbits = [];
@@ -91,7 +91,7 @@ const getPlanets = () => {
         relativeSpeed={getRandom(Math.PI / 16, Math.PI / 8)}
         eccentricity={eccentricity}
         orbitAngle={orbitAngle}
-        scale={[scale, scale, 0]}
+        scale={[scale, scale, 1]}
       />,
     );
 
@@ -123,7 +123,7 @@ const getPlanets = () => {
         relativeSpeed={getRandom(Math.PI / 16, Math.PI / 8)}
         eccentricity={eccentricity}
         orbitAngle={orbitAngle}
-        scale={[scale, scale, 0]}
+        scale={[scale, scale, 1]}
       />,
     );
 
@@ -157,7 +157,7 @@ const getPlanets = () => {
         relativeSpeed={getRandom(Math.PI / 16, Math.PI / 8)}
         eccentricity={eccentricity}
         orbitAngle={orbitAngle}
-        scale={[scale, scale, 0]}
+        scale={[scale, scale, 1]}
       />,
     );
 
@@ -191,7 +191,7 @@ const getPlanets = () => {
         relativeSpeed={getRandom(Math.PI / 16, Math.PI / 8)}
         eccentricity={eccentricity}
         orbitAngle={orbitAngle}
-        scale={[scale, scale, 0]}
+        scale={[scale, scale, 1]}
       />,
     );
 
@@ -225,7 +225,7 @@ const getPlanets = () => {
         relativeSpeed={getRandom(Math.PI / 16, Math.PI / 8)}
         eccentricity={eccentricity}
         orbitAngle={orbitAngle}
-        scale={[scale, scale, 0]}
+        scale={[scale, scale, 1]}
       />,
     );
 
@@ -257,7 +257,7 @@ const getPlanets = () => {
         relativeSpeed={getRandom(Math.PI / 16, Math.PI / 8)}
         eccentricity={eccentricity}
         orbitAngle={orbitAngle}
-        scale={[scale, scale, 0]}
+        scale={[scale, scale, 1]}
       />,
     );
 

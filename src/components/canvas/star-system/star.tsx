@@ -1,5 +1,6 @@
 "use client";
 
+import Color from "color";
 import { useAtomValue } from "jotai";
 import { useRef } from "react";
 import * as React from "react";
@@ -15,8 +16,10 @@ import { StarShader } from "~/templates/shader/star";
 import { StarBlobsShader } from "~/templates/shader/star-blobs";
 import { StarFlaresShader } from "~/templates/shader/star-flares";
 
-const randomizeColors = () => {
-  const seedColors = generateColors(4, getRandom(0.2, 0.4), 2.0);
+const randomizeColors = (initSeedColors?: Vector4) => {
+  const seedColors = initSeedColors
+    ? new Array(7).fill(0).map((_el) => Color.xyz(initSeedColors.toArray()))
+    : generateColors(4, getRandom(0.2, 0.4), 2.0);
 
   const cols = seedColors.slice(0, 4).map((color, i) => {
     let newCol = color.darken((i / 4.0) * 0.9).lighten((1.0 - i / 4.0) * 0.8);
@@ -43,8 +46,9 @@ const Star = ({
   const starRef = useRef<THREE.ShaderMaterial>(null);
   const flaresRef = useRef<THREE.ShaderMaterial>(null);
 
-  const colors =
-    useAtomValue(currentStarSystemAtom)?.star.colors ?? randomizeColors();
+  const colors = randomizeColors(
+    useAtomValue(currentStarSystemAtom)?.star.color,
+  );
 
   const blobs = colors.slice(0, 1);
   const star = colors.slice(1, 5);
