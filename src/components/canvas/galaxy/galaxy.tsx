@@ -7,9 +7,14 @@ import { Vector2, Vector3, Vector4 } from "three";
 import * as Three from "three";
 
 import Stars from "~/components/canvas/star-system/stars";
-import { currentGalaxyAtom, initStarAtom } from "~/helpers/store";
+import {
+  currentGalaxyAtom,
+  currentGalaxyIdAtom,
+  initStarAtom,
+} from "~/helpers/store";
 import { getRandom } from "~/helpers/utils";
 
+import GalaxyGlow from "./galaxy-glow";
 import Star from "./star";
 
 const galaxyRadius = 500;
@@ -53,6 +58,7 @@ const rotate = (coord: Vector2, angle: number) => {
 
 const Galaxy = () => {
   const setStar = useSetAtom(initStarAtom);
+  const currentGalaxyId = useAtomValue(currentGalaxyIdAtom);
   const currentGalaxy = useAtomValue(currentGalaxyAtom);
 
   const galaxyRef = useRef<Three.Group>(null);
@@ -194,6 +200,17 @@ const Galaxy = () => {
   return (
     <group>
       <Stars />
+      {currentGalaxyId && currentGalaxy && (
+        <GalaxyGlow
+          key={currentGalaxyId}
+          colors={currentGalaxy.colors}
+          swirl={currentGalaxy.swirl}
+          seed={currentGalaxy.seed}
+          pixels={5000}
+          rotation={0}
+          position={[0, 0, 0]}
+        />
+      )}
       <group ref={galaxyRef} position={[0, 0, 1]}>
         {stars.map((star) => star.element)}
       </group>

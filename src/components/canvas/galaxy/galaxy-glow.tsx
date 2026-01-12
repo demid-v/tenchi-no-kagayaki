@@ -9,7 +9,6 @@ import GalaxyGlowShader from "~/templates/shader/galaxy-glow";
 const GalaxyGlow = ({
   pixels,
   colors,
-  tilt,
   swirl,
   rotation,
   seed,
@@ -17,7 +16,6 @@ const GalaxyGlow = ({
 }: {
   pixels?: number;
   colors: Vector4[];
-  tilt?: number;
   swirl?: number;
   rotation?: number;
   seed?: number;
@@ -32,7 +30,6 @@ const GalaxyGlow = ({
         <GalaxyGlowShader
           ref={groundRef}
           colors={colors}
-          tilt={1}
           swirl={swirl}
           rotation={0}
           seed={seed}

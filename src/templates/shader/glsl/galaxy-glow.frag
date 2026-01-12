@@ -14,7 +14,6 @@ uniform int OCTAVES;
 uniform float seed;
 
 uniform float time;
-uniform float tilt;
 uniform float n_layers;
 uniform float layer_height;
 uniform float zoom;
@@ -22,6 +21,10 @@ uniform float swirl;
 
 float rand(vec2 coord) {
   return fract(sin(dot(coord.xy, vec2(12.9898, 78.233))) * 15.5453 * seed);
+}
+
+float random(vec2 st) {
+  return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453123);
 }
 
 float noise(vec2 coord) {
@@ -90,14 +93,16 @@ void main() {
   // I offset the second fbm by some amount so the don't all use the same noise, try it wihout and the layers are very obvious
   float f2 = fbm(rotated_uv2 * size + vec2(f1) * 5.0);
 
-  // alpha
-  float a = step(f2 + d_to_center2, 0.7);
-
   // some final steps to choose a nice color
-  f2 *= 2.3;
 
+  // alpha
+  float ec = random(uv);
+  float a = step(f2 + ec / 10.0 + d_to_center2, 0.7) / 3.0;
+
+  f2 *= 2.3 + ec;
   f2 = floor(f2 * float(n_colors));
   f2 = min(f2, float(n_colors));
+
   vec4 col = colors[int(f2)];
 
   gl_FragColor = vec4(col.xyz, a * col.a);
