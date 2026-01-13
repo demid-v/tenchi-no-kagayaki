@@ -46,9 +46,7 @@ const Star = ({
   const starRef = useRef<THREE.ShaderMaterial>(null);
   const flaresRef = useRef<THREE.ShaderMaterial>(null);
 
-  const colors = randomizeColors(
-    useAtomValue(currentStarSystemAtom)?.star.color,
-  );
+  const colors = randomizeColors(useAtomValue(currentStarSystemAtom)?.color);
 
   const blobs = colors.slice(0, 1);
   const star = colors.slice(1, 5);

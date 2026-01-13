@@ -33,7 +33,7 @@ const Common = ({ color }: { color?: string }) => {
 
     ref.current.zoom = currentStarSystem ? 5 : 1;
 
-    const { x, y } = currentStarSystem?.star.position.clone() ?? { x: 0, y: 0 };
+    const { x, y } = currentStarSystem?.position.clone() ?? { x: 0, y: 0 };
 
     ref.current.position.set(x, y, 1000);
     ref.current.rotation.set(0, 0, 0);

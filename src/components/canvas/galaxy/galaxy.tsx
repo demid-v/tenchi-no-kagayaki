@@ -8,9 +8,10 @@ import * as Three from "three";
 
 import Stars from "~/components/canvas/star-system/stars";
 import {
+  type StarSystemsType,
   currentGalaxyAtom,
   currentGalaxyIdAtom,
-  initStarAtom,
+  initStarsAtom,
 } from "~/helpers/store";
 import { getRandom } from "~/helpers/utils";
 
@@ -57,16 +58,16 @@ const rotate = (coord: Vector2, angle: number) => {
 };
 
 const Galaxy = () => {
-  const setStar = useSetAtom(initStarAtom);
+  const setStars = useSetAtom(initStarsAtom);
   const currentGalaxyId = useAtomValue(currentGalaxyIdAtom);
   const currentGalaxy = useAtomValue(currentGalaxyAtom);
 
-  const galaxyRef = useRef<Three.Group>(null);
+  const groupRef = useRef<Three.Group>(null);
 
   useFrame(() => {
-    if (!galaxyRef.current) return;
+    if (!groupRef.current) return;
 
-    galaxyRef.current.rotateZ(-0.0001);
+    groupRef.current.rotateZ(-0.0001);
   });
 
   const rand = (coord: Vector2) => {
@@ -115,12 +116,12 @@ const Galaxy = () => {
     return value;
   };
 
-  const stars = useMemo(() => {
-    if (!currentGalaxy) return [];
+  const { stars, starElements } = useMemo(() => {
+    if (!currentGalaxy)
+      return { stars: new Map() as StarSystemsType, starElements: [] };
 
-    return new Array(20000)
-      .fill(0)
-      .map((_el, i) => {
+    return new Array(20000).fill(0).reduce(
+      (acc, _item, i) => {
         let uv = new Vector2(getRandom(), getRandom());
 
         uv = uv.multiplyScalar(zoom);
@@ -149,21 +150,17 @@ const Galaxy = () => {
             .addScalar(f1 * 5.0),
         );
 
-        const p1 = uv.clone().subScalar(0.5).multiplyScalar(galaxyRadius);
-        const p2 = uv.clone().subScalar(0.5).multiplyScalar(galaxyRadius);
-
-        const position1 = new Vector3(p1.x, p1.y, 0);
-        const position2 = new Vector3(p2.x, p2.y, 0);
-
-        const position = Math.random() < 0.5 ? position1 : position2;
+        const p = uv.clone().subScalar(0.5).multiplyScalar(galaxyRadius);
+        const position = new Vector3(p.x, p.y, 0);
 
         let a = step(f2 + d_to_center2, 0.7);
 
         if (a === 0) {
-          if (getRandom() < 1 - Math.pow(1 - d_to_center2, 2) / 50) return null;
-          else {
-            a = 1;
-          }
+          // if (getRandom() < 1 - Math.pow(1 - d_to_center2, 2) / 50) return acc;
+          // else {
+          //   a = 1;
+          // }
+          return acc;
         }
 
         f2 *= 2.3;
@@ -173,46 +170,38 @@ const Galaxy = () => {
         const col = currentGalaxy.colors[f2];
         const color = new Vector4(col?.x, col?.y, col?.z, a * f2);
 
+        acc.starElements.push(
+          <Star key={i} starId={i} position={position} color={color} />,
+        );
+
         return {
-          key: i,
-          position,
-          color,
-          element: (
-            <Star key={i} starId={i} position={position} color={color} />
-          ),
+          stars: acc.stars.set(i, { position, color }),
+          starElements: acc.starElements,
         };
-      })
-      .filter((el) => el != null);
+      },
+      { stars: new Map() as StarSystemsType, starElements: [] },
+    );
   }, [currentGalaxy]);
 
   useEffect(() => {
-    if (!currentGalaxy) return;
-
-    stars.forEach((star) => {
-      setStar({
-        key: star.key,
-        position: star.position,
-        color: star.color,
-      });
-    });
+    setStars(stars);
   }, [stars]);
 
   return (
     <group>
       <Stars />
-      {currentGalaxyId && currentGalaxy && (
-        <GalaxyGlow
-          key={currentGalaxyId}
-          colors={currentGalaxy.colors}
-          swirl={currentGalaxy.swirl}
-          seed={currentGalaxy.seed}
-          pixels={5000}
-          rotation={0}
-          position={[0, 0, 0]}
-        />
-      )}
-      <group ref={galaxyRef} position={[0, 0, 1]}>
-        {stars.map((star) => star.element)}
+      <group key={currentGalaxyId ?? undefined} ref={groupRef}>
+        {currentGalaxyId && currentGalaxy && (
+          <GalaxyGlow
+            colors={currentGalaxy.colors}
+            swirl={currentGalaxy.swirl}
+            seed={currentGalaxy.seed}
+            pixels={5000}
+            rotation={0}
+            position={[0, 0, 0]}
+          />
+        )}
+        <group position={[0, 0, 1]}>{starElements}</group>
       </group>
     </group>
   );

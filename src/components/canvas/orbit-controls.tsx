@@ -46,7 +46,7 @@ const Controls = () => {
 
     camera.zoom = currentStarSystem ? 5 : 1;
 
-    const { x, y, z } = currentStarSystem?.star.position.clone() ?? {
+    const { x, y, z } = currentStarSystem?.position.clone() ?? {
       x: 0,
       y: 0,
       z: 0,

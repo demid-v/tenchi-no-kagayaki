@@ -93,13 +93,11 @@ void main() {
   // I offset the second fbm by some amount so the don't all use the same noise, try it wihout and the layers are very obvious
   float f2 = fbm(rotated_uv2 * size + vec2(f1) * 5.0);
 
-  // some final steps to choose a nice color
-
   // alpha
-  float ec = random(uv);
-  float a = step(f2 + ec / 10.0 + d_to_center2, 0.7) / 3.0;
+  float a = step(f2 + d_to_center2, 0.7) * 0.8;
 
-  f2 *= 2.3 + ec;
+  // some final steps to choose a nice color
+  f2 *= 2.3;
   f2 = floor(f2 * float(n_colors));
   f2 = min(f2, float(n_colors));
 

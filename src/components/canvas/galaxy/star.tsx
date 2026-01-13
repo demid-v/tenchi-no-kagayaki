@@ -22,7 +22,6 @@ const Star = ({
   const starRef = useRef<THREE.ShaderMaterial>(null);
 
   const scale = useMemo(() => getRandom(1, 4), []);
-
   const [scene, setScene] = useAtom(sceneAtom);
 
   const shaderOptions = useMemo(
@@ -45,7 +44,6 @@ const Star = ({
   useUpdate(groupRef);
 
   const setCurrentStar = useSetAtom(currentStarSystemIdAtom);
-
   const orbit = useAtomValue(orbitAtom);
 
   const [sceneScale, setSceneScale] = useState(scale);

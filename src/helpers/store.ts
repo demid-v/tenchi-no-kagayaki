@@ -7,8 +7,8 @@ const store = createStore();
 const JotaiProvider = ({ children }: { children: React.ReactNode }) =>
   Provider({ children, store });
 
-const cameraAtom = atom<OrthographicCamera | null>(null);
-const orbitAtom = atom<OrbitControls | null>(null);
+const cameraAtom = atom<OrthographicCamera>();
+const orbitAtom = atom<OrbitControls>();
 const sceneAtom = atom<"starSystem" | "galaxy" | "galaxyCluster">(
   "galaxyCluster",
 );
@@ -16,51 +16,35 @@ const sceneAtom = atom<"starSystem" | "galaxy" | "galaxyCluster">(
 const pixelsAtom = atom(100);
 const showOrbitsAtom = atom(false);
 
-type StarSystemsType = Map<
-  number,
-  {
-    star: {
-      position: Vector3;
-      color: Vector4;
-    };
-  }
->;
+type StarMapValue = {
+  position: Vector3;
+  color: Vector4;
+};
+
+type StarSystemsType = Map<number, StarMapValue>;
 
 const starSystemsBaseAtom = atom<StarSystemsType>();
+const currentStarSystemIdAtom = atom<number | null>();
 
-const currentStarSystemIdAtom = atom<number | null>(null);
-
-const initStarAtom = atom(
-  null,
-  (get, set, params: { key: number; position: Vector3; color: Vector4 }) => {
-    const starSystems =
-      get(starSystemsBaseAtom) ?? (new Map() as StarSystemsType);
-
-    const newStarSystem = starSystems.set(params.key, {
-      star: { position: params.position.clone(), color: params.color },
-    });
-
-    set(starSystemsBaseAtom, newStarSystem);
-  },
-);
+const initStarsAtom = atom(null, (_get, set, stars: StarSystemsType) => {
+  set(starSystemsBaseAtom, stars);
+});
 
 const currentStarSystemAtom = atom((get) =>
   get(starSystemsBaseAtom)?.get(get(currentStarSystemIdAtom)!),
 );
 
-type GalaxyType = Map<
-  number,
-  {
-    position: Vector3;
-    colors: Vector4[];
-    swirl: number;
-    seed: number;
-  }
->;
+type GalaxyValueType = {
+  position: Vector3;
+  colors: Vector4[];
+  swirl: number;
+  seed: number;
+};
+
+type GalaxyType = Map<number, GalaxyValueType>;
 
 const galaxyBaseAtom = atom<GalaxyType>();
-
-const currentGalaxyIdAtom = atom<number | null>(null);
+const currentGalaxyIdAtom = atom<number | null>();
 
 const initGalaxyAtom = atom(
   null,
@@ -75,11 +59,7 @@ const initGalaxyAtom = atom(
       seed,
     }: {
       key: number;
-      position: Vector3;
-      colors: Vector4[];
-      swirl: number;
-      seed: number;
-    },
+    } & GalaxyValueType,
   ) => {
     const galaxies = get(galaxyBaseAtom) ?? (new Map() as GalaxyType);
 
@@ -106,9 +86,10 @@ export {
   pixelsAtom,
   showOrbitsAtom,
   currentStarSystemIdAtom,
-  initStarAtom,
+  initStarsAtom,
   currentStarSystemAtom,
   currentGalaxyIdAtom,
   initGalaxyAtom,
   currentGalaxyAtom,
 };
+export type { StarSystemsType };
