@@ -1,8 +1,7 @@
 "use client";
 
-import Color from "color";
 import { useAtomValue } from "jotai";
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 import * as React from "react";
 import * as THREE from "three";
 import { Vector4 } from "three";
@@ -16,14 +15,13 @@ import { StarShader } from "~/templates/shader/star";
 import { StarBlobsShader } from "~/templates/shader/star-blobs";
 import { StarFlaresShader } from "~/templates/shader/star-flares";
 
-const randomizeColors = (initSeedColors?: Vector4) => {
-  const seedColors = initSeedColors
-    ? new Array(7).fill(0).map((_el) => Color.xyz(initSeedColors.toArray()))
-    : generateColors(4, getRandom(0.2, 0.4), 2.0);
+const randomizeColors = (initSeedColor?: Vector4) => {
+  const seedColors = generateColors(4, getRandom(0.2, 0.4), 2.0);
 
   const cols = seedColors.slice(0, 4).map((color, i) => {
-    let newCol = color.darken((i / 4.0) * 0.9).lighten((1.0 - i / 4.0) * 0.8);
+    if (initSeedColor && i === 1) return initSeedColor.setW(1);
 
+    let newCol = color.darken((i / 4.0) * 0.9).lighten((1.0 - i / 4.0) * 0.8);
     if (i === 0) newCol = newCol.lighten(0.8);
 
     return new Vector4().fromArray(newCol.xyz().array()).setW(1);
@@ -46,7 +44,11 @@ const Star = ({
   const starRef = useRef<THREE.ShaderMaterial>(null);
   const flaresRef = useRef<THREE.ShaderMaterial>(null);
 
-  const colors = randomizeColors(useAtomValue(currentStarSystemAtom)?.color);
+  const currentStarSystemColors = useAtomValue(currentStarSystemAtom)?.color;
+  const colors = useMemo(
+    () => randomizeColors(currentStarSystemColors),
+    [currentStarSystemColors],
+  );
 
   const blobs = colors.slice(0, 1);
   const star = colors.slice(1, 5);
