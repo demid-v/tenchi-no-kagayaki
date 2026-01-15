@@ -12,10 +12,10 @@ import vertexShader from "~/templates/shader/glsl/planet.vert";
 export const CloudsShader = ({
   pixels = 100,
   lightPosition = new Vector2(0.41, 0.67),
-  rotation = 0.0,
+  rotation = 0,
   rotationSpeed = 0.1,
   cloudCover = 0.47,
-  stretch = 2.0,
+  stretch = 2,
   cloudCurve = 1.3,
   lightBorder1 = 0.52,
   lightBorder2 = 0.62,
@@ -23,7 +23,7 @@ export const CloudsShader = ({
   size = 7.315,
   octaves = 2,
   seed = flip() ? Math.random() * 10 : Math.random() * 100,
-  time = 0.0,
+  time = 0,
   ref,
 }: {
   pixels?: number;

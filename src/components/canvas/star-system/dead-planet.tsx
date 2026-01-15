@@ -19,14 +19,17 @@ const randomizeColors = () => {
     0.7,
   );
 
-  const cols = seedColors.slice(0, 3).map((color, index) => {
-    const newCol = color.darken(index / 3.0).lighten((1.0 - index / 3.0) * 0.2);
-    return new Vector4().fromArray(newCol.xyz().array()).setW(1);
+  const colors = seedColors.slice(0, 3).map((color, i) => {
+    const newColor = color
+      .offsetHSL(0, 0, -(i / 3))
+      .offsetHSL(0, 0, (1 - i / 3) * 0.2);
+
+    return new Vector4(...newColor.toArray(), 1);
   });
 
-  const newCols = [...cols, cols[1]!, cols[2]!];
+  const newColors = [...colors, colors[1]!, colors[2]!];
 
-  return newCols;
+  return newColors;
 };
 
 const DeadPlanet = ({

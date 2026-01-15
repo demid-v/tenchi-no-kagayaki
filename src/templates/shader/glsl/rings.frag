@@ -107,5 +107,5 @@ void main() {
   }
 
   float ring_a = step(0.28, ring);
-  gl_FragColor = vec4(col.xyz, ring_a * col.a);
+  gl_FragColor = vec4(col.rgb, ring_a * col.a);
 }

@@ -12,7 +12,7 @@ import vertexShader from "~/templates/shader/glsl/planet.vert";
 const GasPlanetLayersShader = ({
   pixels = 100,
   lightPosition = new Vector2(-0.1, 0.3),
-  rotation = 0.0,
+  rotation = 0,
   rotationSpeed = 0.05,
   cloudCover = 0.61,
   stretch = 2.204,
@@ -26,7 +26,7 @@ const GasPlanetLayersShader = ({
   octaves = 3,
   shouldDither = true,
   seed = flip() ? Math.random() * 10 : Math.random() * 100,
-  time = 0.0,
+  time = 0,
   ref,
 }: {
   pixels?: number;

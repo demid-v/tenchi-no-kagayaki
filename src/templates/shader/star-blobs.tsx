@@ -10,16 +10,16 @@ import fragmentShader from "~/templates/shader/glsl/star-blobs.frag";
 import vertexShader from "~/templates/shader/glsl/star.vert";
 
 export const StarBlobsShader = ({
-  pixels = 200.0,
+  pixels = 200,
   color = new Vector4(1, 0.647, 0),
   rotationSpeed = 0.05,
-  rotation = 0.0,
-  circleAmount = 3.0,
+  rotation = 0,
+  circleAmount = 3,
   circleSize = 1.6,
   size = 4,
   octaves = 4,
   seed = flip() ? Math.random() * 10 : Math.random() * 100,
-  time = 0.0,
+  time = 0,
   ref,
 }: {
   pixels?: number;

@@ -37,7 +37,7 @@ const fract = <T extends number | Vector2>(x: T): T => {
   return ((x as number) - Math.floor(x)) as T;
 };
 
-const mix = (x: number, y: number, a: number) => x * (1.0 - a) + y * a;
+const mix = (x: number, y: number, a: number) => x * (1 - a) + y * a;
 
 const step = (edge: number, x: number) => {
   if (x === 0 && edge === 0) return 0;
@@ -92,13 +92,13 @@ const Galaxy = () => {
     const d = rand(new Vector2(i.x + 1, i.y + 1));
 
     const cubic = new Vector2(
-      f.x * f.x * (3.0 - 2.0 * f.x),
-      f.y * f.y * (3.0 - 2.0 * f.y),
+      f.x * f.x * (3 - 2 * f.x),
+      f.y * f.y * (3 - 2 * f.y),
     );
 
     return (
       mix(a, b, cubic.x) +
-      (c - a) * cubic.y * (1.0 - cubic.x) +
+      (c - a) * cubic.y * (1 - cubic.x) +
       (d - b) * cubic.x * cubic.y
     );
   };
@@ -125,7 +125,7 @@ const Galaxy = () => {
         let uv = new Vector2(getRandom(), getRandom());
 
         uv = uv.multiplyScalar(zoom);
-        uv = uv.subScalar((zoom - 1.0) / 2.0);
+        uv = uv.subScalar((zoom - 1) / 2);
 
         uv = rotate(uv, rotation);
         const uv2 = uv.clone();
@@ -147,7 +147,7 @@ const Galaxy = () => {
           rotated_uv2
             .clone()
             .multiplyScalar(size)
-            .addScalar(f1 * 5.0),
+            .addScalar(f1 * 5),
         );
 
         const p = uv.clone().subScalar(0.5).multiplyScalar(galaxyRadius);

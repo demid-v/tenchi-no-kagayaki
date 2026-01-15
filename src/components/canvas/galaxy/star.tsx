@@ -28,7 +28,7 @@ const Star = ({
     () =>
       ({
         uniforms: {
-          time: { value: 0.0 },
+          time: { value: 0 },
           color: { value: color },
           brightness: { value: 1.5 },
           seed: { value: getRandom(6, 10) },

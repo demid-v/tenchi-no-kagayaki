@@ -1,6 +1,5 @@
 "use client";
 
-import Color from "color";
 import { useImperativeHandle, useRef } from "react";
 import * as THREE from "three";
 import { Vector4 } from "three";
@@ -20,46 +19,27 @@ const randomizeColors = () => {
     getRandom(0.45, 0.55),
   );
 
-  const rivers = [];
-  const clouds = [];
+  const landColors = new Array(4).fill(0).map((_, i) => {
+    const newColor = seedColors[0]!.offsetHSL(0.2 * (i / 4), 0, -(i / 4));
+    return new Vector4(...newColor.toArray(), 1);
+  });
 
-  for (let i = 0; i < 4; i++) {
-    let newCol = seedColors[0]!.darken(i / 4.0);
+  const riverColors = new Array(2).fill(0).map((_, i) => {
+    const newColor = seedColors[1]!.offsetHSL(0.2 * (i / 2), 0, -(i / 2));
+    return new Vector4(...newColor.toArray(), 1);
+  });
 
-    newCol = Color.hsv(
-      newCol.hue() + 0.2 * (i / 4),
-      newCol.saturationv(),
-      newCol.value(),
+  const cloudColors = new Array(4).fill(0).map((_, i) => {
+    const newColor = seedColors[2]!.offsetHSL(
+      0.2 * (i / 4),
+      0,
+      (1 - i / 4) * 0.8,
     );
 
-    rivers.push(new Vector4().fromArray(newCol.xyz().array()).setW(1));
-  }
+    return new Vector4(...newColor.toArray(), 1);
+  });
 
-  for (let i = 0; i < 2; i++) {
-    let newCol = seedColors[1]!.darken(i / 2.0);
-
-    newCol = Color.hsv(
-      newCol.hue() + 0.2 * (i / 2),
-      newCol.saturationv(),
-      newCol.value(),
-    );
-
-    rivers.push(new Vector4().fromArray(newCol.xyz().array()).setW(1));
-  }
-
-  for (let i = 0; i < 4; i++) {
-    let newCol = seedColors[2]!.lighten((1.0 - i / 4.0) * 0.8);
-
-    newCol = Color.hsv(
-      newCol.hue() + 0.2 * (i / 4),
-      newCol.saturationv(),
-      newCol.value(),
-    );
-
-    clouds.push(new Vector4().fromArray(newCol.xyz().array()).setW(1));
-  }
-
-  return [...rivers, ...clouds];
+  return [...landColors, ...riverColors, ...cloudColors];
 };
 
 const WetPlanet = ({

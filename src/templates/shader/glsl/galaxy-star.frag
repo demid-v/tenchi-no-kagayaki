@@ -64,5 +64,5 @@ void main() {
   float a = clamp(intensity, 0.0, 1.0);
   if (a < 0.003) discard;
 
-  gl_FragColor = vec4(col.xyz, a);
+  gl_FragColor = vec4(col.rgb, a);
 }

@@ -22,7 +22,7 @@ export const RiversShader = ({
   size = 4.6,
   octaves = 6,
   seed = flip() ? Math.random() * 10 : Math.random() * 100,
-  time = 0.0,
+  time = 0,
   ref,
 }: {
   pixels?: number;

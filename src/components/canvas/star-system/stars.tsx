@@ -13,7 +13,7 @@ const Stars = () => {
 
   const shaderOptions = {
     uniforms: {
-      time: { value: 0.0 },
+      time: { value: 0 },
     },
     vertexShader,
     fragmentShader,

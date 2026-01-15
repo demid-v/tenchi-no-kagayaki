@@ -20,7 +20,7 @@ const Cluster = () => {
 
   const galaxies = useMemo(
     () =>
-      new Array(100).fill(0).map((_el, i) => {
+      new Array(100).fill(0).map((_, i) => {
         const angle = i * angleStep;
         const radius = size * (1 + (Math.random() - 0.5) * variation);
 

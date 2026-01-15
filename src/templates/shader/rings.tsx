@@ -10,20 +10,20 @@ import vertexShader from "~/templates/shader/glsl/planet.vert";
 import fragmentShader from "~/templates/shader/glsl/rings.frag";
 
 const RingsShader = ({
-  pixels = 300.0,
+  pixels = 300,
   lightPosition = new Vector2(-0.1, 0.3),
   rotation = 2.5,
   rotationSpeed = 0.2,
   ringWidth = 0.127,
-  ringPerspective = -6.0,
-  scaleRelToPlanet = 6.0,
+  ringPerspective = -6,
+  scaleRelToPlanet = 6,
   numOfColors = 3,
   colors,
   darkColors,
-  size = 15.0,
+  size = 15,
   octaves = 4,
   seed = flip() ? Math.random() * 10 : Math.random() * 100,
-  time = 0.0,
+  time = 0,
   ref,
 }: {
   pixels?: number;

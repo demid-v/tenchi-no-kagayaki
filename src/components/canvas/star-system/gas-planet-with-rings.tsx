@@ -20,9 +20,11 @@ const randomizeColors = () => {
   );
 
   const colors = seedColors.slice(0, 6).map((color, i) => {
-    const newCol = color.darken(i / 7.0).lighten((1.0 - i / 6.0) * 0.3);
+    const newColor = color
+      .offsetHSL(0, 0, -(i / 7))
+      .offsetHSL(0, 0, (1 - i / 6) * 0.3);
 
-    return new Vector4().fromArray(newCol.xyz().array()).setW(1);
+    return new Vector4(...newColor.toArray(), 1);
   });
 
   return colors;

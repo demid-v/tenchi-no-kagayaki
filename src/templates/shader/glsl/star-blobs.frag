@@ -65,5 +65,5 @@ void main() {
   c *= 0.37 - d;
   c = step(0.07, c - d);
 
-  gl_FragColor = vec4(colors[0].xyz, c * colors[0].a);
+  gl_FragColor = vec4(colors[0].rgb, c * colors[0].a);
 }

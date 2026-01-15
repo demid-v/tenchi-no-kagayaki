@@ -15,22 +15,24 @@ const randomizeColors = () => {
   const seedColors = generateColors(
     8 + Math.floor(getRandom(0.5, 1.5)),
     getRandom(0.3, 0.8),
-    1.0,
+    1,
   );
 
   const cloudsColors1 = seedColors.slice(0, 4).map((color, i) => {
-    const newCol = color
-      .darken(i / 6.0)
-      .darken(0.7)
-      .lighten((1.0 - i / 4.0) * 0.2);
+    const newColor = color
+      .offsetHSL(0, 0, -(i / 6))
+      .offsetHSL(0, 0, -0.7)
+      .offsetHSL(0, 0, (1 - i / 4) * 0.2);
 
-    return new Vector4().fromArray(newCol.xyz().array()).setW(1);
+    return new Vector4(...newColor.toArray(), 1);
   });
 
   const cloudsColors2 = seedColors.slice(4, 8).map((color, i) => {
-    const newCol = color.darken(i / 4.0).lighten((1.0 - i / 4.0) * 0.5);
+    const newColor = color
+      .offsetHSL(0, 0, -(i / 4))
+      .offsetHSL(0, 0, (1 - i / 4) * 0.5);
 
-    return new Vector4().fromArray(newCol.xyz().array()).setW(1);
+    return new Vector4(...newColor.toArray(), 1);
   });
 
   return [...cloudsColors1, ...cloudsColors2];

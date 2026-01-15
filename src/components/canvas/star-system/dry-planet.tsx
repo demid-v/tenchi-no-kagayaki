@@ -13,15 +13,17 @@ import { DryPlanetShader } from "~/templates/shader/dry-planet";
 
 const randomizeColors = () => {
   const seedColors = generateColors(
-    5 + Math.floor(getRandom(0.5, 1.5)),
+    5 + (getRandom(0, 1) < 0.5 ? 0 : 1),
     getRandom(0.3, 0.65),
-    1.0,
+    1,
   );
 
-  const colors = seedColors.slice(0, 5).map((color, index) => {
-    const newCol = color.darken(index / 5.0).lighten((1.0 - index / 5.0) * 0.2);
+  const colors = seedColors.slice(0, 5).map((color, i) => {
+    const newColor = color
+      .offsetHSL(0, 0, -(i / 5))
+      .offsetHSL(0, 0, (1 - i / 5) * 0.2);
 
-    return new Vector4().fromArray(newCol.xyz().array()).setW(1);
+    return new Vector4(...newColor.toArray(), 1);
   });
 
   return colors;

@@ -151,5 +151,5 @@ void main() {
     col = dark_colors[int((posterized - 1.0) * float(n_colors - 1))];
   }
 
-  gl_FragColor = vec4(col.xyz, a * col.a);
+  gl_FragColor = vec4(col.rgb, a * col.a);
 }

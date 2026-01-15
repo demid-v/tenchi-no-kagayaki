@@ -15,9 +15,12 @@ import GalaxyShader from "~/templates/shader/galaxy";
 const randomizeColors = () => {
   const seedColors = generateColors(7, getRandom(0.5, 0.8), 1.4);
 
-  const colors = seedColors.map((color, index) => {
-    const newCol = color.darken(index / 7.0).lighten((1.0 - index / 6.0) * 0.6);
-    return new Vector4().fromArray(newCol.xyz().array()).setW(1);
+  const colors = seedColors.map((color, i) => {
+    const newColor = color
+      .offsetHSL(0, 0, -(i / 7))
+      .offsetHSL(0, 0, (1 - i / 6) * 0.6);
+
+    return new Vector4(...newColor.toArray(), 1);
   });
 
   return colors;

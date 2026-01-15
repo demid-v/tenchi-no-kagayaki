@@ -12,17 +12,17 @@ import vertexShader from "~/templates/shader/glsl/star.vert";
 export const StarFlaresShader = ({
   pixels = 100,
   rotationSpeed = 0.1,
-  rotation = 0.0,
+  rotation = 0,
   stormWidth = 0.2,
   stormDitherWidth = 0.07,
-  circleAmount = 2.0,
-  circleScale = 1.0,
-  scale = 1.0,
+  circleAmount = 2,
+  circleScale = 1,
+  scale = 1,
   size = 1.6,
   octaves = 4,
   shouldDither = true,
   seed = flip() ? Math.random() * 10 : Math.random() * 100,
-  time = 0.0,
+  time = 0,
   ref,
 }: {
   pixels?: number;

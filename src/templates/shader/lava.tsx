@@ -12,16 +12,16 @@ import vertexShader from "~/templates/shader/glsl/planet.vert";
 const LavaShader = ({
   pixels = 100,
   lightPosition = new Vector2(0.3, 0.3),
-  rotation = 0.0,
+  rotation = 0,
   rotationSpeed = 0.2,
   lightBorder1 = 0.019,
   lightBorder2 = 0.036,
   riverCutoff = 0.579,
   colors,
-  size = 10.0,
+  size = 10,
   octaves = 4,
   seed = flip() ? Math.random() * 10 : Math.random() * 100,
-  time = 0.0,
+  time = 0,
   ref,
 }: {
   pixels?: number;

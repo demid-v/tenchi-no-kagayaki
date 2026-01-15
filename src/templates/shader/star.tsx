@@ -12,13 +12,13 @@ import vertexShader from "~/templates/shader/glsl/star.vert";
 export const StarShader = ({
   pixels = 100,
   rotationSpeed = 0.01,
-  rotation = 0.0,
+  rotation = 0,
   colors,
-  size = 15.0,
+  size = 15,
   tiles = 5,
   shouldDither = true,
   seed = flip() ? Math.random() * 10 : Math.random() * 100,
-  time = 0.0,
+  time = 0,
   ref,
 }: {
   pixels?: number;

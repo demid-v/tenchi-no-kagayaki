@@ -115,5 +115,5 @@ void main() {
   f2 = min(f2, float(n_colors));
   vec4 col = colors[int(f2)] * brightness;
 
-  gl_FragColor = vec4(col.xyz, a * col.a);
+  gl_FragColor = vec4(col.rgb, a * col.a);
 }

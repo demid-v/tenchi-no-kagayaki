@@ -1,6 +1,5 @@
 "use client";
 
-import Color from "color";
 import { useImperativeHandle, useRef } from "react";
 import * as THREE from "three";
 import { Vector4 } from "three";
@@ -17,32 +16,20 @@ import { PlanetShader } from "~/templates/shader/planet";
 const randomizeColors = () => {
   const seedColors = generateColors(
     3 + Math.floor(getRandom(0.5, 1.5)),
-    getRandom(0.6, 1.0),
+    getRandom(0.6, 1),
     getRandom(0.7, 0.8),
   );
 
   const landColors = new Array(3).fill(0).map((_, i) => {
-    let newCol = seedColors[0]!.darken(i / 3.0);
+    const newColor = seedColors[0]!.offsetHSL(0.2 * (i / 4), 0, -(i / 3));
 
-    newCol = Color.hsv(
-      newCol.hue() + 0.2 * (i / 4.0),
-      newCol.saturationv(),
-      newCol.value(),
-    );
-
-    return new Vector4().fromArray(newCol.xyz().array()).setW(1);
+    return new Vector4(...newColor.toArray(), 1);
   });
 
   const lavaColors = new Array(3).fill(0).map((_, i) => {
-    let newCol = seedColors[1]!.darken(i / 3.0);
+    const newColor = seedColors[1]!.offsetHSL(0.2 * (i / 3), 0, -(i / 3));
 
-    newCol = Color.hsv(
-      newCol.hue() + 0.2 * (i / 3.0),
-      newCol.saturationv(),
-      newCol.value(),
-    );
-
-    return new Vector4().fromArray(newCol.xyz().array()).setW(1);
+    return new Vector4(...newColor.toArray(), 1);
   });
 
   const craterColors = [landColors[1]!, landColors[2]!];

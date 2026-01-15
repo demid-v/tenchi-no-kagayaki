@@ -13,13 +13,13 @@ export const CraterShader = ({
   pixels = 100,
   lightPosition = new Vector2(0.39, 0.7),
   rotationSpeed = 0.1,
-  rotation = 0.0,
+  rotation = 0,
   colors,
   lightBorder = 0.4,
-  size = 5.0,
+  size = 5,
   octaves = 20,
   seed = flip() ? Math.random() * 10 : Math.random() * 100,
-  time = 0.0,
+  time = 0,
   ref,
 }: {
   pixels?: number;

@@ -16,20 +16,22 @@ import { StarBlobsShader } from "~/templates/shader/star-blobs";
 import { StarFlaresShader } from "~/templates/shader/star-flares";
 
 const randomizeColors = (initSeedColor?: Vector4) => {
-  const seedColors = generateColors(4, getRandom(0.2, 0.4), 2.0);
+  const seedColors = generateColors(4, getRandom(0.2, 0.4), 2);
 
-  const cols = seedColors.slice(0, 4).map((color, i) => {
+  const colors = seedColors.slice(0, 4).map((color, i) => {
     if (initSeedColor && i === 1) return initSeedColor.setW(1);
 
-    let newCol = color.darken((i / 4.0) * 0.9).lighten((1.0 - i / 4.0) * 0.8);
-    if (i === 0) newCol = newCol.lighten(0.8);
+    const newColor = color
+      .offsetHSL(0, 0, -((i / 4) * 0.9))
+      .offsetHSL(0, 0, (1 - i / 4) * 0.8)
+      .offsetHSL(0, 0, i === 0 ? 0.8 : 0);
 
-    return new Vector4().fromArray(newCol.xyz().array()).setW(1);
+    return new Vector4(...newColor.toArray(), 1);
   });
 
-  const newCols = [cols[0]!, ...cols, cols[1]!, cols[0]!];
+  const newColors = [colors[0]!, ...colors, colors[1]!, colors[0]!];
 
-  return newCols;
+  return newColors;
 };
 
 const Star = ({

@@ -124,5 +124,5 @@ void main() {
     col = colors[3];
   }
 
-  gl_FragColor = vec4(col.xyz, step(cloud_cover, c) * a * col.a);
+  gl_FragColor = vec4(col.rgb, step(cloud_cover, c) * a * col.a);
 }

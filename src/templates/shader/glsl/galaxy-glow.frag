@@ -103,5 +103,5 @@ void main() {
 
   vec4 col = colors[int(f2)];
 
-  gl_FragColor = vec4(col.xyz, a * col.a);
+  gl_FragColor = vec4(col.rgb, a * col.a);
 }
