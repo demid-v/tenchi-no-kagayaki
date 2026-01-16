@@ -2,10 +2,8 @@ precision mediump float;
 
 varying vec3 vUv;
 
-uniform float pixels;
 uniform float rotation;
 uniform float time_speed;
-uniform bool should_dither;
 uniform vec4 colors[7];
 uniform int n_colors;
 
@@ -14,6 +12,7 @@ uniform int OCTAVES;
 uniform float seed;
 
 uniform float time;
+uniform float tilt;
 uniform float n_layers;
 uniform float layer_height;
 uniform float zoom;
@@ -21,10 +20,6 @@ uniform float swirl;
 
 float rand(vec2 coord) {
   return fract(sin(dot(coord.xy, vec2(12.9898, 78.233))) * 15.5453 * seed);
-}
-
-float random(vec2 st) {
-  return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453123);
 }
 
 float noise(vec2 coord) {
@@ -72,6 +67,9 @@ void main() {
   uv = rotate(uv, rotation);
   vec2 uv2 = uv; // save a copy of untranslated uv for later
 
+  uv.y *= tilt;
+  uv.y -= (tilt - 1.0) / 2.0;
+
   float d_to_center = distance(uv, vec2(0.5, 0.5));
   // swirl uv around the center, the further from the center the more rotated.
   float rot = swirl * pow(d_to_center, 0.4);
@@ -84,7 +82,8 @@ void main() {
 
   // use the unaltered second uv for the actual galaxy
   // tilt so it looks like it's an angle.
-  uv2.y -= f1 * layer_height;
+  uv2.y *= tilt;
+  uv2.y -= (tilt - 1.0) / 2.0 + f1 * layer_height;
 
   // now do the same stuff as before, but for the actual galaxy image, not the layers
   float d_to_center2 = distance(uv2, vec2(0.5, 0.5));

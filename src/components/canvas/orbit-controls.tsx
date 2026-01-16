@@ -22,7 +22,7 @@ const Controls = () => {
       onChange={() => {
         if (scene === "starSystem" && camera.zoom < 0.2) {
           setScene("galaxy");
-        } else if (scene === "galaxy" && camera.zoom < 0.2) {
+        } else if (scene === "galaxy" && camera.zoom < 0.6) {
           setCurrentStarSystem(null);
           setScene("galaxyCluster");
         }
