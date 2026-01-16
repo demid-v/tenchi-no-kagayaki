@@ -4,7 +4,6 @@ import { useSetAtom } from "jotai";
 import { useEffect, useMemo } from "react";
 import { Vector3 } from "three";
 
-import Stars from "~/components/canvas/star-system/stars";
 import { initGalaxyAtom } from "~/helpers/store";
 import { flip, getRandom } from "~/helpers/utils";
 
@@ -75,12 +74,7 @@ const Cluster = () => {
     });
   }, [galaxies]);
 
-  return (
-    <group>
-      <Stars />
-      {galaxies.map((galaxy) => galaxy.element)}
-    </group>
-  );
+  return <group>{galaxies.map((galaxy) => galaxy.element)}</group>;
 };
 
 export default Cluster;

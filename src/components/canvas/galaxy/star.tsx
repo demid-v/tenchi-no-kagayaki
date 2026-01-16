@@ -1,10 +1,10 @@
 "use client";
 
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 import React, { useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 
-import { currentStarSystemIdAtom, orbitAtom, sceneAtom } from "~/helpers/store";
+import { currentStarSystemIdAtom, sceneAtom } from "~/helpers/store";
 import useUpdate from "~/helpers/use-update";
 import { getRandom } from "~/helpers/utils";
 import fragmentShader from "~/templates/shader/glsl/galaxy-star.frag";
@@ -44,7 +44,6 @@ const Star = ({
   useUpdate(groupRef);
 
   const setCurrentStar = useSetAtom(currentStarSystemIdAtom);
-  const orbit = useAtomValue(orbitAtom);
 
   const [sceneScale, setSceneScale] = useState(scale);
 
@@ -67,8 +66,6 @@ const Star = ({
       }}
       onClick={() => {
         if (scene !== "galaxy") return;
-
-        orbit!.enableDamping = false;
 
         setCurrentStar(starId);
         setScene("starSystem");

@@ -1,11 +1,11 @@
 "use client";
 
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 import { useRef, useState } from "react";
 import * as THREE from "three";
 import { Vector4 } from "three";
 
-import { currentGalaxyIdAtom, orbitAtom, sceneAtom } from "~/helpers/store";
+import { currentGalaxyIdAtom, sceneAtom } from "~/helpers/store";
 import useColors from "~/helpers/use-random-colors";
 import useUpdate from "~/helpers/use-update";
 import useUpdatePixels from "~/helpers/use-update-pixels";
@@ -51,7 +51,6 @@ const Galaxy = ({
   const galaxyRef = useRef<THREE.ShaderMaterial>(null);
 
   const [scene, setScene] = useAtom(sceneAtom);
-  const orbit = useAtomValue(orbitAtom);
 
   useColors([{ object: galaxyRef, colors }]);
   useUpdate(groupRef);
@@ -83,8 +82,6 @@ const Galaxy = ({
       }}
       onClick={() => {
         if (scene !== "galaxyCluster") return;
-
-        orbit!.enableDamping = false;
 
         setCurrentGalaxyId(galaxyId);
         setScene("galaxy");

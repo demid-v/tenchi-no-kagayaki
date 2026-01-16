@@ -1,11 +1,12 @@
 import Stars from "~/components/canvas/stars";
+import "~/components/canvas/view";
 
-import StarSystem from "./star-system";
+import Galaxy from "./galaxy";
 
 const Scene = () => (
   <>
     <Stars />
-    <StarSystem />
+    <Galaxy />
   </>
 );
 

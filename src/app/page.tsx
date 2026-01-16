@@ -43,26 +43,23 @@ const Common = dynamic(
   },
 );
 
-const StarSystemScene = dynamic(
+const StarSystem = dynamic(
   () => import("~/components/canvas/star-system/scene"),
   {
     ssr: false,
   },
 );
 
-const Cluster = dynamic(
-  () => import("~/components/canvas/galaxy-cluster/cluster"),
+const GalaxyCluster = dynamic(
+  () => import("~/components/canvas/galaxy-cluster/scene"),
   {
     ssr: false,
   },
 );
 
-const InsideGalaxyStars = dynamic(
-  () => import("~/components/canvas/galaxy/galaxy"),
-  {
-    ssr: false,
-  },
-);
+const Galaxy = dynamic(() => import("~/components/canvas/galaxy/scene"), {
+  ssr: false,
+});
 
 export default function Page() {
   return (
@@ -71,7 +68,6 @@ export default function Page() {
         className="flex h-full w-full flex-col items-center justify-center"
         orbit
       >
-        <Common color="black" />
         <Scene />
       </View>
     </JotaiProvider>
@@ -83,14 +79,15 @@ const Scene = () => {
 
   return (
     <Suspense fallback={null}>
+      <Common key={scene} />
       <group visible={scene === "starSystem"}>
-        <StarSystemScene />
+        <StarSystem />
       </group>
       <group visible={scene === "galaxy"}>
-        <InsideGalaxyStars />
+        <Galaxy />
       </group>
       <group visible={scene === "galaxyCluster"}>
-        <Cluster />
+        <GalaxyCluster />
       </group>
     </Suspense>
   );
