@@ -1,23 +1,46 @@
 import { OrbitControls } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
-import { useAtom, useSetAtom } from "jotai";
-import { useRef } from "react";
-import { OrbitControls as OrbitControlsImpl } from "three-stdlib";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 
-import { currentStarSystemIdAtom, sceneAtom } from "~/helpers/store";
+import {
+  currentGalaxyAtom,
+  currentStarSystemAtom,
+  currentStarSystemIdAtom,
+  sceneAtom,
+} from "~/helpers/store";
 
 const Controls = () => {
   const { camera } = useThree();
+
   const [scene, setScene] = useAtom(sceneAtom);
   const setCurrentStarSystem = useSetAtom(currentStarSystemIdAtom);
 
-  const orbitRef = useRef<OrbitControlsImpl>(null);
+  const currentStarSystem = useAtomValue(currentStarSystemAtom);
+  const currentGalaxy = useAtomValue(currentGalaxyAtom);
+
+  const { x, y } = (() => {
+    if (scene === "galaxy" && currentStarSystem) {
+      return {
+        x: currentStarSystem.position.x,
+        y: currentStarSystem.position.y,
+      };
+    } else if (scene === "galaxyCluster" && currentGalaxy) {
+      return {
+        x: currentGalaxy.position.x,
+        y: currentGalaxy.position.y,
+      };
+    }
+
+    return {
+      x: 0,
+      y: 0,
+    };
+  })();
 
   return (
     <OrbitControls
-      ref={orbitRef}
       makeDefault
-      target={[0, 0, 0]}
+      target={[x, y, 0]}
       enableRotate={false}
       onChange={() => {
         if (scene === "starSystem" && camera.zoom < 0.2) {

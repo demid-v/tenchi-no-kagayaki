@@ -1,9 +1,8 @@
 "use client";
 
 import { useAtomValue, useSetAtom } from "jotai";
-import { JSX, useEffect, useMemo, useRef } from "react";
+import { JSX, useEffect, useMemo } from "react";
 import { Vector2, Vector3, Vector4 } from "three";
-import * as Three from "three";
 
 import {
   type StarSystemsType,
@@ -179,8 +178,6 @@ const Galaxy = () => {
 
     return stars;
   }, [currentGalaxy]);
-
-  console.log(stars.size);
 
   useEffect(() => {
     setStars(stars);

@@ -7,8 +7,6 @@ const store = createStore();
 const JotaiProvider = ({ children }: { children: React.ReactNode }) =>
   Provider({ children, store });
 
-const cameraAtom = atom<OrthographicCamera>();
-const orbitAtom = atom<OrbitControls>();
 const sceneAtom = atom<"starSystem" | "galaxy" | "galaxyCluster">(
   "galaxyCluster",
 );
@@ -80,8 +78,6 @@ const currentGalaxyAtom = atom((get) =>
 
 export {
   JotaiProvider,
-  cameraAtom,
-  orbitAtom,
   sceneAtom,
   pixelsAtom,
   showOrbitsAtom,
