@@ -114,7 +114,7 @@ const Galaxy = () => {
       starElements: [] as JSX.Element[],
     };
 
-    let protection = 0;
+    let limit = 0;
 
     while (stars.stars.size < 5000) {
       const position0 = new Vector2(getRandom(), getRandom());
@@ -129,30 +129,30 @@ const Galaxy = () => {
 
       uv.setY(uv.y * tilt - (tilt - 1) / 2);
 
-      const d_to_center = uv.distanceTo(new Vector2(0.5, 0.5));
-      const rot = currentGalaxy.swirl * Math.pow(d_to_center, 0.4);
-      const rotated_uv = rotate(uv, rot);
+      const distanceToCenter = uv.distanceTo(new Vector2(0.5, 0.5));
+      const rot = currentGalaxy.swirl * Math.pow(distanceToCenter, 0.4);
+      const rotatedUv = rotate(uv, rot);
 
-      let f1 = fbm(rotated_uv.multiplyScalar(size));
+      let f1 = fbm(rotatedUv.multiplyScalar(size));
       f1 = Math.floor(f1 * numOfLayers) / numOfLayers;
 
       uv2.setY(uv2.y * tilt - ((tilt - 1) / 2 + f1 * layerHeight));
 
-      const d_to_center2 = uv2.distanceTo(new Vector2(0.5, 0.5));
-      const rot2 = currentGalaxy.swirl * Math.pow(d_to_center2, 0.4);
-      const rotated_uv2 = rotate(uv2, rot2);
+      const distanceToCenter2 = uv2.distanceTo(new Vector2(0.5, 0.5));
+      const rot2 = currentGalaxy.swirl * Math.pow(distanceToCenter2, 0.4);
+      const rotatedUv2 = rotate(uv2, rot2);
 
-      let f2 = fbm(rotated_uv2.multiplyScalar(size).addScalar(f1 * 5));
+      let f2 = fbm(rotatedUv2.multiplyScalar(size).addScalar(f1 * 5));
 
       position0.subScalar(0.5).multiplyScalar(radius);
       const position = new Vector3(position0.x, position0.y, 0);
 
-      let a = step(f2 + d_to_center2, 0.7);
+      let a = step(f2 + distanceToCenter2, 0.7);
 
       if (a === 0) {
-        if (protection > 20000) break;
+        if (limit > 20000) break;
 
-        protection++;
+        limit++;
         continue;
       }
 
@@ -185,7 +185,7 @@ const Galaxy = () => {
 
   return (
     <group key={currentGalaxyId ?? undefined}>
-      {currentGalaxyId && currentGalaxy && (
+      {currentGalaxyId != null && currentGalaxy != null && (
         <GalaxyGlow
           radius={radius}
           colors={currentGalaxy.colors}

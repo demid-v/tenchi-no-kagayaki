@@ -2,34 +2,45 @@
 
 import { useSetAtom } from "jotai";
 import { useEffect, useMemo } from "react";
-import { Vector3 } from "three";
+import { Vector2, Vector3 } from "three";
 
 import { initGalaxyAtom } from "~/helpers/store";
 import { flip, getRandom } from "~/helpers/utils";
 
 import Galaxy, { randomizeColors } from "./galaxy";
 
+const rand = (coord: Vector2) => {
+  coord = coord.divide(new Vector2(1.0, 1.0)).multiplyScalar(3);
+
+  return (
+    (Math.sin(coord.distanceTo(new Vector2(12.9898, 78.233))) *
+      15.5453 *
+      Math.random()) %
+    1
+  );
+};
+
 const Cluster = () => {
   const setGalaxy = useSetAtom(initGalaxyAtom);
 
-  const size = 70;
-  const complexity = 70;
-  const variation = 50;
-  const angleStep = (Math.PI * 2) / complexity;
-
   const galaxies = useMemo(
     () =>
-      new Array(100).fill(0).map((_, i) => {
-        const angle = i * angleStep;
-        const radius = size * (1 + (Math.random() - 0.5) * variation);
+      new Array(Math.floor(getRandom(10, 100))).fill(0).map((_, i) => {
+        const coords = new Vector2(getRandom(), getRandom()).subScalar(0.5);
+        coords.addScalar(rand(coords)).multiplyScalar(getRandom(300, 400));
 
-        const position = new Vector3(
-          radius * Math.cos(angle),
-          radius * Math.sin(angle),
-          1,
-        );
+        const position = new Vector3(...coords, 1);
 
-        const scale = getRandom(60, 120);
+        const scale = (() => {
+          const r = getRandom();
+
+          if (r < 0.1) {
+            return getRandom() < 0.6 ? getRandom(10, 30) : getRandom(200, 300);
+          }
+
+          return getRandom(80, 100);
+        })();
+
         const colors = randomizeColors();
         const rotation = getRandom(0, Math.PI / 2);
         const rotationSpeed = getRandom(0.01, 1);
