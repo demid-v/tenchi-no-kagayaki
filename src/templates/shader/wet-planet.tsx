@@ -40,16 +40,20 @@ export const RiversShader = ({
   time?: number;
   ref?: React.Ref<THREE.ShaderMaterial>;
 }) => {
-  const colorPalette = colors
-    ? colors
-    : [
-        new Vector4(0.388235, 0.670588, 0.247059, 1),
-        new Vector4(0.231373, 0.490196, 0.309804, 1),
-        new Vector4(0.184314, 0.341176, 0.32549, 1),
-        new Vector4(0.156863, 0.207843, 0.25098, 1),
-        new Vector4(0.309804, 0.643137, 0.721569, 1),
-        new Vector4(0.25098, 0.286275, 0.45098, 1),
-      ];
+  const colorPalette = useMemo(
+    () =>
+      colors
+        ? colors
+        : [
+            new Vector4(0.388235, 0.670588, 0.247059, 1),
+            new Vector4(0.231373, 0.490196, 0.309804, 1),
+            new Vector4(0.184314, 0.341176, 0.32549, 1),
+            new Vector4(0.156863, 0.207843, 0.25098, 1),
+            new Vector4(0.309804, 0.643137, 0.721569, 1),
+            new Vector4(0.25098, 0.286275, 0.45098, 1),
+          ],
+    [colors],
+  );
 
   const shaderOptions = useMemo(
     () => ({
@@ -72,6 +76,7 @@ export const RiversShader = ({
       fragmentShader,
       transparent: true,
     }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
 

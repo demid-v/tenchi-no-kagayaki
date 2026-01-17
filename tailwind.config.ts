@@ -1,11 +1,18 @@
 import { type Config } from "tailwindcss";
+import tailwindcssAnimate from "tailwindcss-animate";
+import tailwindDefaultTheme from "tailwindcss/defaultTheme";
 
 export default {
-  mode: "jit",
-  content: ["./src/**/*.{js,ts,jsx,tsx}"],
-  darkMode: ["class"],
+  darkMode: "class",
+  content: ["./src/**/*.tsx"],
   theme: {
     extend: {
+      fontFamily: {
+        sans: [
+          "var(--font-geist-sans)",
+          ...tailwindDefaultTheme.fontFamily.sans,
+        ],
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
@@ -52,11 +59,22 @@ export default {
           "4": "hsl(var(--chart-4))",
           "5": "hsl(var(--chart-5))",
         },
+        sidebar: {
+          DEFAULT: "hsl(var(--sidebar-background))",
+          foreground: "hsl(var(--sidebar-foreground))",
+          primary: "hsl(var(--sidebar-primary))",
+          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
+          accent: "hsl(var(--sidebar-accent))",
+          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
+          border: "hsl(var(--sidebar-border))",
+          ring: "hsl(var(--sidebar-ring))",
+        },
+      },
+      gridTemplateColumns: {
+        tiles: "repeat(auto-fill,minmax(200px,1fr))",
+        mobile: "repeat(auto-fill,minmax(150px,1fr))",
       },
     },
   },
-  variants: {
-    extend: {},
-  },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [tailwindcssAnimate],
 } satisfies Config;

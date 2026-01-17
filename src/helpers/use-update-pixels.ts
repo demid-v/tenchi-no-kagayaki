@@ -17,7 +17,7 @@ const useUpdatePixels = (
 
       planet.material.uniforms.pixels.value = pixels;
     });
-  }, [pixels]);
+  }, [object, pixels]);
 };
 
 export default useUpdatePixels;

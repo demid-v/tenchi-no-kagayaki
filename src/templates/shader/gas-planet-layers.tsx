@@ -48,16 +48,20 @@ const GasPlanetLayersShader = ({
   time?: number;
   ref?: React.Ref<THREE.ShaderMaterial>;
 }) => {
-  const colorPalette = colors
-    ? colors
-    : [
-        new Vector4(0.933333, 0.764706, 0.603922, 1),
-        new Vector4(0.85098, 0.627451, 0.4, 1),
-        new Vector4(0.560784, 0.337255, 0.231373, 1),
-        new Vector4(0.4, 0.223529, 0.192157, 1),
-        new Vector4(0.270588, 0.156863, 0.235294, 1),
-        new Vector4(0.133333, 0.12549, 0.203922, 1),
-      ];
+  const colorPalette = useMemo(
+    () =>
+      colors
+        ? colors
+        : [
+            new Vector4(0.933333, 0.764706, 0.603922, 1),
+            new Vector4(0.85098, 0.627451, 0.4, 1),
+            new Vector4(0.560784, 0.337255, 0.231373, 1),
+            new Vector4(0.4, 0.223529, 0.192157, 1),
+            new Vector4(0.270588, 0.156863, 0.235294, 1),
+            new Vector4(0.133333, 0.12549, 0.203922, 1),
+          ],
+    [colors],
+  );
 
   const shaderOptions = useMemo(
     () => ({
@@ -84,6 +88,7 @@ const GasPlanetLayersShader = ({
       fragmentShader,
       transparent: true,
     }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
 

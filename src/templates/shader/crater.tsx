@@ -34,12 +34,16 @@ export const CraterShader = ({
   time?: number;
   ref?: React.Ref<THREE.ShaderMaterial>;
 }) => {
-  const colorPalette = colors
-    ? colors
-    : [
-        new Vector4(71 / 255, 97 / 255, 124 / 255, 1),
-        new Vector4(53 / 255, 57 / 255, 85 / 255, 1),
-      ];
+  const colorPalette = useMemo(
+    () =>
+      colors
+        ? colors
+        : [
+            new Vector4(71 / 255, 97 / 255, 124 / 255, 1),
+            new Vector4(53 / 255, 57 / 255, 85 / 255, 1),
+          ],
+    [colors],
+  );
 
   const shaderOptions = useMemo(
     () => ({
@@ -60,6 +64,7 @@ export const CraterShader = ({
       depthTest: true,
       transparent: true,
     }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
 

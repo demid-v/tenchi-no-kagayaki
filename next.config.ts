@@ -1,6 +1,8 @@
+import nextPWA from "@ducanh2912/next-pwa";
+import bundleAnalyzer from "@next/bundle-analyzer";
 import { NextConfig } from "next";
 
-const withBundleAnalyzer = require("@next/bundle-analyzer")({
+const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === "true",
 });
 
@@ -8,7 +10,7 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
  * A fork of 'next-pwa' that has app directory support
  * @see https://github.com/shadowwalker/next-pwa/issues/424#issuecomment-1332258575
  */
-const withPWA = require("@ducanh2912/next-pwa").default({
+const withPWA = nextPWA({
   dest: "public",
   disable: process.env.NODE_ENV === "development",
 });
@@ -75,11 +77,12 @@ const KEYS_TO_OMIT = [
   "assetPrefix",
 ];
 
-//@ts-ignore
+//@ts-expect-error No types
 module.exports = (_phase, { defaultConfig }) => {
   const plugins = [[withPWA], [withBundleAnalyzer, {}]];
 
   const wConfig = plugins.reduce(
+    //@ts-expect-error No types
     (acc, [plugin, config]) => plugin({ ...acc, ...config }),
     {
       ...defaultConfig,

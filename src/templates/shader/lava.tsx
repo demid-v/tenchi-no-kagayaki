@@ -38,13 +38,17 @@ const LavaShader = ({
   time?: number;
   ref?: React.Ref<THREE.ShaderMaterial>;
 }) => {
-  const colorPalette = colors
-    ? colors
-    : [
-        new Vector4(1, 0.537255, 0.2, 1),
-        new Vector4(0.901961, 0.270588, 0.223529, 1),
-        new Vector4(0.678431, 0.184314, 0.270588, 1),
-      ];
+  const colorPalette = useMemo(
+    () =>
+      colors
+        ? colors
+        : [
+            new Vector4(1, 0.537255, 0.2, 1),
+            new Vector4(0.901961, 0.270588, 0.223529, 1),
+            new Vector4(0.678431, 0.184314, 0.270588, 1),
+          ],
+    [colors],
+  );
 
   const shaderOptions = useMemo(
     () => ({
@@ -66,6 +70,7 @@ const LavaShader = ({
       fragmentShader,
       transparent: true,
     }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
 

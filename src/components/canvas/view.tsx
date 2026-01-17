@@ -3,6 +3,7 @@
 import { OrthographicCamera, View as ViewImpl } from "@react-three/drei";
 import { useAtomValue } from "jotai";
 import { Suspense, useRef } from "react";
+import React from "react";
 import { OrthographicCamera as OrthographicCameraImpl } from "three";
 
 import { Three } from "~/helpers/components/three";
@@ -66,22 +67,20 @@ const Common = ({ color }: { color?: string }) => {
 const View = ({
   children,
   orbit,
-  ref,
   ...props
 }: Readonly<
   {
     children: React.ReactNode;
     orbit?: boolean;
-    ref?: React.Ref<HTMLInputElement>;
   } & React.HTMLAttributes<HTMLDivElement>
 >) => {
-  const localRef = useRef(null);
+  const localRef = useRef<HTMLDivElement>(null);
 
   return (
     <>
       <div ref={localRef} {...props} />
       <Three>
-        {/* @ts-ignore */}
+        {/* @ts-expect-error Does accept null */}
         <ViewImpl track={localRef}>
           {children}
           {orbit && <Orbit />}

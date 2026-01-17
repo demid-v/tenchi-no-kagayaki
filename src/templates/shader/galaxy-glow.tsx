@@ -44,17 +44,21 @@ const GalaxyGlowShader = ({
   time?: number;
   ref?: React.Ref<THREE.ShaderMaterial>;
 }) => {
-  const colorPalette = colors
-    ? colors
-    : [
-        new Vector4(1, 1, 0.921569, 1),
-        new Vector4(1, 0.913725, 0.552941, 1),
-        new Vector4(0.709804, 0.878431, 0.4, 1),
-        new Vector4(0.396078, 0.647059, 0.4, 1),
-        new Vector4(0.223529, 0.364706, 0.392157, 1),
-        new Vector4(0.196078, 0.223529, 0.301961, 1),
-        new Vector4(0.196078, 0.160784, 0.278431, 1),
-      ];
+  const colorPalette = useMemo(
+    () =>
+      colors
+        ? colors
+        : [
+            new Vector4(1, 1, 0.921569, 1),
+            new Vector4(1, 0.913725, 0.552941, 1),
+            new Vector4(0.709804, 0.878431, 0.4, 1),
+            new Vector4(0.396078, 0.647059, 0.4, 1),
+            new Vector4(0.223529, 0.364706, 0.392157, 1),
+            new Vector4(0.196078, 0.223529, 0.301961, 1),
+            new Vector4(0.196078, 0.160784, 0.278431, 1),
+          ],
+    [colors],
+  );
 
   const shaderOptions = useMemo(
     () => ({
@@ -79,6 +83,7 @@ const GalaxyGlowShader = ({
       fragmentShader,
       transparent: true,
     }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
 

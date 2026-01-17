@@ -9,6 +9,7 @@ const useColors = (
 ) => {
   useLayoutEffect(() => {
     for (const object of objects) {
+      // eslint-disable-next-line react-hooks/immutability
       object.object.current!.uniforms.colors!.value = object.colors;
     }
   });

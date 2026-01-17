@@ -42,14 +42,18 @@ export const CloudsShader = ({
   time?: number;
   ref?: React.Ref<THREE.ShaderMaterial>;
 }) => {
-  const colorPalette = colors
-    ? colors
-    : [
-        new Vector4(0.882353, 0.94902, 1, 1),
-        new Vector4(0.752941, 0.890196, 1, 1),
-        new Vector4(0.368627, 0.439216, 0.647059, 1),
-        new Vector4(0.25098, 0.286275, 0.45098, 1),
-      ];
+  const colorPalette = useMemo(
+    () =>
+      colors
+        ? colors
+        : [
+            new Vector4(0.882353, 0.94902, 1, 1),
+            new Vector4(0.752941, 0.890196, 1, 1),
+            new Vector4(0.368627, 0.439216, 0.647059, 1),
+            new Vector4(0.25098, 0.286275, 0.45098, 1),
+          ],
+    [colors],
+  );
 
   const shaderOptions = useMemo(
     () => ({
@@ -73,6 +77,7 @@ export const CloudsShader = ({
       fragmentShader,
       transparent: true,
     }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
 

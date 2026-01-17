@@ -13,7 +13,7 @@ const View = dynamic(
     loading: () => (
       <div className="flex h-full w-full flex-col items-center justify-center">
         <svg
-          className="-ml-1 mr-3 h-5 w-5 animate-spin text-black"
+          className="mr-3 -ml-1 h-5 w-5 animate-spin text-black"
           fill="none"
           viewBox="0 0 24 24"
         >

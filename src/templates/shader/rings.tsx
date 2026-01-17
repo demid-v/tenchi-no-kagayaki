@@ -19,7 +19,6 @@ const RingsShader = ({
   scaleRelToPlanet = 6,
   numOfColors = 3,
   colors,
-  darkColors,
   size = 15,
   octaves = 4,
   seed = flip() ? Math.random() * 10 : Math.random() * 100,
@@ -35,23 +34,26 @@ const RingsShader = ({
   scaleRelToPlanet?: number;
   numOfColors?: number;
   colors?: Vector4[];
-  darkColors?: Vector4[];
   size?: number;
   octaves?: number;
   seed?: number;
   time?: number;
   ref?: React.Ref<THREE.ShaderMaterial>;
 }) => {
-  const colorPalette = colors
-    ? colors
-    : [
-        new Vector4(0.933333, 0.764706, 0.603922, 1),
-        new Vector4(0.701961, 0.478431, 0.313726, 1),
-        new Vector4(0.560784, 0.337255, 0.231373, 1),
-        new Vector4(0.333333, 0.188235, 0.211765, 1),
-        new Vector4(0.196078, 0.137255, 0.215686, 1),
-        new Vector4(0.133333, 0.12549, 0.203922, 1),
-      ];
+  const colorPalette = useMemo(
+    () =>
+      colors
+        ? colors
+        : [
+            new Vector4(0.933333, 0.764706, 0.603922, 1),
+            new Vector4(0.701961, 0.478431, 0.313726, 1),
+            new Vector4(0.560784, 0.337255, 0.231373, 1),
+            new Vector4(0.333333, 0.188235, 0.211765, 1),
+            new Vector4(0.196078, 0.137255, 0.215686, 1),
+            new Vector4(0.133333, 0.12549, 0.203922, 1),
+          ],
+    [colors],
+  );
 
   const shaderOptions = useMemo(
     () => ({
@@ -74,6 +76,7 @@ const RingsShader = ({
       fragmentShader,
       transparent: true,
     }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
 

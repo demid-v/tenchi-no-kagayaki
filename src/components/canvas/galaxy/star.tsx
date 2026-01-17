@@ -1,5 +1,6 @@
 "use client";
 
+import { ThreeElements } from "@react-three/fiber";
 import { useAtom, useSetAtom } from "jotai";
 import React, { useMemo, useRef, useState } from "react";
 import * as THREE from "three";
@@ -17,7 +18,7 @@ const Star = ({
 }: {
   color: THREE.Vector4;
   starId: number;
-} & React.ComponentProps<"group">) => {
+} & ThreeElements["group"]) => {
   const groupRef = useRef<THREE.Group>(null);
   const starRef = useRef<THREE.ShaderMaterial>(null);
 
@@ -38,7 +39,7 @@ const Star = ({
         transparent: true,
         blending: THREE.AdditiveBlending,
       }) satisfies THREE.ShaderMaterialParameters,
-    [],
+    [color],
   );
 
   useUpdate(groupRef);

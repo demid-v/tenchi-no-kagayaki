@@ -33,14 +33,18 @@ export const StarShader = ({
   time?: number;
   ref?: React.Ref<THREE.ShaderMaterial>;
 }) => {
-  const colorPalette = colors
-    ? colors
-    : [
-        new Vector4(0.961, 1, 0.91),
-        new Vector4(1, 0.847, 0.196),
-        new Vector4(1, 0.51, 0.231),
-        new Vector4(0.486, 0.098, 0.102),
-      ];
+  const colorPalette = useMemo(
+    () =>
+      colors
+        ? colors
+        : [
+            new Vector4(0.961, 1, 0.91),
+            new Vector4(1, 0.847, 0.196),
+            new Vector4(1, 0.51, 0.231),
+            new Vector4(0.486, 0.098, 0.102),
+          ],
+    [colors],
+  );
 
   const shaderOptions = useMemo(
     () => ({
@@ -59,6 +63,7 @@ export const StarShader = ({
       fragmentShader,
       transparent: true,
     }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
 

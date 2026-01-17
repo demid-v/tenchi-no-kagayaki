@@ -12,7 +12,7 @@ const Scene = dynamic(() => import("~/components/canvas/scene"), {
 });
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null!);
   const scene = useAtomValue(sceneAtom);
 
   return (
@@ -21,7 +21,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       style={{
         position: "relative",
         width: "100%",
-        height: "100%",
+        height: "100svh",
         overflow: "auto",
         touchAction: "auto",
       }}

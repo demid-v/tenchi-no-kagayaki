@@ -46,7 +46,7 @@ const Cluster = () => {
         const rotationSpeed = getRandom(0.01, 1);
         const tilt = getRandom(1, 3);
         const swirl = getRandom(-12, -6);
-        const seed = flip() ? Math.random() * 10 : Math.random() * 100;
+        const seed = flip() ? getRandom() * 10 : getRandom() * 100;
 
         return {
           key: i,
@@ -83,7 +83,7 @@ const Cluster = () => {
         seed: galaxy.seed,
       });
     });
-  }, [galaxies]);
+  }, [galaxies, setGalaxy]);
 
   return <group>{galaxies.map((galaxy) => galaxy.element)}</group>;
 };

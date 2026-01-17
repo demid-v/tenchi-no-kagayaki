@@ -53,18 +53,12 @@ const rotate = (coord: Vector2, angle: number) => {
   return coord.addScalar(0.5);
 };
 
-const Galaxy = () => {
-  const setStars = useSetAtom(initStarsAtom);
-  const currentGalaxyId = useAtomValue(currentGalaxyIdAtom);
-  const currentGalaxy = useAtomValue(currentGalaxyAtom);
-
+const fbm = (coord: Vector2, seed: number) => {
   const rand = (coord: Vector2) => {
     coord = coord.clone();
 
     return fract(
-      Math.sin(coord.dot(new Vector2(12.9898, 78.233))) *
-        15.5453 *
-        (currentGalaxy?.seed ?? 0),
+      Math.sin(coord.dot(new Vector2(12.9898, 78.233))) * 15.5453 * (seed ?? 0),
     );
   };
 
@@ -91,18 +85,22 @@ const Galaxy = () => {
     );
   };
 
-  const fbm = (coord: Vector2) => {
-    coord = coord.clone();
+  coord = coord.clone();
 
-    let value = 0;
+  let value = 0;
 
-    for (let i = 0, scale = 0.5; i < octaves; i++, scale *= 0.5) {
-      value += noise(coord) * scale;
-      coord.multiplyScalar(2);
-    }
+  for (let i = 0, scale = 0.5; i < octaves; i++, scale *= 0.5) {
+    value += noise(coord) * scale;
+    coord.multiplyScalar(2);
+  }
 
-    return value;
-  };
+  return value;
+};
+
+const Galaxy = () => {
+  const setStars = useSetAtom(initStarsAtom);
+  const currentGalaxyId = useAtomValue(currentGalaxyIdAtom);
+  const currentGalaxy = useAtomValue(currentGalaxyAtom);
 
   const { stars, starElements } = useMemo(() => {
     if (!currentGalaxy) {
@@ -133,7 +131,7 @@ const Galaxy = () => {
       const rot = currentGalaxy.swirl * Math.pow(distanceToCenter, 0.4);
       const rotatedUv = rotate(uv, rot);
 
-      let f1 = fbm(rotatedUv.multiplyScalar(size));
+      let f1 = fbm(rotatedUv.multiplyScalar(size), currentGalaxy.seed);
       f1 = Math.floor(f1 * numOfLayers) / numOfLayers;
 
       uv2.setY(uv2.y * tilt - ((tilt - 1) / 2 + f1 * layerHeight));
@@ -141,13 +139,15 @@ const Galaxy = () => {
       const distanceToCenter2 = uv2.distanceTo(new Vector2(0.5, 0.5));
       const rot2 = currentGalaxy.swirl * Math.pow(distanceToCenter2, 0.4);
       const rotatedUv2 = rotate(uv2, rot2);
-
-      let f2 = fbm(rotatedUv2.multiplyScalar(size).addScalar(f1 * 5));
+      let f2 = fbm(
+        rotatedUv2.multiplyScalar(size).addScalar(f1 * 5),
+        currentGalaxy.seed,
+      );
 
       position0.subScalar(0.5).multiplyScalar(radius);
       const position = new Vector3(position0.x, position0.y, 0);
 
-      let a = step(f2 + distanceToCenter2, 0.7);
+      const a = step(f2 + distanceToCenter2, 0.7);
 
       if (a === 0) {
         if (limit > 20000) break;
@@ -168,7 +168,7 @@ const Galaxy = () => {
       stars.stars.set(i, { position, color });
       stars.starElements.push(
         <Star
-          key={i + Math.random()}
+          key={i + getRandom()}
           starId={i}
           position={position}
           color={color}
@@ -181,7 +181,7 @@ const Galaxy = () => {
 
   useEffect(() => {
     setStars(stars);
-  }, [stars]);
+  }, [setStars, stars]);
 
   return (
     <group key={currentGalaxyId ?? undefined}>

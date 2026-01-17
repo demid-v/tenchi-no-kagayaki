@@ -40,7 +40,10 @@ export const StarFlaresShader = ({
   time?: number;
   ref?: React.Ref<THREE.ShaderMaterial>;
 }) => {
-  const colorPalette = [new Vector4(1, 0.647, 0), new Vector4(1, 1, 0.894118)];
+  const colorPalette = useMemo(
+    () => [new Vector4(1, 0.647, 0), new Vector4(1, 1, 0.894118)],
+    [],
+  );
 
   const shaderOptions = useMemo(
     () => ({
@@ -64,6 +67,7 @@ export const StarFlaresShader = ({
       fragmentShader,
       transparent: true,
     }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
 
