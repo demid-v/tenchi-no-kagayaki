@@ -7,7 +7,6 @@ import { Vector2, Vector3, Vector4 } from "three";
 import {
   type StarSystemsType,
   currentGalaxyAtom,
-  currentGalaxyIdAtom,
   initStarsAtom,
 } from "~/helpers/store";
 import { getRandom } from "~/helpers/utils";
@@ -99,7 +98,6 @@ const fbm = (coord: Vector2, seed: number) => {
 
 const Galaxy = () => {
   const setStars = useSetAtom(initStarsAtom);
-  const currentGalaxyId = useAtomValue(currentGalaxyIdAtom);
   const currentGalaxy = useAtomValue(currentGalaxyAtom);
 
   const { stars, starElements } = useMemo(() => {
@@ -184,8 +182,8 @@ const Galaxy = () => {
   }, [setStars, stars]);
 
   return (
-    <group key={currentGalaxyId ?? undefined}>
-      {currentGalaxyId != null && currentGalaxy != null && (
+    <group>
+      {currentGalaxy && (
         <GalaxyGlow
           radius={radius}
           colors={currentGalaxy.colors}
