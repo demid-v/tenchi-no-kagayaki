@@ -8,7 +8,7 @@ import useColors from "~/helpers/use-random-colors";
 import useRotation from "~/helpers/use-rotation";
 import useUpdate from "~/helpers/use-update";
 import useUpdatePixels from "~/helpers/use-update-pixels";
-import { generateColors, getRandom } from "~/helpers/utils";
+import { darken, generateColors, getRandom } from "~/helpers/utils";
 import { CraterShader } from "~/templates/shader/crater";
 import LavaShader from "~/templates/shader/lava";
 import { PlanetShader } from "~/templates/shader/planet";
@@ -21,15 +21,23 @@ const randomizeColors = () => {
   );
 
   const landColors = new Array(3).fill(0).map((_, i) => {
-    const newColor = seedColors[0]!.offsetHSL(0.2 * (i / 4), 0, -(i / 3));
+    const color = darken(seedColors[0]!, -(i / 3)).offsetHSL(
+      0.2 * (i / 4),
+      0,
+      0,
+    );
 
-    return new Vector4(...newColor.toArray(), 1);
+    return new Vector4(...color, 1);
   });
 
   const lavaColors = new Array(3).fill(0).map((_, i) => {
-    const newColor = seedColors[1]!.offsetHSL(0.2 * (i / 3), 0, -(i / 3));
+    const color = darken(seedColors[1]!, -(i / 3)).offsetHSL(
+      0.2 * (i / 3),
+      0,
+      0,
+    );
 
-    return new Vector4(...newColor.toArray(), 1);
+    return new Vector4(...color, 1);
   });
 
   const craterColors = [landColors[1]!, landColors[2]!];

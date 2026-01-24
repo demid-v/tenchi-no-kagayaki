@@ -8,7 +8,7 @@ import useColors from "~/helpers/use-random-colors";
 import useRotation from "~/helpers/use-rotation";
 import useUpdate from "~/helpers/use-update";
 import useUpdatePixels from "~/helpers/use-update-pixels";
-import { generateColors, getRandom } from "~/helpers/utils";
+import { darken, generateColors, getRandom, lighten } from "~/helpers/utils";
 import { DryPlanetShader } from "~/templates/shader/dry-planet";
 
 const randomizeColors = () => {
@@ -19,11 +19,10 @@ const randomizeColors = () => {
   );
 
   const colors = seedColors.slice(0, 5).map((color, i) => {
-    const newColor = color
-      .offsetHSL(0, 0, -(i / 5))
-      .offsetHSL(0, 0, (1 - i / 5) * 0.2);
+    color = darken(color, i / 5);
+    color = lighten(color, (1 - i / 5) * 0.2);
 
-    return new Vector4(...newColor.toArray(), 1);
+    return new Vector4(...color, 1);
   });
 
   return colors;

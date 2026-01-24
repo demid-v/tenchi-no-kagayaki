@@ -34,4 +34,24 @@ const generateColors = (numOfColors = 4, hueDiff = 0.9, saturation = 0.5) => {
   return colors;
 };
 
-export { flip, getRandom, generateColors };
+const darken = (color: Color, p_amount: number) => {
+  color = color.clone();
+
+  color.r = color.r * (1 - p_amount);
+  color.g = color.g * (1 - p_amount);
+  color.b = color.b * (1 - p_amount);
+
+  return color;
+};
+
+const lighten = (color: Color, p_amount: number) => {
+  color = color.clone();
+
+  color.r = color.r + (1 - color.r) * p_amount;
+  color.g = color.g + (1 - color.g) * p_amount;
+  color.b = color.b + (1 - color.b) * p_amount;
+
+  return color;
+};
+
+export { flip, getRandom, generateColors, darken, lighten };

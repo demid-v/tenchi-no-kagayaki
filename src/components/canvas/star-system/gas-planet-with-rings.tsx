@@ -8,7 +8,7 @@ import useColors from "~/helpers/use-random-colors";
 import useRotation from "~/helpers/use-rotation";
 import useUpdate from "~/helpers/use-update";
 import useUpdatePixels from "~/helpers/use-update-pixels";
-import { generateColors, getRandom } from "~/helpers/utils";
+import { darken, generateColors, getRandom, lighten } from "~/helpers/utils";
 import GasPlanetLayersShader from "~/templates/shader/gas-planet-layers";
 import RingsShader from "~/templates/shader/rings";
 
@@ -20,11 +20,10 @@ const randomizeColors = () => {
   );
 
   const colors = seedColors.slice(0, 6).map((color, i) => {
-    const newColor = color
-      .offsetHSL(0, 0, -(i / 7))
-      .offsetHSL(0, 0, (1 - i / 6) * 0.3);
+    color = darken(color, i / 7);
+    color = lighten(color, (1 - i / 6) * 0.3);
 
-    return new Vector4(...newColor.toArray(), 1);
+    return new Vector4(...color, 1);
   });
 
   return colors;

@@ -9,18 +9,17 @@ import { currentGalaxyIdAtom, sceneAtom } from "~/helpers/store";
 import useColors from "~/helpers/use-random-colors";
 import useUpdate from "~/helpers/use-update";
 import useUpdatePixels from "~/helpers/use-update-pixels";
-import { generateColors, getRandom } from "~/helpers/utils";
+import { darken, generateColors, getRandom, lighten } from "~/helpers/utils";
 import GalaxyShader from "~/templates/shader/galaxy";
 
 const randomizeColors = () => {
   const seedColors = generateColors(7, getRandom(0.5, 0.8), 1.4);
 
   const colors = seedColors.map((color, i) => {
-    const newColor = color
-      .offsetHSL(0, 0, -(i / 7))
-      .offsetHSL(0, 0, (1 - i / 6) * 0.6);
+    color = darken(color, i / 7);
+    color = lighten(color, (1 - i / 6) * 0.6);
 
-    return new Vector4(...newColor.toArray(), 1);
+    return new Vector4(...color, 1);
   });
 
   return colors;

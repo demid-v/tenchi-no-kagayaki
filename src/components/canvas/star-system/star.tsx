@@ -10,7 +10,7 @@ import { currentStarSystemAtom } from "~/helpers/store";
 import useColors from "~/helpers/use-random-colors";
 import useUpdate from "~/helpers/use-update";
 import useUpdatePixels from "~/helpers/use-update-pixels";
-import { generateColors, getRandom } from "~/helpers/utils";
+import { darken, generateColors, getRandom, lighten } from "~/helpers/utils";
 import { StarShader } from "~/templates/shader/star";
 import { StarBlobsShader } from "~/templates/shader/star-blobs";
 import { StarFlaresShader } from "~/templates/shader/star-flares";
@@ -21,12 +21,14 @@ const randomizeColors = (initSeedColor?: Vector4) => {
   const colors = seedColors.slice(0, 4).map((color, i) => {
     if (initSeedColor && i === 1) return initSeedColor.setW(1);
 
-    const newColor = color
-      .offsetHSL(0, 0, -((i / 4) * 0.9))
-      .offsetHSL(0, 0, (1 - i / 4) * 0.8)
-      .offsetHSL(0, 0, i === 0 ? 0.8 : 0);
+    color = darken(color, (i / 4) * 0.9);
+    color = lighten(color, (1 - i / 4) * 0.8);
 
-    return new Vector4(...newColor.toArray(), 1);
+    if (i === 0) {
+      color = lighten(color, 0.8);
+    }
+
+    return new Vector4(...color, 1);
   });
 
   const newColors = [colors[0]!, ...colors, colors[1]!, colors[0]!];
